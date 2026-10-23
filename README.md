@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/myna-logo.png" alt="Myna logo" width="160">
+</p>
+
 # Myna — Developer Intent Engine
 
 **Turn what you want into the technical language AI understands.**
@@ -71,7 +75,19 @@ myna list                     List every concept
 myna -d FILE ...              Use a different catalogue file
 ```
 
+In a colour terminal, the interactive session opens with the Myna logo.
+
 More examples are in [examples/requests.md](examples/requests.md).
+
+### Windows shortcut
+
+To open Myna like an app, with its own icon and window:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/install-shortcut.ps1
+```
+
+This adds a **Myna** shortcut to your Desktop and Start menu.
 
 ## The concept catalogue
 

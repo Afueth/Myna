@@ -8,12 +8,19 @@
 #include "myna/catalogue.h"
 #include "myna/search.h"
 
+#include "logo.h"
+#include "terminal.h"
+
 #define DEFAULT_CATALOGUE "data/concepts.csv"
 #define MAX_RESULTS 5
 #define MAX_SUGGESTIONS 3
 #define INPUT_MAX 500
 #define WRAP_WIDTH 76
 #define PATH_MAX_LEN 1024
+
+#define STYLE_TITLE "\033[1;38;2;255;196;0m"
+#define STYLE_DIM "\033[38;2;150;150;175m"
+#define STYLE_RESET "\033[0m"
 
 typedef enum { INPUT_OK, INPUT_EMPTY, INPUT_TOO_LONG, INPUT_EOF } input_status;
 
@@ -33,6 +40,34 @@ static void print_usage(const char *prog)
             "  -d FILE                Catalogue CSV (default: " DEFAULT_CATALOGUE ")\n"
             "  -h, --help             Show this help\n",
             prog);
+}
+
+/* The colour logo with the title beside it, or a plain text title. */
+static void print_banner(FILE *out, int colour)
+{
+    if (!colour) {
+        fprintf(out, "\nMYNA - Developer Intent Engine\n");
+        fprintf(out, "==============================\n");
+        return;
+    }
+
+    const char *beside[] = {
+        STYLE_TITLE "M Y N A" STYLE_RESET,
+        "Developer Intent Engine",
+        "",
+        STYLE_DIM "Turn what you want into the" STYLE_RESET,
+        STYLE_DIM "technical language AI understands." STYLE_RESET,
+    };
+    int count = (int)(sizeof beside / sizeof beside[0]);
+    int first = (MYNA_LOGO_LINES - count) / 2;
+
+    fputc('\n', out);
+    for (int i = 0; i < MYNA_LOGO_LINES; i++) {
+        fprintf(out, "  %s", MYNA_LOGO[i]);
+        if (i >= first && i < first + count)
+            fprintf(out, "   %s", beside[i - first]);
+        fputc('\n', out);
+    }
 }
 
 static void trim(char *s)
@@ -219,9 +254,7 @@ int myna_repl(const myna_catalogue *cat, FILE *in, FILE *out)
     myna_match matches[MAX_RESULTS];
     size_t count = 0;
 
-    fprintf(out, "\nMYNA - Developer Intent Engine\n");
-    fprintf(out, "==============================\n");
-    fprintf(out, "%d concepts loaded. Type Q to quit.\n", (int)cat->count);
+    fprintf(out, "\n%d concepts loaded. Type Q to quit.\n", (int)cat->count);
 
     for (;;) {
         input_status status;
@@ -410,6 +443,10 @@ int myna_cli_run(int argc, char **argv)
             status = 1;
         }
     } else {
+        int colour = myna_terminal_init();
+        if (colour)
+            myna_terminal_set_title("Myna");
+        print_banner(stdout, colour);
         status = myna_repl(&cat, stdin, stdout);
     }
 

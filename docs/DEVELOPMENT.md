@@ -46,6 +46,24 @@ printf 'close the popup when I click outside\nD\n1\nQ\n' | ./build/myna
 3. Check with `gcc --version`, then build with `mingw32-make` and run
    `.\build\myna.exe`.
 
+## Logo and icon
+
+`assets/myna-logo.png` is the source logo. Two files are generated from it and
+committed, so building needs no extra tools:
+
+- `src/cli/logo.c`: the colour terminal logo (half-block characters with
+  24-bit colour escapes)
+- `assets/myna.ico`: the Windows icon, embedded in `myna.exe` via `assets/myna.rc`
+
+After changing the logo, regenerate both on Windows:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/make_logo.ps1
+```
+
+The logo is only drawn when stdout is an interactive terminal. It is skipped
+when output is piped or `NO_COLOR` is set.
+
 ## Adding a test
 
 Tests live in `tests/` and use a small `CHECK` macro rather than a framework.

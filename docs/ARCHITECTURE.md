@@ -8,8 +8,10 @@ lets future integrations (prompt builder, local API, editor plugins) reuse it.
 include/myna/   Public headers
 src/core/       Core library (myna_core): catalogue loading and search
 src/cli/        Interactive session, commands and output formatting
+                (terminal.c: colour and title; logo.c: generated logo)
 src/main.c      Entry point; delegates to myna_cli_run()
 data/           The concept catalogue (CSV)
+assets/         Logo, Windows icon and resource script
 ```
 
 ## Components

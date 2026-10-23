@@ -16,10 +16,19 @@ add_library(myna_core
 )
 target_include_directories(myna_core PUBLIC include)
 
-add_executable(myna
+set(MYNA_CLI_SOURCES
     src/main.c
     src/cli/cli.c
+    src/cli/terminal.c
+    src/cli/logo.c
 )
+if(WIN32)
+    # Embeds the icon in myna.exe.
+    enable_language(RC)
+    list(APPEND MYNA_CLI_SOURCES assets/myna.rc)
+endif()
+
+add_executable(myna ${MYNA_CLI_SOURCES})
 target_link_libraries(myna PRIVATE myna_core)
 
 enable_testing()

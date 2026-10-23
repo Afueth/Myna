@@ -1,0 +1,2 @@
+// Windows resources for myna.exe. Regenerate myna.ico with scripts/make_logo.ps1.
+1 ICON "myna.ico"
