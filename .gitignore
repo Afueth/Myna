@@ -1,0 +1,27 @@
+# Build output
+build/
+cmake-build-*/
+*.o
+*.obj
+*.exe
+*.a
+*.lib
+*.so
+*.dll
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+cmake_install.cmake
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc

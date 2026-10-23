@@ -1,0 +1,30 @@
+# Contributing to myna
+
+Thanks for your interest in improving myna!
+
+## Ways to contribute
+
+- **Add concepts** to `data/concepts.csv` (see [docs/DATA_FORMAT.md](docs/DATA_FORMAT.md)).
+- **Fix bugs** or **add features** — check [docs/ROADMAP.md](docs/ROADMAP.md) for ideas.
+- **Improve the docs.**
+
+## Workflow
+
+1. Fork the repository and create a branch from `main`.
+2. Make your change. Keep commits focused.
+3. Run the checks:
+   ```sh
+   cmake -S . -B build && cmake --build build && ctest --test-dir build
+   python scripts/check_catalogue.py data/concepts.csv
+   ```
+4. Open a pull request describing what changed and why.
+
+For larger changes, open an issue first so we can agree on the approach.
+
+## Guidelines
+
+- Follow the code style in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+- Add or update tests for behaviour changes.
+- Keep catalogue ids unique and stable — never renumber existing entries.
+
+By participating, you agree to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
