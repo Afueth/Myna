@@ -115,6 +115,30 @@ static void test_legacy_session(const myna_catalogue *cat)
     CHECK(has(r, "\"name\":\"find_concepts\""));
     CHECK(has(r, "\"name\":\"get_checklist\""));
     CHECK(has(r, "\"name\":\"review_checklist\""));
+    CHECK(has(r, "\"name\":\"list_concepts\""));
+    free(r);
+
+    /* Keywords from the assistant find a concept the user's words don't name. */
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"find_concepts\",\"arguments\":{\"description\":"
+                       "\"people keep tapping the wrong thing on phones\","
+                       "\"keywords\":[\"target size\"]}}}");
+    CHECK(has(r, "(id: target-size)"));
+    free(r);
+
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":4,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"list_concepts\",\"arguments\":{}}}");
+    CHECK(has(r, "- ui (") && has(r, "- security ("));
+    free(r);
+
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":5,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"list_concepts\",\"arguments\":{\"category\":\"ui\"}}}");
+    CHECK(has(r, "(id: modal-dialog)") && !has(r, "(id: rest-api)"));
+    free(r);
+
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":6,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"list_concepts\",\"arguments\":{\"category\":\"nope\"}}}");
+    CHECK(has(r, "Unknown category: nope") && has(r, "\"isError\":true"));
     free(r);
 
     r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":\"x\",\"method\":\"tools/call\",\"params\":"

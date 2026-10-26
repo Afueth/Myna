@@ -8,16 +8,19 @@
 #define MYNA_EXPLANATION_MAX 512
 #define MYNA_TERM_MAX 64
 #define MYNA_MAX_SYNONYMS 8
-#define MYNA_MAX_TRIGGERS 16
+#define MYNA_MAX_TRIGGERS 32
 #define MYNA_MAX_RELATED 8
 #define MYNA_ITEM_MAX 128
 #define MYNA_MAX_REQUIREMENTS 8
 #define MYNA_MAX_DONE_WHEN 6
+#define MYNA_CATEGORY_MAX 32
 
 /* A single entry in the concept catalogue. */
 typedef struct {
     char id[MYNA_ID_MAX];
     char name[MYNA_NAME_MAX];
+    /* The category file it came from, such as "ui"; empty for a single file. */
+    char category[MYNA_CATEGORY_MAX];
     char explanation[MYNA_EXPLANATION_MAX];
 
     /* Other names developers use for the concept, e.g. "popup". */

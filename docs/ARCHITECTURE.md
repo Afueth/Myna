@@ -23,7 +23,7 @@ assets/         Logo, Windows icon and resource script
 | catalogue   | `myna/catalogue.h`  | Growable array of concepts; CSV parsing and loading             |
 | search      | `myna/search.h`     | Scored matching of a description, related suggestions, lookup by id |
 | prompt      | `myna/prompt.h`     | Builds an AI prompt, or a numbered review rubric, from chosen concepts: merged checklists without duplicates |
-| mcp         | `src/cli/mcp.h`     | MCP server over stdio (`myna mcp`): JSON-RPC dispatch and the three tools |
+| mcp         | `src/cli/mcp.h`     | MCP server over stdio (`myna mcp`): JSON-RPC dispatch and the five tools |
 | json        | `src/cli/json.h`    | Small strict JSON reader and writer used by the MCP server |
 | cli         | `myna/cli.h`        | Interactive session (`myna_repl`) and one-shot commands         |
 

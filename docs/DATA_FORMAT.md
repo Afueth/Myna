@@ -33,7 +33,7 @@ Each following line is one concept:
 | `name`        | 63 bytes         | Display name, e.g. `Modal dialog`.                           |
 | `explanation` | 511 bytes        | Plain-language explanation. Quote it if it contains commas.  |
 | `synonyms`    | 8 items          | Other technical names, `;`-separated, e.g. `popup;dialog`.   |
-| `triggers`    | 16 items         | Everyday phrases people type, e.g. `click outside;tap outside`. |
+| `triggers`    | 32 items         | Everyday phrases people type, e.g. `click outside;tap outside`. |
 | `related`     | 8 items          | Ids of related concepts, `;`-separated.                      |
 | `requirements`| 8 items          | What a good implementation must do, e.g. `Close it with the Escape key`. Optional. |
 | `done_when`   | 6 items          | How to check it works, e.g. `Keyboard users cannot tab out of it`. Optional. |

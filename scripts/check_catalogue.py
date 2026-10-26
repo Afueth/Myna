@@ -12,7 +12,7 @@ EXPECTED_HEADER = ["id", "name", "explanation", "synonyms", "triggers", "related
 # Byte limits match the buffers in include/myna/concept.h (size minus the NUL).
 FIELD_LIMITS = {"id": 47, "name": 63, "explanation": 511}
 TERM_LIMIT = 63
-LIST_LIMITS = {"synonyms": 8, "triggers": 16, "related": 8}
+LIST_LIMITS = {"synonyms": 8, "triggers": 32, "related": 8}
 # Checklist items are sentences, so they get more room than terms.
 ITEM_LIMIT = 127
 ITEM_LIST_LIMITS = {"requirements": 8, "done_when": 6}

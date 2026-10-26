@@ -25,6 +25,8 @@
 #define MAX_SUGGESTIONS 3
 #define MAX_IDS 10
 #define MAX_DESCRIPTION 2000
+#define MAX_KEYWORDS_LEN 500
+#define MAX_CATEGORIES 64
 #define MAX_LINE (1024 * 1024)
 
 /* JSON-RPC and MCP error codes. */
@@ -41,10 +43,13 @@ static const char *const LEGACY_VERSIONS[] = {
 #define LEGACY_COUNT (sizeof LEGACY_VERSIONS / sizeof LEGACY_VERSIONS[0])
 
 static const char INSTRUCTIONS[] =
-    "Myna knows what a good implementation of common app features needs: "
-    "dialogs, menus, forms, loading states, navigation, sign-in and more. "
+    "Myna knows what a good implementation of software features needs: "
+    "interface, forms, product features, APIs, backend, system design, "
+    "security, mobile, AI features, releases and more. "
     "Before building such a feature, call find_concepts with the user's request "
-    "in plain words, then get_checklist with the ids you will implement, and "
+    "in plain words, plus in keywords any technical names you think apply. If "
+    "nothing fits, browse with list_concepts. Then call get_checklist with the "
+    "ids you will implement, and "
     "follow its requirements. After writing the code, call review_checklist "
     "with the same ids and check the code against every item. Then call "
     "report_review with your verdicts, so the user can see the review in "
@@ -66,7 +71,20 @@ static const char TOOLS[] =
     "ids, names, one-line explanations and related concepts to consider.\","
     "\"inputSchema\":{\"type\":\"object\",\"properties\":{\"description\":"
     "{\"type\":\"string\",\"description\":\"What the user wants, in their own "
-    "words.\"}},\"required\":[\"description\"],\"additionalProperties\":false},"
+    "words.\"},\"keywords\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},"
+    "\"maxItems\":10,\"description\":\"Technical names you think apply, such as "
+    "'target size' or 'debounce'. Myna searches them together with the "
+    "description, which helps when the user's words don't name the concept.\"}},"
+    "\"required\":[\"description\"],\"additionalProperties\":false},"
+    READ_ONLY "},"
+    "{\"name\":\"list_concepts\",\"title\":\"List concepts\","
+    "\"description\":\"Browse the catalogue. With no category, lists the "
+    "categories, such as ui, forms, security or architecture, and how many "
+    "concepts each has. With a category, lists the id and name of every concept "
+    "in it. Use it when find_concepts doesn't find what you need.\","
+    "\"inputSchema\":{\"type\":\"object\",\"properties\":{\"category\":"
+    "{\"type\":\"string\",\"description\":\"A category name from list_concepts, "
+    "such as ui.\"}},\"additionalProperties\":false},"
     READ_ONLY "},"
     "{\"name\":\"get_checklist\",\"title\":\"Get implementation checklist\","
     "\"description\":\"Get what a good implementation must do (requirements) "
@@ -281,7 +299,9 @@ static void tool_find(json_buf *text, int *is_error, const myna_catalogue *cat,
                       const json_value *args)
 {
     const char *desc = json_string(json_get(args, "description"));
+    const json_value *keywords = json_get(args, "keywords");
     myna_match matches[MAX_RESULTS];
+    char query[MAX_DESCRIPTION + MAX_KEYWORDS_LEN + 1];
 
     if (!desc || !*desc) {
         textf(text, "Pass a plain-language description of what the user wants, "
@@ -295,8 +315,32 @@ static void tool_find(json_buf *text, int *is_error, const myna_catalogue *cat,
         *is_error = 1;
         return;
     }
+    if (keywords && keywords->type != JSON_ARRAY) {
+        textf(text, "keywords must be an array of strings, such as [\"debounce\"].");
+        *is_error = 1;
+        return;
+    }
 
-    size_t n = myna_search(cat, desc, matches, MAX_RESULTS);
+    /* The keywords are appended to the description and searched with it. */
+    size_t len = strlen(desc);
+    memcpy(query, desc, len + 1);
+    for (const json_value *v = keywords ? keywords->child : NULL; v; v = v->next) {
+        const char *word = json_string(v);
+        size_t wlen = word ? strlen(word) : 0;
+        if (!wlen)
+            continue;
+        if (len + 2 + wlen >= sizeof query) {
+            textf(text, "The keywords are too long (max %d characters in all).",
+                  MAX_KEYWORDS_LEN);
+            *is_error = 1;
+            return;
+        }
+        memcpy(query + len, ". ", 2);
+        memcpy(query + len + 2, word, wlen + 1);
+        len += 2 + wlen;
+    }
+
+    size_t n = myna_search(cat, query, matches, MAX_RESULTS);
     if (n == 0) {
         textf(text, "No matching concepts found for \"%s\". Myna covers common "
                     "app features such as dialogs, menus, forms, loading states, "
@@ -327,6 +371,59 @@ static void tool_find(json_buf *text, int *is_error, const myna_catalogue *cat,
 
     textf(text, "\nNext: call get_checklist with the ids of the concepts you will "
                 "implement (skip any that don't fit the request).");
+}
+
+/* `list_concepts`: the categories with their sizes, or the concepts in one. */
+static void tool_list(json_buf *text, int *is_error, const myna_catalogue *cat,
+                      const json_value *args)
+{
+    const char *want = json_string(json_get(args, "category"));
+    const char *names[MAX_CATEGORIES];
+    size_t counts[MAX_CATEGORIES];
+    size_t ncat = 0;
+
+    for (size_t i = 0; i < cat->count; i++) {
+        const char *c = cat->items[i].category;
+        size_t k = 0;
+        while (k < ncat && strcmp(names[k], c) != 0)
+            k++;
+        if (k == ncat && ncat < MAX_CATEGORIES) {
+            names[ncat] = c;
+            counts[ncat++] = 0;
+        }
+        if (k < ncat)
+            counts[k]++;
+    }
+
+    if (want && *want) {
+        size_t shown = 0;
+        for (size_t i = 0; i < cat->count; i++) {
+            const myna_concept *c = &cat->items[i];
+            if (strcmp(c->category, want) != 0)
+                continue;
+            if (shown == 0)
+                textf(text, "Concepts in %s:\n", want);
+            textf(text, "\n- %s (id: %s)", c->name, c->id);
+            shown++;
+        }
+        if (shown) {
+            textf(text, "\n\nNext: call get_checklist with the ids that fit the request.");
+            return;
+        }
+        textf(text, "Unknown category: %s.", want);
+        *is_error = 1;
+    }
+
+    if (ncat == 1 && !names[0][0]) {
+        textf(text, "%sThis catalogue has no categories. Use find_concepts.",
+              want ? " " : "");
+        return;
+    }
+    textf(text, "%sCategories:\n", (want && *want) ? " " : "");
+    for (size_t k = 0; k < ncat; k++)
+        textf(text, "\n- %s (%d concepts)", names[k][0] ? names[k] : "uncategorised",
+              (int)counts[k]);
+    textf(text, "\n\nCall list_concepts with a category to see its concepts.");
 }
 
 /*
@@ -657,6 +754,8 @@ static void handle_tools_call(json_buf *b, const json_value *id, const myna_cata
     json_buf_init(&text);
     if (strcmp(name, "find_concepts") == 0) {
         tool_find(&text, &is_error, cat, args);
+    } else if (strcmp(name, "list_concepts") == 0) {
+        tool_list(&text, &is_error, cat, args);
     } else if (strcmp(name, "get_checklist") == 0) {
         tool_checklist(&text, &is_error, cat, args, 0);
     } else if (strcmp(name, "review_checklist") == 0) {

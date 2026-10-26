@@ -70,12 +70,13 @@ and arguments (`mcp`). For Claude Desktop, add the Cursor-style
 
 | Tool | When | What Myna returns |
 |---|---|---|
-| `find_concepts` | You ask for a feature in plain words | The matching concepts with ids, explanations, and related concepts to consider |
+| `find_concepts` | You ask for a feature in plain words | The matching concepts with ids, explanations, and related concepts to consider. The assistant can add `keywords`, technical names it thinks apply, which helps when your words don't name the concept |
+| `list_concepts` | Search didn't find what fits | The categories (ui, forms, security, architecture...) with their sizes, or every concept in one category |
 | `get_checklist` | Before writing code | The requirements and "done when" checks for the chosen concepts |
 | `review_checklist` | After writing code | A numbered rubric to mark PASS, FAIL or NOT APPLICABLE against the code |
 | `report_review` | After checking the code | Saves the verdicts in your project and returns a summary of what failed |
 
-The first three only read Myna's catalogue. `report_review` writes to one
+The first four only read Myna's catalogue. `report_review` writes to one
 place only: a `.myna` folder in the project folder the assistant names. None
 of the tools make network requests.
 

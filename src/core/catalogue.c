@@ -288,12 +288,21 @@ int myna_catalogue_load(myna_catalogue *cat, const char *path)
     for (int i = 0; i < n; i++) {
         char file[PATH_MAX_LEN];
         int fits = snprintf(file, sizeof file, "%s/%s", path, names[i]) < (int)sizeof file;
+        size_t first = cat->count;
         int r = (loaded >= 0 && fits) ? myna_catalogue_load_csv(cat, file) : -1;
         if (r < 0) {
             loaded = -1;
         } else {
             loaded += r;
             skipped += cat->skipped;
+            /* The file name without ".csv" is the category. */
+            size_t stem = strlen(names[i]) - 4;
+            if (stem >= MYNA_CATEGORY_MAX)
+                stem = MYNA_CATEGORY_MAX - 1;
+            for (size_t k = first; k < cat->count; k++) {
+                memcpy(cat->items[k].category, names[i], stem);
+                cat->items[k].category[stem] = '\0';
+            }
         }
         free(names[i]);
     }
