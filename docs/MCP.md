@@ -24,7 +24,7 @@ Check that it works:
 
 ```console
 $ myna --version
-myna 0.2.0
+myna 0.2.1
 ```
 
 ### Claude Code
@@ -93,7 +93,7 @@ Each `report_review` call writes two files:
 ```json
 {
   "tool": "myna",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "created": "2026-10-26T13:08:03Z",
   "summary": "Settings page",
   "concepts": ["toggle-switch", "dropdown-menu"],
