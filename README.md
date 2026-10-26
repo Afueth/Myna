@@ -2,53 +2,154 @@
   <img src="assets/myna-logo.png" alt="Myna logo" width="160">
 </p>
 
-# Myna — Developer Intent Engine
+<h1 align="center">Myna</h1>
 
-**Turn what you want into the technical language AI understands.**
+<p align="center">
+  <strong>Describe what you want in plain words. Myna tells you what it's called.</strong>
+</p>
 
-You often know the result you want without knowing the terms that describe it.
-Myna takes a plain-language description and shows the software concepts behind
-it, with explanations, so you can ask AI coding assistants (and people)
-precisely for what you mean.
+<p align="center">
+  <a href="https://github.com/Afueth/Myna/actions/workflows/ci.yml"><img src="https://github.com/Afueth/Myna/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Afueth/Myna/releases/latest"><img src="https://img.shields.io/github/v/release/Afueth/Myna" alt="Latest release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/Afueth/Myna" alt="MIT license"></a>
+  <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs welcome"></a>
+</p>
 
-> Core principle: help developers express intent precisely, rather than merely
-> generate more code.
+---
 
-```console
-$ myna
-MYNA - Developer Intent Engine
-==============================
-107 concepts loaded. Type Q to quit.
+## What is Myna?
 
-Describe what you want to implement:
-> Make this popup modern, blur the background, animate it, and close it when I click outside.
+You know **what** you want your app to do, but not **what it's called**.
 
-Possible concepts:
+> "Close the popup when I click outside it."
 
+Developers call that **outside-click dismissal**. When you know the right
+name, you can search for it, read about it, and ask an AI assistant or a
+colleague for exactly that, and get a much better answer.
+
+**Myna finds those names for you.** Type what you want in everyday words, and
+Myna shows the matching software concepts, explains each one in a sentence,
+and reminds you of related things you might have forgotten.
+
+It runs on your computer, needs no internet or AI service, and is free and
+open source.
+
+## See it in action
+
+You type:
+
+```text
+Make this popup modern, blur the background, animate it, and close it when I click outside.
+```
+
+Myna answers:
+
+```text
   1. Outside-click dismissal
      Closing a dialog, menu or popover when the user clicks or taps anywhere
      outside it.
-     Matched: "click outside", "close it when i click"
 
   2. Backdrop blur / overlay
+     A semi-transparent layer behind a dialog that dims or blurs the page
+     underneath, often made with the CSS backdrop-filter property.
+
   3. Modal dialog
+     A window that opens on top of the page and blocks interaction with the
+     rest of the page until it is dismissed.
+
   4. Entry and exit transitions
-     ...
+     Animations that play when an element appears or disappears, such as
+     fading or sliding in and out.
+
+  5. Visual design system
+     A consistent set of colours, typography, spacing, shadows and
+     components that makes an interface look modern and coherent.
 
 Also consider: Escape-key handling, Focus management, Reduced motion
-
-[S] Search again  [D] Details and related concepts  [P] Build prompt  [Q] Quit
 ```
 
-Myna runs locally, needs no AI service, and is a small C program with a
-curated, community-editable concept catalogue.
+### Why that helps
 
-> **Status:** early prototype (0.1 — Vocabulary Search). See the
-> [roadmap](docs/ROADMAP.md) for where it's heading.
+| Before Myna | After Myna |
+|---|---|
+| *"Make this popup modern, blur the background, animate it, and close it when I click outside."* | *"Build a **modal dialog** with a **backdrop blur overlay**, **entry and exit transitions** and **outside-click dismissal**. Close it with the **Escape key**, **trap focus** while it's open, and respect **reduced motion**."* |
+| Vague: the AI has to guess what you mean. | Precise: the AI knows exactly what to build. |
+| Easy to forget the details. | Myna reminded you of Escape, focus and reduced motion. |
 
-## Download
+## Who is it for?
 
-Ready-to-run versions for Windows, macOS and Linux are on the
+- **New developers** who know what they want but not the terms yet
+- **Anyone using AI coding assistants** who wants better answers from clearer requests
+- **Designers, founders and product people** who want to talk with developers
+  in the same language
+- **Experienced developers** who want a checklist of related things not to forget
+
+## Try it
+
+**Windows:** download `Myna-Setup-<version>.exe` from the
+[latest release](https://github.com/Afueth/Myna/releases/latest), run it, and
+open **Myna** from the Start menu.
+
+**macOS and Linux:** download the `.tar.gz` for your system from the
+[latest release](https://github.com/Afueth/Myna/releases/latest), unpack it,
+and run `./bin/myna` in a terminal.
+
+Then just describe what you want:
+
+```console
+$ myna search "only admins can see this page"
+  1. Authorization and roles
+     Deciding what a signed-in user is allowed to do, usually through roles
+     or permissions.
+```
+
+More details are in [Download and install](#download-and-install) below.
+
+## What Myna knows today
+
+Myna 0.1 knows **107 concepts** from everyday app development, including:
+
+- **Interface:** popups, menus, tooltips, tabs, forms, dark mode, loading states, responsive layouts
+- **Accounts and security:** sign-in, roles, two-factor login, sessions, password safety
+- **Data and backend:** APIs, caching, search, file uploads, background jobs, databases
+- **Releases:** feature flags, gradual rollouts, A/B tests, rollbacks, CI/CD
+
+It's an early version: if your request uses words Myna hasn't learned yet, it
+may find nothing. Every concept is written by people, and that's exactly where
+you can help.
+
+## Help make Myna smarter
+
+**You don't need to know C to contribute.** Myna's knowledge lives in one
+simple file, [data/concepts.csv](data/concepts.csv). Each line is a concept
+with a short explanation and the everyday phrases people use for it.
+
+- **Myna didn't understand your request?** [Open an issue](https://github.com/Afueth/Myna/issues/new/choose)
+  with the sentence you typed. That's already a useful contribution.
+- **Know a concept that's missing?** Add it to the CSV and open a pull
+  request. See [CONTRIBUTING.md](CONTRIBUTING.md) and the
+  [data format](docs/DATA_FORMAT.md).
+- **Like C?** The [roadmap](docs/ROADMAP.md) lists what's coming next:
+  better ranking, a prompt builder, framework awareness and editor
+  integrations.
+
+## Roadmap
+
+| Version | What it adds |
+|---|---|
+| **0.1** (now) | Describe a change and see matching concepts with explanations |
+| 0.2 | Richer links between concepts: synonyms, prerequisites, conflicts |
+| 0.3 | Better ranking, so results are fewer and more relevant |
+| 0.4 | Prompt builder: turn chosen concepts into a ready-to-paste AI prompt |
+| 0.5 – 1.0 | Framework awareness, project awareness, a local API and editor integrations |
+
+Full details are in [docs/ROADMAP.md](docs/ROADMAP.md).
+
+---
+
+## Download and install
+
+All downloads are on the
 [Releases page](https://github.com/Afueth/Myna/releases/latest).
 
 ### Windows installer
@@ -71,14 +172,28 @@ Click **More info → Run anyway** to continue.
    ```
 
 On Windows you can also run `scripts\install-shortcut.ps1` from the unzipped
-folder to add a Myna shortcut to your Desktop and Start menu (see below).
+folder to add a Myna shortcut to your Desktop and Start menu.
 
 On macOS, if the system blocks the program because it is from an unidentified
 developer, run `xattr -d com.apple.quarantine bin/myna` once.
 
-## Building
+## Usage
 
-To build from source, you need a C11 compiler (GCC, Clang or MSVC) and either CMake or Make.
+```
+myna                          Start the interactive session
+myna search <description>     Find concepts for a description and exit
+myna show <id>                Show one concept in full
+myna list                     List every concept
+myna -d FILE ...              Use a different catalogue file
+```
+
+In the interactive session, type a description, then `D` (or a result
+number) for details and related concepts, `S` to search again, or `Q` to
+quit. More examples are in [examples/requests.md](examples/requests.md).
+
+## Building from source
+
+You need a C11 compiler (GCC, Clang or MSVC) and either CMake or Make.
 
 With Make (on Windows with MSYS2, use `mingw32-make`):
 
@@ -95,49 +210,19 @@ cmake --build build
 ctest --test-dir build
 ```
 
-## Usage
-
-```
-myna                          Start the interactive session
-myna search <description>     Find concepts for a description and exit
-myna show <id>                Show one concept in full
-myna list                     List every concept
-myna -d FILE ...              Use a different catalogue file
-```
-
-In a colour terminal, the interactive session opens with the Myna logo.
-
-More examples are in [examples/requests.md](examples/requests.md).
-
-### Windows shortcut
-
-To open Myna like an app, with its own icon and window:
+To open a source build like an app on Windows, with its own icon and window:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/install-shortcut.ps1
 ```
 
-This adds a **Myna** shortcut to your Desktop and Start menu.
-
-## The concept catalogue
-
-Concepts live in [data/concepts.csv](data/concepts.csv). Each has a name, an
-explanation, synonyms, everyday trigger phrases and related concepts. Adding
-and improving concepts is the most valuable contribution; see
-[docs/DATA_FORMAT.md](docs/DATA_FORMAT.md).
-
 ## Documentation
 
-- [Architecture](docs/ARCHITECTURE.md)
-- [Data format](docs/DATA_FORMAT.md)
-- [Development](docs/DEVELOPMENT.md)
-- [Roadmap](docs/ROADMAP.md)
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md). Please follow the
-[Code of Conduct](CODE_OF_CONDUCT.md).
+- [Architecture](docs/ARCHITECTURE.md): how Myna is built
+- [Data format](docs/DATA_FORMAT.md): how concepts are written
+- [Development](docs/DEVELOPMENT.md): building, testing and measuring coverage
+- [Roadmap](docs/ROADMAP.md): where Myna is heading
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
