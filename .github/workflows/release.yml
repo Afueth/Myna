@@ -9,8 +9,9 @@ on:
     tags: ["v*"]
   workflow_dispatch:
 
+# Read-only by default; only the release job may write.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -113,6 +114,8 @@ jobs:
     needs: build
     if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/download-artifact@v4
         with:
