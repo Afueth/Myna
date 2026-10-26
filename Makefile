@@ -21,7 +21,7 @@ else
     RES    :=
 endif
 
-.PHONY: all test check clean
+.PHONY: all test check coverage clean
 
 all: $(BUILD)/myna
 
@@ -43,6 +43,10 @@ test: $(BUILD)/test_search
 
 check:
 	$(PYTHON) scripts/check_catalogue.py data/concepts.csv
+
+# Report how well the catalogue answers the requests in tests/requests.csv.
+coverage: $(BUILD)/myna
+	$(PYTHON) scripts/coverage.py
 
 clean:
 	$(RMDIR)

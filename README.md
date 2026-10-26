@@ -18,7 +18,7 @@ precisely for what you mean.
 $ myna
 MYNA - Developer Intent Engine
 ==============================
-47 concepts loaded. Type Q to quit.
+107 concepts loaded. Type Q to quit.
 
 Describe what you want to implement:
 > Make this popup modern, blur the background, animate it, and close it when I click outside.

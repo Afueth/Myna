@@ -20,6 +20,7 @@ Using Make instead (on Windows with MSYS2 the command is `mingw32-make`):
 make          # builds build/myna
 make test     # builds and runs build/test_search
 make check    # validates data/concepts.csv
+make coverage # reports which example requests Myna answers badly
 make clean
 ```
 
@@ -63,6 +64,30 @@ powershell -ExecutionPolicy Bypass -File scripts/make_logo.ps1
 
 The logo is only drawn when stdout is an interactive terminal. It is skipped
 when output is piped or `NO_COLOR` is set.
+
+## Measuring coverage
+
+`tests/requests.csv` holds plain-language requests, each with the concept ids
+a good answer should include. `scripts/coverage.py` runs every request through
+`myna search` and sorts them into:
+
+- **ok**: the expected concepts were found, and one of them ranked first
+- **weak**: they were found, but none ranked first
+- **missed**: an expected concept exists but was not returned, so its
+  triggers or synonyms need work
+- **no match**: Myna returned nothing
+- **gap**: the expected concept is not in the catalogue yet
+
+It ends with a list of the missing concepts most often asked for.
+
+```sh
+python scripts/coverage.py        # or: make coverage
+python scripts/coverage.py -v     # also list the requests that are ok
+```
+
+When you see a real request Myna handles badly, add it to `tests/requests.csv`
+in your own words, then fix the catalogue until it reports **ok**. This is a
+report, not a test, so it is not run in CI.
 
 ## Adding a test
 

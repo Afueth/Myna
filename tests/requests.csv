@@ -1,0 +1,103 @@
+request,expected
+# Plain-language requests for scripts/coverage.py, phrased the way developers
+# describe what they want. "expected" lists the concept ids a good answer
+# should include, separated by ";". An id that is not in the catalogue yet
+# marks a gap to fill. Leave "expected" empty to only check that something
+# matches.
+#
+# UI and interaction
+close the menu when the user clicks anywhere else,outside-click-dismissal
+make the background blurry behind the popup,backdrop-overlay
+show a confirmation box before deleting,modal-dialog
+pressing esc should close the dialog,escape-key
+the popup should fade in and slide up,entry-exit-transition
+when the dialog opens put the cursor in the first field,focus-management
+users should be able to move through the menu with arrow keys,keyboard-navigation
+screen readers don't announce my button,aria-attributes
+the grey text is hard to read on white,color-contrast
+turn off animations for people who get motion sick,reduced-motion
+the page looks broken on mobile,responsive-layout
+the card stretches too wide on big screens,element-sizing
+put three boxes side by side and center them,css-layout
+add a night theme,dark-mode
+show a small message in the corner that says saved,toast-notification
+show grey placeholder boxes while the data loads,loading-states
+only load images when they scroll into view,lazy-loading
+keep loading more posts as I scroll down,infinite-scroll
+split the results into pages with next and previous buttons,pagination
+don't call the api on every keystroke,debounce-throttle
+suggest city names while the user types,autocomplete
+show an error under the email field if it's wrong,form-validation
+let users reorder the list by dragging items,drag-and-drop
+show a small hint when I hover over the icon,tooltip
+add a button that copies the code to the clipboard,copy-to-clipboard
+let the user undo their last change,undo-redo
+make the header stay at the top when scrolling,sticky-header
+click a column title to sort the table,table-sorting
+sections that expand and collapse when clicked,accordion
+show the app in spanish and french too,internationalization
+the app should still work without internet,offline-support
+update the like count instantly before the server responds,optimistic-update
+#
+# Releases and delivery
+turn the new checkout on without deploying,feature-flags
+give the new design to 5% of users first,percentage-rollout
+only show the beta to customers in germany,feature-targeting
+release to a few servers first and watch for errors,canary-release
+go back to the previous version if the deploy breaks,rollback
+compare two button colors to see which gets more clicks,ab-testing
+run the tests automatically on every push,ci-cd-pipeline
+write tests so I know nothing broke,automated-testing
+don't commit the api key to git,environment-variables
+#
+# Backend and data
+make an endpoint that returns the list of products,rest-api
+users need to log in,authentication
+let people sign in with their google account,single-sign-on
+ask for a code from their phone after the password,two-factor-auth
+log the user out after 30 minutes of doing nothing,session-management
+only managers can approve invoices,authorization
+never save passwords in plain text,password-hashing
+stop people from hammering the login endpoint,rate-limiting
+the same expensive query runs again and again,caching
+my frontend can't call the api on another domain,cors
+someone typed a script tag into the comment box,input-sanitization
+make sure nobody can submit forms from another site,csrf-protection
+let users attach a profile picture,file-upload
+show new chat messages without refreshing,real-time-updates
+send the report email in the background so the page is fast,background-jobs
+run a cleanup every night at 2am,scheduled-jobs
+add a column to the users table without losing data,database-migration
+the query on the orders table is very slow,database-index
+remember the user's settings in the browser,browser-storage
+search inside the article text,full-text-search
+filter products by price and brand on the side,faceted-search
+send a welcome email when someone signs up,transactional-email
+notify my server when a payment succeeds,webhooks
+try the request again if the server is busy,retry-backoff
+keep a record of who changed what,audit-log
+deleting should hide the item but keep it recoverable,soft-delete
+let users download their data as a spreadsheet,data-export
+charge customers monthly,payments
+send a notification to their phone even if the app is closed,push-notifications
+get alerted when the site throws errors in production,error-monitoring
+the images make the page slow,image-optimization
+#
+# Requests tried after the first coverage run
+add a search bar to the navbar,search-input;navigation-bar
+the button does nothing when I click it,event-handling
+make the login remember me for a week,session-management
+show a chart of sales per month,data-visualization
+send an sms when the order ships,sms-messaging
+the website takes forever to open,
+make the table scroll sideways on mobile,responsive-layout
+users keep getting logged out,session-management
+upload a big video without the page freezing,file-upload
+let users comment on posts,comments-system
+convert the date to the user's timezone,timezone-handling
+my app crashes when the list is empty,error-handling;empty-states
+#
+# Vague requests: only check that something useful matches
+make it faster,
+it should feel more modern,
+make the app more secure,
