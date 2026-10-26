@@ -51,6 +51,17 @@ curated, community-editable concept catalogue.
 Ready-to-run versions for Windows, macOS and Linux are on the
 [Releases page](https://github.com/Afueth/Myna/releases/latest).
 
+### Windows installer
+
+Download `Myna-Setup-<version>.exe` and run it. It adds Myna to the Start
+menu, can create a desktop shortcut and add `myna` to your PATH, and can be
+removed from **Settings → Apps**. No admin rights are needed.
+
+Myna isn't code-signed yet, so Windows may show "Windows protected your PC".
+Click **More info → Run anyway** to continue.
+
+### Zip and tar archives
+
 1. Download the archive for your system and unzip it.
 2. Run the program in `bin/` from a terminal:
 

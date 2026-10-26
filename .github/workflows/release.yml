@@ -1,10 +1,13 @@
 name: Release
 
-# Pushing a tag such as v0.1.0 builds Myna on each platform and publishes the
-# archives as a GitHub release.
+# Pushing a tag such as v0.1.0 builds Myna on each platform, plus a Windows
+# installer, and publishes them as a GitHub release. Running the workflow by
+# hand from the Actions tab builds the same files as a test, without
+# publishing anything; download them from the run's Artifacts section.
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -21,19 +24,19 @@ jobs:
           - os: windows-latest
             name: windows-x64
     runs-on: ${{ matrix.os }}
-    env:
-      PKG: myna-${{ github.ref_name }}-${{ matrix.name }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check the tag matches the project version
+      - name: Read the version
         shell: bash
         run: |
           version=$(sed -n 's/^project(myna VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)
-          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+          if [ "$GITHUB_REF_TYPE" = "tag" ] && [ "v$version" != "$GITHUB_REF_NAME" ]; then
             echo "Tag $GITHUB_REF_NAME does not match CMakeLists.txt version $version"
             exit 1
           fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "PKG=myna-v$version-${{ matrix.name }}" >> "$GITHUB_ENV"
 
       # A static C runtime on Windows, so myna.exe runs without extra DLLs.
       - name: Configure
@@ -75,13 +78,40 @@ jobs:
             tar -czf "$PKG.tar.gz" "$PKG"
           fi
 
+      - name: Build the Windows installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress }
+          & $iscc "/DAppVersion=$env:VERSION" "/DSourceDir=$env:GITHUB_WORKSPACE\$env:PKG" "/O$env:GITHUB_WORKSPACE" installer\myna.iss
+
+      # Install silently, run myna through PATH from a new shell, uninstall.
+      - name: Test the Windows installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $dir = "$env:RUNNER_TEMP\MynaInstall"
+          Start-Process ".\Myna-Setup-$env:VERSION.exe" -Wait -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', "/DIR=$dir", '/TASKS=addtopath'
+          $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+          if ($userPath -notlike "*$dir\bin*") { throw "Installer did not add $dir\bin to PATH" }
+          cmd /c "set PATH=$dir\bin;%PATH% && cd /d %TEMP% && myna search close the popup when I click outside"
+          if ($LASTEXITCODE -ne 0) { throw "myna failed when started from PATH" }
+          Start-Process "$dir\unins000.exe" -Wait -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES'
+          $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+          if ($userPath -like "*$dir\bin*") { throw "Uninstaller did not remove Myna from PATH" }
+          if (Test-Path "$dir\bin\myna.exe") { throw "Uninstaller left myna.exe behind" }
+
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PKG }}
-          path: ${{ env.PKG }}.*
+          path: |
+            ${{ env.PKG }}.*
+            Myna-Setup-*.exe
 
   release:
     needs: build
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4

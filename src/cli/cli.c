@@ -331,7 +331,9 @@ static int file_exists(const char *path)
     return 1;
 }
 
-/* MYNA_DATA wins, then ./data, then data/ beside the executable's folder. */
+/* MYNA_DATA wins, then ./data, then data/ beside the executable's folder.
+ * The executable's real path is used when known, because argv[0] is just
+ * "myna" when it is started from PATH. */
 static const char *find_catalogue(const char *prog, char *buf, size_t size)
 {
     const char *env = getenv("MYNA_DATA");
@@ -339,6 +341,10 @@ static const char *find_catalogue(const char *prog, char *buf, size_t size)
         return env;
     if (file_exists(DEFAULT_CATALOGUE))
         return DEFAULT_CATALOGUE;
+
+    char exe[PATH_MAX_LEN];
+    if (myna_executable_path(exe, sizeof exe))
+        prog = exe;
 
     const char *sep = strrchr(prog, '/');
     const char *bsep = strrchr(prog, '\\');

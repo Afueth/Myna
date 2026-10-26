@@ -1,5 +1,5 @@
-#ifndef _WIN32
-#define _POSIX_C_SOURCE 200809L /* isatty, fileno */
+#if !defined(_WIN32) && !defined(__APPLE__)
+#define _POSIX_C_SOURCE 200809L /* isatty, fileno, readlink */
 #endif
 
 #include "terminal.h"
@@ -16,6 +16,11 @@
 #endif
 #else
 #include <unistd.h>
+#endif
+
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#include <stdint.h>
 #endif
 
 #ifdef _WIN32
@@ -59,4 +64,25 @@ int myna_terminal_init(void)
 void myna_terminal_set_title(const char *title)
 {
     printf("\033]0;%s\007", title);
+}
+
+int myna_executable_path(char *buf, size_t size)
+{
+#if defined(_WIN32)
+    DWORD len = GetModuleFileNameA(NULL, buf, (DWORD)size);
+    return len > 0 && len < size;
+#elif defined(__APPLE__)
+    uint32_t len = (uint32_t)size;
+    return _NSGetExecutablePath(buf, &len) == 0;
+#elif defined(__linux__)
+    ssize_t len = readlink("/proc/self/exe", buf, size - 1);
+    if (len <= 0)
+        return 0;
+    buf[len] = '\0';
+    return 1;
+#else
+    (void)buf;
+    (void)size;
+    return 0;
+#endif
 }
