@@ -1,0 +1,99 @@
+name: Release
+
+# Pushing a tag such as v0.1.0 builds Myna on each platform and publishes the
+# archives as a GitHub release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: linux-x64
+          - os: macos-latest
+            name: macos-arm64
+          - os: windows-latest
+            name: windows-x64
+    runs-on: ${{ matrix.os }}
+    env:
+      PKG: myna-${{ github.ref_name }}-${{ matrix.name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches the project version
+        shell: bash
+        run: |
+          version=$(sed -n 's/^project(myna VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match CMakeLists.txt version $version"
+            exit 1
+          fi
+
+      # A static C runtime on Windows, so myna.exe runs without extra DLLs.
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Package
+        shell: bash
+        run: |
+          mkdir -p "$PKG/bin"
+          exe=$(find build -name 'myna' -type f -perm -u+x -o -name 'myna.exe' -type f | head -n 1)
+          cp "$exe" "$PKG/bin/"
+          cp -r data "$PKG/"
+          cp README.md LICENSE "$PKG/"
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            mkdir -p "$PKG/assets" "$PKG/scripts"
+            cp assets/myna.ico "$PKG/assets/"
+            cp scripts/install-shortcut.ps1 "$PKG/scripts/"
+          fi
+
+      # Run the packaged program from outside its folder, as a user would.
+      - name: Smoke test
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          "$GITHUB_WORKSPACE/$PKG/bin/myna" search "close the popup when I click outside"
+
+      - name: Archive
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            7z a "$PKG.zip" "$PKG"
+          else
+            tar -czf "$PKG.tar.gz" "$PKG"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PKG }}
+          path: ${{ env.PKG }}.*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Myna $GITHUB_REF_NAME" \
+            --generate-notes

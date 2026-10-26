@@ -2,16 +2,22 @@
 Creates a "Myna" shortcut with the Myna icon on your Desktop and in the Start
 menu. Opening it starts Myna in its own terminal window.
 
-Build Myna first (mingw32-make), then run from the project root:
+Run it from the unzipped release folder, or from the project root after
+building Myna (mingw32-make):
   powershell -ExecutionPolicy Bypass -File scripts/install-shortcut.ps1
 #>
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$exe = Join-Path $root 'build\myna.exe'
 $icon = Join-Path $root 'assets\myna.ico'
 
-if (-not (Test-Path $exe)) {
-    Write-Error "build\myna.exe not found. Build Myna first with: mingw32-make"
+# bin\ in a release download, build\ in a source checkout.
+$exe = @('bin\myna.exe', 'build\myna.exe') |
+    ForEach-Object { Join-Path $root $_ } |
+    Where-Object { Test-Path $_ } |
+    Select-Object -First 1
+
+if (-not $exe) {
+    Write-Error "myna.exe not found. Build Myna first with: mingw32-make"
 }
 
 $shell = New-Object -ComObject WScript.Shell

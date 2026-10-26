@@ -46,9 +46,28 @@ curated, community-editable concept catalogue.
 > **Status:** early prototype (0.1 — Vocabulary Search). See the
 > [roadmap](docs/ROADMAP.md) for where it's heading.
 
+## Download
+
+Ready-to-run versions for Windows, macOS and Linux are on the
+[Releases page](https://github.com/Afueth/Myna/releases/latest).
+
+1. Download the archive for your system and unzip it.
+2. Run the program in `bin/` from a terminal:
+
+   ```console
+   $ ./bin/myna                                    # Windows: .\bin\myna.exe
+   $ ./bin/myna search "close the popup when I click outside"
+   ```
+
+On Windows you can also run `scripts\install-shortcut.ps1` from the unzipped
+folder to add a Myna shortcut to your Desktop and Start menu (see below).
+
+On macOS, if the system blocks the program because it is from an unidentified
+developer, run `xattr -d com.apple.quarantine bin/myna` once.
+
 ## Building
 
-You need a C11 compiler (GCC, Clang or MSVC) and either CMake or Make.
+To build from source, you need a C11 compiler (GCC, Clang or MSVC) and either CMake or Make.
 
 With Make (on Windows with MSYS2, use `mingw32-make`):
 
