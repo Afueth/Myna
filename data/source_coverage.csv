@@ -1,0 +1,396 @@
+source,item,concepts,note
+# Which Myna concepts cover each item of the three reference sources.
+# "concepts" lists concept ids (;-separated) whose checklists cover the item.
+# Items left out on purpose have no concepts and a note starting with "excluded:".
+# scripts/check_catalogue.py checks that every listed concept id exists.
+#
+# ---- W3C ARIA Authoring Practices Guide: all 30 patterns
+APG,Accordion,accordion,
+APG,Alert,alert-message,
+APG,Alert and Message Dialogs,alert-dialog,
+APG,Breadcrumb,breadcrumbs,
+APG,Button,accessible-buttons,
+APG,Carousel,carousel,
+APG,Checkbox,checkbox,
+APG,Combobox,autocomplete,
+APG,Dialog (Modal),modal-dialog;focus-management,
+APG,Disclosure (Show/Hide),accordion,
+APG,Feed,infinite-scroll,
+APG,Grid,table-sorting,
+APG,Landmarks,page-structure,
+APG,Link,page-structure;accessible-buttons,
+APG,Listbox,custom-select,
+APG,Menu and Menubar,dropdown-menu;navigation-bar,
+APG,Menu Button,dropdown-menu,
+APG,Meter,progress-indicator,
+APG,Radio Group,radio-group,
+APG,Slider,range-slider,
+APG,Slider (Multi-Thumb),range-slider,
+APG,Spinbutton,number-input,
+APG,Switch,toggle-switch,
+APG,Table,table-sorting,
+APG,Tabs,tabs,
+APG,Toolbar,toolbar,
+APG,Tooltip,tooltip,
+APG,Tree View,tree-view,
+APG,Treegrid,tree-view,
+APG,Window Splitter,resizable-panels,
+#
+# ---- WCAG 2.2: all level A and AA success criteria
+WCAG,1.1.1 Non-text Content,image-optimization;aria-attributes,
+WCAG,1.2.1 Audio-only and Video-only (Prerecorded),media-accessibility,
+WCAG,1.2.2 Captions (Prerecorded),media-accessibility,
+WCAG,1.2.3 Audio Description or Media Alternative (Prerecorded),media-accessibility,
+WCAG,1.2.4 Captions (Live),media-accessibility,
+WCAG,1.2.5 Audio Description (Prerecorded),media-accessibility,
+WCAG,1.3.1 Info and Relationships,page-structure;accessible-forms;table-sorting,
+WCAG,1.3.2 Meaningful Sequence,css-layout,
+WCAG,1.3.3 Sensory Characteristics,page-structure,
+WCAG,1.3.4 Orientation,responsive-layout,
+WCAG,1.3.5 Identify Input Purpose,accessible-forms,
+WCAG,1.4.1 Use of Color,color-contrast,
+WCAG,1.4.2 Audio Control,media-accessibility,
+WCAG,1.4.3 Contrast (Minimum),color-contrast,
+WCAG,1.4.4 Resize Text,responsive-layout,
+WCAG,1.4.5 Images of Text,page-structure,
+WCAG,1.4.10 Reflow,responsive-layout,
+WCAG,1.4.11 Non-text Contrast,color-contrast,
+WCAG,1.4.12 Text Spacing,element-sizing,
+WCAG,1.4.13 Content on Hover or Focus,tooltip,
+WCAG,2.1.1 Keyboard,keyboard-navigation,
+WCAG,2.1.2 No Keyboard Trap,keyboard-navigation,
+WCAG,2.1.4 Character Key Shortcuts,keyboard-shortcuts,
+WCAG,2.2.1 Timing Adjustable,session-management,
+WCAG,"2.2.2 Pause, Stop, Hide",carousel;reduced-motion;media-accessibility,
+WCAG,2.3.1 Three Flashes or Below Threshold,reduced-motion;media-accessibility,
+WCAG,2.4.1 Bypass Blocks,page-structure,
+WCAG,2.4.2 Page Titled,page-structure,
+WCAG,2.4.3 Focus Order,keyboard-navigation;css-layout,
+WCAG,2.4.4 Link Purpose (In Context),page-structure,
+WCAG,2.4.5 Multiple Ways,navigation-bar,
+WCAG,2.4.6 Headings and Labels,page-structure;accessible-forms,
+WCAG,2.4.7 Focus Visible,keyboard-navigation,
+WCAG,2.4.11 Focus Not Obscured (Minimum),sticky-header,
+WCAG,2.5.1 Pointer Gestures,touch-gestures,
+WCAG,2.5.2 Pointer Cancellation,touch-gestures;accessible-buttons,
+WCAG,2.5.3 Label in Name,aria-attributes,
+WCAG,2.5.4 Motion Actuation,touch-gestures,
+WCAG,2.5.7 Dragging Movements,drag-and-drop;resizable-panels,
+WCAG,2.5.8 Target Size (Minimum),responsive-layout;touch-gestures;accessible-buttons,
+WCAG,3.1.1 Language of Page,page-structure;internationalization,
+WCAG,3.1.2 Language of Parts,page-structure,
+WCAG,3.2.1 On Focus,accessible-forms,
+WCAG,3.2.2 On Input,accessible-forms,
+WCAG,3.2.3 Consistent Navigation,navigation-bar,
+WCAG,3.2.4 Consistent Identification,design-system,
+WCAG,3.2.6 Consistent Help,page-structure,
+WCAG,3.3.1 Error Identification,form-validation,
+WCAG,3.3.2 Labels or Instructions,accessible-forms,
+WCAG,3.3.3 Error Suggestion,form-validation,
+WCAG,"3.3.4 Error Prevention (Legal, Financial, Data)",accessible-forms,
+WCAG,3.3.7 Redundant Entry,accessible-forms;multi-step-form,
+WCAG,3.3.8 Accessible Authentication (Minimum),authentication;bot-protection,
+WCAG,"4.1.1 Parsing",,"excluded: obsolete in WCAG 2.2, always satisfied"
+WCAG,"4.1.2 Name, Role, Value",aria-attributes;accessible-buttons,
+WCAG,4.1.3 Status Messages,toast-notification;alert-message;progress-indicator,
+#
+# ---- OWASP Cheat Sheet Series: sheets about building web, mobile, API and AI apps
+OWASP,Access Control,authorization,
+OWASP,AI Agent Security,llm-features,
+OWASP,Authentication,authentication,
+OWASP,Authentication Patterns,authentication;single-sign-on;passkeys,
+OWASP,Authorization,authorization,
+OWASP,Authorization Decisions And Output Handling,authorization,
+OWASP,Authorization Patterns,authorization;multi-tenancy,
+OWASP,Authorization Policy And Data Distribution,authorization,
+OWASP,Authorization Regression Testing,authorization,
+OWASP,Authorization Testing Automation,authorization,
+OWASP,Bot Management and Anti-Automation,bot-protection;rate-limiting,
+OWASP,Business Logic Security,input-sanitization,
+OWASP,CI CD Security,ci-cd-pipeline,
+OWASP,Choosing and Using Security Questions,password-reset,
+OWASP,Clickjacking Defense,security-headers,
+OWASP,Content Security Policy,security-headers,
+OWASP,Cookie Theft Mitigation,session-management,
+OWASP,Credential Stuffing Prevention,bot-protection;authentication;two-factor-auth,
+OWASP,Cross-Site Request Forgery Prevention,csrf-protection,
+OWASP,Cross Site Scripting Prevention,input-sanitization;security-headers,
+OWASP,Cryptographic Storage,data-encryption;password-hashing,
+OWASP,DOM Clobbering Prevention,input-sanitization,
+OWASP,DOM based XSS Prevention,input-sanitization,
+OWASP,Database Security,data-encryption;injection-prevention,
+OWASP,Denial of Service,rate-limiting;graphql-api,
+OWASP,Dependency Graph SBOM,dependency-security,
+OWASP,Deserialization,injection-prevention,
+OWASP,Docker Security,containerization,
+OWASP,Email Validation and Verification,email-verification,
+OWASP,Error Handling,error-handling,
+OWASP,File Upload,file-upload,
+OWASP,Forgot Password,password-reset,
+OWASP,GitHub Actions Security,ci-cd-pipeline;dependency-security,
+OWASP,GraphQL,graphql-api,
+OWASP,HTML5 Security,cors;browser-storage;input-sanitization,
+OWASP,HTTP Headers,security-headers,
+OWASP,HTTP Strict Transport Security,https-tls,
+OWASP,Injection Prevention,injection-prevention,
+OWASP,Input Validation,input-sanitization,
+OWASP,Insecure Direct Object Reference Prevention,authorization,
+OWASP,JSON Web Token,api-authentication,
+OWASP,Key Management,data-encryption,
+OWASP,LDAP Injection Prevention,injection-prevention,
+OWASP,LLM Prompt Injection Prevention,llm-features,
+OWASP,Logging,logging;audit-log,
+OWASP,Logging Vocabulary,logging,
+OWASP,MCP Security,llm-features,
+OWASP,Mass Assignment,rest-api,
+OWASP,Mobile Application Security,mobile-app-security,
+OWASP,Multi Tenant Security,multi-tenancy,
+OWASP,Multifactor Authentication,two-factor-auth,
+OWASP,NoSQL Security,injection-prevention,
+OWASP,NPM Security,dependency-security,
+OWASP,OAuth2,single-sign-on,
+OWASP,OS Command Injection Defense,injection-prevention,
+OWASP,Passkey Security,passkeys,
+OWASP,Password Storage,password-hashing,
+OWASP,Pinning,mobile-app-security,
+OWASP,Prototype Pollution Prevention,injection-prevention,
+OWASP,Query Parameterization,injection-prevention,
+OWASP,RAG Security,llm-features,
+OWASP,REST Security,rest-api;api-authentication,
+OWASP,SAML Security,single-sign-on,
+OWASP,SQL Injection Prevention,injection-prevention,
+OWASP,Secrets Management,environment-variables;data-encryption,
+OWASP,Server Side Request Forgery Prevention,ssrf-protection,
+OWASP,Server Side Template Injection Prevention,injection-prevention,
+OWASP,Session Management,session-management,
+OWASP,Software Supply Chain Security,dependency-security,
+OWASP,TLS Cipher String,https-tls,
+OWASP,Third Party Javascript Management,dependency-security;security-headers,
+OWASP,Third Party Payment Gateway Integration,payments,
+OWASP,Transaction Authorization,payments;two-factor-auth,
+OWASP,Transport Layer Protection,https-tls,
+OWASP,Transport Layer Security,https-tls,
+OWASP,Unvalidated Redirects and Forwards,input-sanitization,
+OWASP,User Privacy Protection,user-data-privacy,
+OWASP,Vulnerable Dependency Management,dependency-security,
+OWASP,Web Cache Security,caching,
+OWASP,Web Frontend Security,security-headers;input-sanitization,
+OWASP,Web Service Security,api-authentication;https-tls,
+OWASP,Webhook Security,webhooks,
+OWASP,WebSocket Security,real-time-updates,
+OWASP,XML External Entity Prevention,injection-prevention,
+OWASP,XML Security,injection-prevention,
+OWASP,XPath Injection Prevention,injection-prevention,
+OWASP,XS Leaks,security-headers,
+OWASP,XSS Filter Evasion,input-sanitization,
+# Left out on purpose
+OWASP,AI-Powered Advertising Systems Security,,excluded: specialised domain
+OWASP,AML Sanctions AI Agent Payments,,excluded: specialised domain
+OWASP,Automotive Security,,excluded: specialised domain
+OWASP,Drone Security,,excluded: specialised domain
+OWASP,Browser Extension Vulnerabilities,,excluded: specialised app type
+OWASP,Bean Validation,,excluded: framework or language specific
+OWASP,C-Based Toolchain Hardening,,excluded: framework or language specific
+OWASP,Django REST Framework,,excluded: framework or language specific
+OWASP,Django Security,,excluded: framework or language specific
+OWASP,DotNet Security,,excluded: framework or language specific
+OWASP,FastAPI Security,,excluded: framework or language specific
+OWASP,Injection Prevention in Java,,excluded: framework or language specific
+OWASP,JAAS,,excluded: framework or language specific
+OWASP,JavaScript and TypeScript Security,,excluded: framework or language specific
+OWASP,Java Security,,excluded: framework or language specific
+OWASP,Laravel,,excluded: framework or language specific
+OWASP,Nextjs Security,,excluded: framework or language specific
+OWASP,NodeJS Docker,,excluded: framework or language specific
+OWASP,Nodejs Security,,excluded: framework or language specific
+OWASP,PHP Configuration,,excluded: framework or language specific
+OWASP,Ruby on Rails,,excluded: framework or language specific
+OWASP,Symfony,,excluded: framework or language specific
+OWASP,gRPC Security,,excluded: framework or language specific
+OWASP,Identity Propagation Patterns,,excluded: infrastructure and architecture
+OWASP,Infrastructure as Code Security,,excluded: infrastructure and architecture
+OWASP,Kubernetes Security,,excluded: infrastructure and architecture
+OWASP,Micro Frontend Security,,excluded: infrastructure and architecture
+OWASP,Microservices Security,,excluded: infrastructure and architecture
+OWASP,Network Segmentation,,excluded: infrastructure and architecture
+OWASP,Secure Cloud Architecture,,excluded: infrastructure and architecture
+OWASP,Serverless FaaS Security,,excluded: infrastructure and architecture
+OWASP,Subdomain Takeover Prevention,,excluded: infrastructure and architecture
+OWASP,Workload Identity Federation,,excluded: infrastructure and architecture
+OWASP,Zero Trust Architecture,,excluded: infrastructure and architecture
+OWASP,Post Quantum Cryptography,,excluded: infrastructure and architecture
+OWASP,Secure AI Model Ops,,excluded: infrastructure and architecture
+OWASP,Abuse Case,,excluded: team process or reference material
+OWASP,Attack Surface Analysis,,excluded: team process or reference material
+OWASP,Legacy Application Management,,excluded: team process or reference material
+OWASP,Microservices based Security Arch Doc,,excluded: team process or reference material
+OWASP,REST Assessment,,excluded: team process or reference material
+OWASP,Secure Code Review,,excluded: team process or reference material
+OWASP,Secure Coding with AI,,excluded: team process or reference material
+OWASP,Secure Product Design,,excluded: team process or reference material
+OWASP,Security Terminology,,excluded: team process or reference material
+OWASP,Threat Modeling,,excluded: team process or reference material
+OWASP,Verifying Third Party Agent Execution Evidence,,excluded: team process or reference material
+OWASP,Virtual Patching,,excluded: team process or reference material
+OWASP,Vulnerability Disclosure,,excluded: team process or reference material
+#
+# ---- OWASP MASVS 2: all 24 mobile security controls
+MASVS,MASVS-STORAGE-1 The app securely stores sensitive data,mobile-app-security,
+MASVS,MASVS-STORAGE-2 The app prevents leakage of sensitive data,mobile-app-security,
+MASVS,MASVS-CRYPTO-1 The app employs current strong cryptography,data-encryption,
+MASVS,MASVS-CRYPTO-2 The app performs key management according to best practices,data-encryption;mobile-app-security,
+MASVS,MASVS-AUTH-1 The app uses secure authentication and authorization protocols,api-authentication;mobile-app-security,
+MASVS,MASVS-AUTH-2 The app performs local authentication securely,mobile-app-security,
+MASVS,MASVS-AUTH-3 The app secures sensitive operations with additional authentication,two-factor-auth;payments,
+MASVS,MASVS-NETWORK-1 The app secures all network traffic,mobile-app-security;https-tls,
+MASVS,MASVS-NETWORK-2 The app performs identity pinning,mobile-app-security,
+MASVS,MASVS-PLATFORM-1 The app uses IPC mechanisms securely,mobile-app-security,
+MASVS,MASVS-PLATFORM-2 The app uses WebViews securely,mobile-app-security,
+MASVS,MASVS-PLATFORM-3 The app uses the user interface securely,mobile-app-security,
+MASVS,MASVS-CODE-1 The app requires an up-to-date platform version,mobile-app-hardening,
+MASVS,MASVS-CODE-2 The app has a mechanism for enforcing app updates,mobile-app-hardening,
+MASVS,MASVS-CODE-3 The app only uses software components without known vulnerabilities,dependency-security,
+MASVS,MASVS-CODE-4 The app validates and sanitizes all untrusted inputs,input-sanitization;injection-prevention,
+MASVS,MASVS-RESILIENCE-1 The app validates the integrity of the platform,mobile-app-hardening,
+MASVS,MASVS-RESILIENCE-2 The app implements anti-tampering mechanisms,mobile-app-hardening,
+MASVS,MASVS-RESILIENCE-3 The app implements anti-static analysis mechanisms,mobile-app-hardening,
+MASVS,MASVS-RESILIENCE-4 The app implements anti-dynamic analysis techniques,mobile-app-hardening,
+MASVS,MASVS-PRIVACY-1 The app minimizes access to sensitive data and resources,user-data-privacy,
+MASVS,MASVS-PRIVACY-2 The app prevents identification of the user,user-data-privacy,
+MASVS,MASVS-PRIVACY-3 The app is transparent about data collection and usage,user-data-privacy,
+MASVS,MASVS-PRIVACY-4 The app offers user control over their data,user-data-privacy,
+#
+# ---- web.dev Core Web Vitals and the supporting metrics
+CWV,Largest Contentful Paint (LCP) at most 2.5 s,web-performance;image-optimization;lazy-loading,
+CWV,Interaction to Next Paint (INP) at most 200 ms,web-performance;debounce-throttle,
+CWV,Cumulative Layout Shift (CLS) at most 0.1,web-performance;element-sizing;image-optimization,
+CWV,Assessed at the 75th percentile on mobile and desktop,web-performance,
+CWV,Time to First Byte (TTFB),web-performance;caching,
+CWV,First Contentful Paint (FCP),web-performance,
+CWV,Total Blocking Time (TBT),web-performance,
+#
+# ---- NIST SP 800-63B-4 (authentication)
+NIST,"Password length: 15 single-factor, 8 with MFA, allow at least 64",authentication,
+NIST,No composition rules,authentication,
+NIST,No periodic password changes,authentication,
+NIST,Check passwords against a blocklist,authentication,
+NIST,Allow password managers and paste,authentication,
+NIST,Accept Unicode and spaces,authentication,
+NIST,No password hints or security questions,password-reset,
+NIST,Limit consecutive failed attempts,authentication;bot-protection,
+NIST,Reauthentication and session timeouts,session-management,
+NIST,Offer a phishing-resistant authenticator,two-factor-auth;passkeys,
+NIST,SMS and phone codes are restricted,two-factor-auth,
+NIST,Email is not an out-of-band authenticator,two-factor-auth,
+NIST,Syncable authenticators (passkeys),passkeys,
+NIST,Biometric attempt limits,,excluded: enforced by the platform biometric APIs
+#
+# ---- API guidelines, by topic: RFC 9457, Zalando chapters, Microsoft sections
+API,RFC 9457 Problem Details for HTTP APIs,api-errors,
+API,Zalando: General guidelines (API first),rest-api,
+API,Zalando: REST Basics - Meta information,rest-api;api-versioning,
+API,Zalando: REST Basics - Security,api-authentication;authorization,
+API,Zalando: REST Basics - Data formats,api-data-formats,
+API,Zalando: REST Basics - URLs,rest-api,
+API,Zalando: REST Basics - JSON payload,api-data-formats,
+API,Zalando: REST Basics - HTTP requests,rest-api;idempotency-keys;conditional-requests,
+API,Zalando: REST Basics - HTTP status codes,rest-api;api-errors;rate-limiting,
+API,Zalando: REST Basics - HTTP headers,conditional-requests;api-versioning;idempotency-keys,
+API,Zalando: REST Design - Hypermedia,,excluded: optional style (hypermedia links)
+API,Zalando: REST Design - Performance,caching;api-filtering,
+API,Zalando: REST Design - Pagination,pagination,
+API,Zalando: REST Design - Compatibility,api-versioning,
+API,Zalando: REST Design - Deprecation,api-versioning,
+API,Zalando: REST Operation,rest-api,
+API,Zalando: EVENT Basics - Event Types,,excluded: event streaming infrastructure
+API,Zalando: EVENT Basics - Event Categories,,excluded: event streaming infrastructure
+API,Zalando: EVENT Design,,excluded: event streaming infrastructure
+API,"Microsoft: HTTP (URLs, request and response pattern, query parameters and headers)",rest-api,
+API,Microsoft: Resource schema and field mutability,rest-api;api-data-formats,
+API,Microsoft: Handling errors,api-errors,
+API,Microsoft: JSON (enums and polymorphic types),api-data-formats,
+API,Microsoft: Performing an action,rest-api,
+API,"Microsoft: Collections (filter, orderby, skip, top, maxpagesize)",api-filtering;pagination,
+API,Microsoft: API versioning,api-versioning,
+API,Microsoft: Deprecating behavior notification,api-versioning,
+API,Microsoft: Repeatability of requests,idempotency-keys,
+API,Microsoft: Long-running operations and jobs,long-running-operations,
+API,Microsoft: Bring your own storage,,excluded: Azure specific
+API,Microsoft: Conditional requests,conditional-requests,
+API,Microsoft: Returning string offsets and lengths,,excluded: Azure specific
+API,Microsoft: Distributed tracing and telemetry,logging;api-errors,
+#
+# ---- Google API Improvement Proposals: all 73 general AIPs
+API,AIP-1 AIP Purpose and Guidelines,,excluded: team process or reference material
+API,AIP-2 AIP Numbering,,excluded: team process or reference material
+API,AIP-3 AIP Versioning,,excluded: team process or reference material
+API,AIP-8 AIP Style and Guidance,,excluded: team process or reference material
+API,AIP-9 Glossary,,excluded: team process or reference material
+API,AIP-100 API Design Review FAQ,,excluded: team process or reference material
+API,AIP-111 Planes,,excluded: Google specific
+API,AIP-121 Resource-oriented design,rest-api,
+API,AIP-122 Resource names,rest-api,
+API,AIP-123 Resource types,rest-api,
+API,AIP-124 Resource association,rest-api,
+API,AIP-126 Enumerations,api-data-formats,
+API,AIP-127 HTTP and gRPC Transcoding,,excluded: protocol buffers or gRPC specific
+API,AIP-128 Declarative-friendly interfaces,,excluded: Google specific
+API,AIP-129 Server-Modified Values and Defaults,,excluded: Google specific
+API,AIP-130 Methods,rest-api,
+API,"AIP-131 Standard methods: Get",rest-api,
+API,"AIP-132 Standard methods: List",rest-api;pagination,
+API,"AIP-133 Standard methods: Create",rest-api,
+API,"AIP-134 Standard methods: Update",rest-api;conditional-requests,
+API,"AIP-135 Standard methods: Delete",rest-api,
+API,AIP-136 Custom methods,rest-api,
+API,AIP-140 Field names,api-data-formats,
+API,AIP-141 Quantities,api-data-formats,
+API,AIP-142 Time and duration,api-data-formats;timezone-handling,
+API,AIP-143 Standardized codes,api-data-formats,
+API,AIP-144 Repeated fields,,excluded: protocol buffers or gRPC specific
+API,AIP-145 Ranges,,excluded: Google specific
+API,AIP-146 Generic fields,,excluded: protocol buffers or gRPC specific
+API,AIP-147 Sensitive fields,rest-api,
+API,AIP-148 Standard fields,,excluded: Google specific
+API,AIP-149 Unset field values,api-data-formats,
+API,AIP-151 Long-running operations,long-running-operations,
+API,AIP-152 Jobs,long-running-operations;background-jobs,
+API,AIP-153 Import and export,data-import;data-export,
+API,AIP-154 Resource freshness validation,conditional-requests,
+API,AIP-155 Request identification,idempotency-keys,
+API,AIP-156 Singleton resources,,excluded: Google specific
+API,AIP-157 Partial responses,api-filtering,
+API,AIP-158 Pagination,pagination,
+API,AIP-159 Reading across collections,,excluded: Google specific
+API,AIP-160 Filtering,api-filtering,
+API,AIP-161 Field masks,api-filtering,
+API,AIP-162 Resource Revisions,,excluded: Google specific
+API,AIP-163 Change validation,,excluded: Google specific
+API,AIP-164 Soft delete,soft-delete,
+API,AIP-165 Criteria-based delete,batch-operations,
+API,AIP-180 Backwards compatibility,api-versioning,
+API,AIP-181 Stability levels,,excluded: Google specific
+API,AIP-182 External software dependencies,,excluded: Google specific
+API,AIP-184 API version identifiers,api-versioning,
+API,AIP-185 API Versioning,api-versioning,
+API,AIP-190 Naming conventions,api-data-formats,
+API,AIP-191 File and directory structure,,excluded: protocol buffers or gRPC specific
+API,AIP-192 Documentation,rest-api,
+API,AIP-193 Errors,api-errors,
+API,AIP-194 Automatic retry configuration,retry-backoff,
+API,AIP-200 Precedent,,excluded: team process or reference material
+API,AIP-202 Fields,,excluded: protocol buffers or gRPC specific
+API,AIP-203 Field behavior documentation,,excluded: protocol buffers or gRPC specific
+API,AIP-205 Beta-blocking changes,,excluded: team process or reference material
+API,AIP-210 Unicode,api-data-formats,
+API,AIP-211 Authorization checks,authorization,
+API,AIP-213 Common components,,excluded: protocol buffers or gRPC specific
+API,AIP-214 Resource expiration,,excluded: Google specific
+API,AIP-215 API-specific protos,,excluded: protocol buffers or gRPC specific
+API,AIP-216 States,,excluded: Google specific
+API,AIP-217 Unreachable resources,,excluded: Google specific
+API,"AIP-231 Batch methods: Get",batch-operations,
+API,"AIP-233 Batch methods: Create",batch-operations,
+API,"AIP-234 Batch methods: Update",batch-operations,
+API,"AIP-235 Batch methods: Delete",batch-operations,
+API,AIP-236 Policy preview,,excluded: Google specific

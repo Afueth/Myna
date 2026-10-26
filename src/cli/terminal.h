@@ -2,6 +2,7 @@
 #define MYNA_TERMINAL_H
 
 #include <stddef.h>
+#include <stdio.h>
 
 /*
  * Prepare stdout for colour output. Returns 1 if stdout is an interactive
@@ -19,5 +20,15 @@ void myna_terminal_set_title(const char *title);
  * success, 0 if the platform can't tell or the path doesn't fit.
  */
 int myna_executable_path(char *buf, size_t size);
+
+/* Returns 1 if `stream` is an interactive terminal rather than a file or pipe. */
+int myna_stream_is_terminal(FILE *stream);
+
+/*
+ * Put UTF-8 `text` on the system clipboard. Uses the Windows clipboard,
+ * pbcopy on macOS, and wl-copy, xclip or xsel elsewhere. Returns 1 on
+ * success, 0 if no clipboard is available.
+ */
+int myna_copy_to_clipboard(const char *text);
 
 #endif /* MYNA_TERMINAL_H */

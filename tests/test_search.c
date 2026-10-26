@@ -63,6 +63,24 @@ static void test_parse_fields_and_lists(void)
     CHECK(strcmp(c.related[1], "focus") == 0);
 }
 
+static void test_parse_checklist_columns(void)
+{
+    myna_concept c;
+    CHECK(myna_concept_parse("modal,Modal,A window.,popup,pop up,,"
+                             "\"Close with Escape; Trap focus, then restore it\",Esc closes it",
+                             &c) == 0);
+    CHECK(c.requirement_count == 2);
+    CHECK(strcmp(c.requirements[1], "Trap focus, then restore it") == 0);
+    CHECK(c.done_when_count == 1);
+    CHECK(strcmp(c.done_when[0], "Esc closes it") == 0);
+
+    /* The checklist columns are optional. */
+    CHECK(myna_concept_parse("modal,Modal,A window.,popup,pop up,", &c) == 0);
+    CHECK(c.requirement_count == 0 && c.done_when_count == 0);
+    CHECK(myna_concept_parse("modal,Modal,A window.,popup,pop up,,Close with Escape", &c) == 0);
+    CHECK(c.requirement_count == 1 && c.done_when_count == 0);
+}
+
 static void test_parse_escaped_quote_and_empty_lists(void)
 {
     myna_concept c;
@@ -75,7 +93,7 @@ static void test_parse_rejects_malformed(void)
 {
     myna_concept c;
     CHECK(myna_concept_parse("a,b,c", &c) != 0);               /* too few fields */
-    CHECK(myna_concept_parse("a,b,c,d,e,f,g", &c) != 0);       /* too many fields */
+    CHECK(myna_concept_parse("a,b,c,d,e,f,g,h,i", &c) != 0);   /* too many fields */
     CHECK(myna_concept_parse("a,b,\"oops,d,e,f", &c) != 0);    /* unterminated quote */
     CHECK(myna_concept_parse("a,b,\"x\"y,d,e,f", &c) != 0);    /* text after quote */
     CHECK(myna_concept_parse(",Name,x,,,", &c) != 0);          /* missing id */
@@ -238,6 +256,15 @@ static void test_dataset(const char *path)
     CHECK(has_id(m, n, "feature-targeting"));
     CHECK(has_id(m, n, "gradual-deployment"));
 
+    /* A word that starts another only matches with a real ending:
+     * "check" is not "checkbox", and "graph" is not "graphql". */
+    n = myna_search(&cat, "check the npm packages for vulnerabilities", m, 5);
+    CHECK(has_id(m, n, "dependency-security"));
+    CHECK(!has_id(m, n, "checkbox"));
+    n = myna_search(&cat, "show a graph of sales per month", m, 5);
+    CHECK(has_id(m, n, "data-visualization"));
+    CHECK(!has_id(m, n, "graphql-api"));
+
     myna_catalogue_free(&cat);
 }
 
@@ -246,6 +273,7 @@ int main(int argc, char **argv)
     const char *dataset = argc > 1 ? argv[1] : "data/concepts.csv";
 
     test_parse_fields_and_lists();
+    test_parse_checklist_columns();
     test_parse_escaped_quote_and_empty_lists();
     test_parse_rejects_malformed();
     test_parse_caps_list_length();

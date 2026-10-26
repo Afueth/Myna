@@ -6,9 +6,12 @@
 #include <string.h>
 
 #include "myna/catalogue.h"
+#include "myna/prompt.h"
 #include "myna/search.h"
+#include "myna/version.h"
 
 #include "logo.h"
+#include "mcp.h"
 #include "terminal.h"
 
 #define DEFAULT_CATALOGUE "data/concepts.csv"
@@ -17,6 +20,7 @@
 #define INPUT_MAX 500
 #define WRAP_WIDTH 76
 #define PATH_MAX_LEN 1024
+#define MAX_REVIEW_IDS 10
 
 #define STYLE_TITLE "\033[1;38;2;255;196;0m"
 #define STYLE_DIM "\033[38;2;150;150;175m"
@@ -33,12 +37,16 @@ static void print_usage(const char *prog)
             "\n"
             "Commands:\n"
             "  search <description>   Find concepts for a plain-language description\n"
+            "  prompt <description>   Build an AI prompt from the best matching concepts\n"
+            "  review <id>...         Print a checklist for reviewing finished code\n"
             "  show <id>              Show a single concept by id\n"
             "  list                   List every concept\n"
+            "  mcp                    Run as an MCP server for AI coding tools (stdio)\n"
             "\n"
             "Options:\n"
             "  -d FILE                Catalogue CSV (default: " DEFAULT_CATALOGUE ")\n"
-            "  -h, --help             Show this help\n",
+            "  -h, --help             Show this help\n"
+            "  -v, --version          Show the version\n",
             prog);
 }
 
@@ -228,6 +236,95 @@ static size_t run_search(FILE *out, const myna_catalogue *cat, const char *query
     return count;
 }
 
+/*
+ * Print the prompt for `chosen`. In the interactive session it is framed and,
+ * when `out` is a terminal, copied to the clipboard; otherwise it is printed
+ * bare so it can be piped. Returns 0, or -1 if memory runs out.
+ */
+static int print_prompt(FILE *out, const myna_catalogue *cat, const char *request,
+                        const myna_concept *const *chosen, size_t count,
+                        int interactive)
+{
+    size_t len = myna_build_prompt(cat, request, chosen, count, NULL, 0);
+    char *text = malloc(len + 1);
+    if (!text) {
+        fprintf(stderr, "Out of memory\n");
+        return -1;
+    }
+    myna_build_prompt(cat, request, chosen, count, text, len + 1);
+
+    if (!interactive) {
+        fputs(text, out);
+    } else {
+        fprintf(out, "\n------------ Copy this into your AI assistant ------------\n\n");
+        fputs(text, out);
+        fprintf(out, "\n----------------------------------------------------------\n");
+        if (myna_stream_is_terminal(out) && myna_copy_to_clipboard(text))
+            fprintf(out, "Copied to clipboard.\n");
+    }
+    free(text);
+    return 0;
+}
+
+/*
+ * Parse a choice like "1,3" or "2 4" into the chosen matches, in result
+ * order. Returns the number chosen, or 0 if any part is not a valid number.
+ */
+static size_t parse_selection(const char *s, const myna_match *matches, size_t count,
+                              const myna_concept **chosen)
+{
+    int picked[MAX_RESULTS] = {0};
+
+    while (*s) {
+        if (*s == ',' || isspace((unsigned char)*s)) {
+            s++;
+            continue;
+        }
+        char *end;
+        long v = strtol(s, &end, 10);
+        if (end == s || v < 1 || v > (long)count)
+            return 0;
+        picked[v - 1] = 1;
+        s = end;
+    }
+
+    size_t n = 0;
+    for (size_t i = 0; i < count; i++) {
+        if (picked[i])
+            chosen[n++] = matches[i].concept;
+    }
+    return n;
+}
+
+static void choose_prompt(FILE *in, FILE *out, const myna_catalogue *cat,
+                          const char *request, const myna_match *matches, size_t count)
+{
+    const myna_concept *chosen[MAX_RESULTS];
+    size_t n = 0;
+
+    if (count > 1) {
+        char buf[64];
+        fprintf(out, "Which concepts? (for example 1,3 - press Enter for all): ");
+        fflush(out);
+        input_status status = read_line(in, buf, sizeof buf);
+        if (status == INPUT_EOF)
+            return;
+        if (status != INPUT_EMPTY) {
+            n = status == INPUT_OK ? parse_selection(buf, matches, count, chosen) : 0;
+            if (n == 0) {
+                fprintf(out, "Please enter numbers from 1 to %d, separated by commas.\n",
+                        (int)count);
+                return;
+            }
+        }
+    }
+    if (n == 0) {
+        for (; n < count; n++)
+            chosen[n] = matches[n].concept;
+    }
+    print_prompt(out, cat, request, chosen, n, 1);
+}
+
 static void choose_details(FILE *in, FILE *out, const myna_catalogue *cat,
                            const myna_match *matches, size_t count)
 {
@@ -251,6 +348,7 @@ static void choose_details(FILE *in, FILE *out, const myna_catalogue *cat,
 int myna_repl(const myna_catalogue *cat, FILE *in, FILE *out)
 {
     char input[INPUT_MAX + 2];
+    char request[INPUT_MAX + 2] = ""; /* the description behind the results */
     myna_match matches[MAX_RESULTS];
     size_t count = 0;
 
@@ -282,6 +380,7 @@ int myna_repl(const myna_catalogue *cat, FILE *in, FILE *out)
                              "and P options work once results are shown.\n");
                 continue;
             }
+            strcpy(request, input);
             count = run_search(out, cat, input, matches);
             continue;
         }
@@ -302,8 +401,7 @@ int myna_repl(const myna_catalogue *cat, FILE *in, FILE *out)
         } else if (is_key(input, 'D')) {
             choose_details(in, out, cat, matches, count);
         } else if (is_key(input, 'P')) {
-            fprintf(out, "The prompt builder is planned for Myna 0.4. For now, "
-                         "use the concept names above in your AI request.\n");
+            choose_prompt(in, out, cat, request, matches, count);
         } else if (isdigit((unsigned char)input[0])) {
             int choice = parse_choice(input, count);
             if (choice < 0)
@@ -312,6 +410,7 @@ int myna_repl(const myna_catalogue *cat, FILE *in, FILE *out)
                 print_details(out, cat, matches[choice].concept);
         } else if (input[1] != '\0') {
             /* A longer reply is treated as a new description. */
+            strcpy(request, input);
             count = run_search(out, cat, input, matches);
         } else {
             fprintf(out, "Please choose S, D, P or Q.\n");
@@ -331,16 +430,16 @@ static int file_exists(const char *path)
     return 1;
 }
 
-/* MYNA_DATA wins, then ./data, then data/ beside the executable's folder.
- * The executable's real path is used when known, because argv[0] is just
+/* MYNA_DATA wins, then data/ beside the executable's folder, then ./data.
+ * The executable's own data comes before ./data because AI tools start
+ * `myna mcp` inside the user's project, which may have a data/ folder of its
+ * own. The real executable path is used when known, because argv[0] is just
  * "myna" when it is started from PATH. */
 static const char *find_catalogue(const char *prog, char *buf, size_t size)
 {
     const char *env = getenv("MYNA_DATA");
     if (env && *env)
         return env;
-    if (file_exists(DEFAULT_CATALOGUE))
-        return DEFAULT_CATALOGUE;
 
     char exe[PATH_MAX_LEN];
     if (myna_executable_path(exe, sizeof exe))
@@ -355,7 +454,39 @@ static const char *find_catalogue(const char *prog, char *buf, size_t size)
         if (file_exists(buf))
             return buf;
     }
-    return DEFAULT_CATALOGUE;
+    return DEFAULT_CATALOGUE; /* ./data, relative to the current folder */
+}
+
+/* `myna review <id>...`: print the review rubric for the given concepts. */
+static int run_review(const myna_catalogue *cat, char **ids, int n)
+{
+    const myna_concept *chosen[MAX_REVIEW_IDS];
+    size_t count = 0;
+
+    if (n > MAX_REVIEW_IDS) {
+        fprintf(stderr, "Too many concepts (max %d)\n", MAX_REVIEW_IDS);
+        return 2;
+    }
+    for (int k = 0; k < n; k++) {
+        const myna_concept *c = myna_find_by_id(cat, ids[k]);
+        if (!c) {
+            fprintf(stderr, "No concept with id \"%s\". Run \"myna list\" to see "
+                            "every id.\n", ids[k]);
+            return 1;
+        }
+        chosen[count++] = c;
+    }
+
+    size_t len = myna_build_review(chosen, count, NULL, 0);
+    char *text = malloc(len + 1);
+    if (!text) {
+        fprintf(stderr, "Out of memory\n");
+        return 1;
+    }
+    myna_build_review(chosen, count, text, len + 1);
+    fputs(text, stdout);
+    free(text);
+    return 0;
 }
 
 static int join_args(char **args, int n, char *buf, size_t size)
@@ -387,6 +518,10 @@ int myna_cli_run(int argc, char **argv)
             print_usage(prog);
             return 0;
         }
+        if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0) {
+            printf("myna %s\n", MYNA_VERSION);
+            return 0;
+        }
         if (strcmp(argv[i], "-d") == 0 && i + 1 < argc) {
             data_path = argv[++i];
             continue;
@@ -398,15 +533,19 @@ int myna_cli_run(int argc, char **argv)
 
     const char *command = i < argc ? argv[i++] : NULL;
     int is_search = command && strcmp(command, "search") == 0;
+    int is_prompt = command && strcmp(command, "prompt") == 0;
+    int is_review = command && strcmp(command, "review") == 0;
     int is_show = command && strcmp(command, "show") == 0;
     int is_list = command && strcmp(command, "list") == 0;
+    int is_mcp = command && strcmp(command, "mcp") == 0;
 
-    if (command && !is_search && !is_show && !is_list) {
+    if (command && !is_search && !is_prompt && !is_review && !is_show && !is_list &&
+        !is_mcp) {
         fprintf(stderr, "Unknown command: %s\n", command);
         print_usage(prog);
         return 2;
     }
-    if ((is_search || is_show) && i >= argc) {
+    if ((is_search || is_prompt || is_review || is_show) && i >= argc) {
         print_usage(prog);
         return 2;
     }
@@ -429,7 +568,11 @@ int myna_cli_run(int argc, char **argv)
 
     int status = 0;
 
-    if (is_list) {
+    if (is_mcp) {
+        status = myna_mcp_serve(&cat, stdin, stdout);
+    } else if (is_review) {
+        status = run_review(&cat, &argv[i], argc - i);
+    } else if (is_list) {
         print_list(stdout, &cat);
     } else if (is_show) {
         const myna_concept *c = myna_find_by_id(&cat, argv[i]);
@@ -447,6 +590,23 @@ int myna_cli_run(int argc, char **argv)
             status = 2;
         } else if (run_search(stdout, &cat, query, matches) == 0) {
             status = 1;
+        }
+    } else if (is_prompt) {
+        char query[INPUT_MAX + 1];
+        myna_match matches[MAX_RESULTS];
+        const myna_concept *chosen[MAX_RESULTS];
+        size_t n;
+        if (join_args(&argv[i], argc - i, query, sizeof query) != 0) {
+            fprintf(stderr, "Description too long (max %d characters)\n", INPUT_MAX);
+            status = 2;
+        } else if ((n = myna_search(&cat, query, matches, MAX_RESULTS)) == 0) {
+            fprintf(stderr, "No matching concepts found, so there is no prompt to build.\n");
+            status = 1;
+        } else {
+            for (size_t k = 0; k < n; k++)
+                chosen[k] = matches[k].concept;
+            if (print_prompt(stdout, &cat, query, chosen, n, 0) != 0)
+                status = 1;
         }
     } else {
         int colour = myna_terminal_init();

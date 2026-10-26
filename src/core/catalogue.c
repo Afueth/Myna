@@ -5,8 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define LINE_MAX_LEN 4096
-#define FIELD_COUNT 6
+#define LINE_MAX_LEN 8192
+/* id..related are required; requirements and done_when are optional. */
+#define MIN_FIELD_COUNT 6
+#define MAX_FIELD_COUNT 8
 
 void myna_catalogue_init(myna_catalogue *cat)
 {
@@ -124,13 +126,14 @@ static size_t split_list(char *list, char *slots, size_t slot_size, size_t max_s
 int myna_concept_parse(const char *line, myna_concept *out)
 {
     char buf[LINE_MAX_LEN];
-    char *fields[FIELD_COUNT];
+    char *fields[MAX_FIELD_COUNT];
     size_t len = strlen(line);
 
     if (len >= sizeof buf)
         return -1;
     memcpy(buf, line, len + 1);
-    if (split_csv(buf, fields, FIELD_COUNT) != FIELD_COUNT)
+    int n = split_csv(buf, fields, MAX_FIELD_COUNT);
+    if (n < MIN_FIELD_COUNT)
         return -1;
 
     memset(out, 0, sizeof *out);
@@ -143,6 +146,12 @@ int myna_concept_parse(const char *line, myna_concept *out)
                                     MYNA_TERM_MAX, MYNA_MAX_TRIGGERS);
     out->related_count = split_list(fields[5], &out->related[0][0],
                                     MYNA_ID_MAX, MYNA_MAX_RELATED);
+    if (n > 6)
+        out->requirement_count = split_list(fields[6], &out->requirements[0][0],
+                                            MYNA_ITEM_MAX, MYNA_MAX_REQUIREMENTS);
+    if (n > 7)
+        out->done_when_count = split_list(fields[7], &out->done_when[0][0],
+                                          MYNA_ITEM_MAX, MYNA_MAX_DONE_WHEN);
 
     return (out->id[0] && out->name[0]) ? 0 : -1;
 }

@@ -36,6 +36,10 @@ jobs:
             echo "Tag $GITHUB_REF_NAME does not match CMakeLists.txt version $version"
             exit 1
           fi
+          if ! grep -q "#define MYNA_VERSION \"$version\"" include/myna/version.h; then
+            echo "include/myna/version.h does not match CMakeLists.txt version $version"
+            exit 1
+          fi
           echo "VERSION=$version" >> "$GITHUB_ENV"
           echo "PKG=myna-v$version-${{ matrix.name }}" >> "$GITHUB_ENV"
 
@@ -69,6 +73,9 @@ jobs:
         run: |
           cd "$RUNNER_TEMP"
           "$GITHUB_WORKSPACE/$PKG/bin/myna" search "close the popup when I click outside"
+          "$GITHUB_WORKSPACE/$PKG/bin/myna" prompt "close the popup when I click outside" | grep -q "^Requirements:"
+          echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{}}}' \
+            | "$GITHUB_WORKSPACE/$PKG/bin/myna" mcp | grep -q '"serverInfo":{"name":"myna"'
 
       - name: Archive
         shell: bash

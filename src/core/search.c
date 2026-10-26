@@ -90,7 +90,22 @@ static void tokenize(const char *text, token_list *t)
 }
 
 /* Equal words match, and so do close variants that share a long prefix,
- * like "animate" and "animation". */
+ * like "animate" and "animation". When one word is the start of the other,
+ * the rest must be a common ending, so "deploy" matches "deployment" but
+ * "check" does not match "checkbox", nor "table" "tablet". */
+static int is_word_ending(const char *s)
+{
+    static const char *const ENDINGS[] = {
+        "e", "s", "es", "ed", "er", "ers", "ing", "ion", "ions", "ation", "ations",
+        "ment", "ments", "al", "ally", "ly", "able", "ity", "ive", "or", "ors",
+    };
+    for (size_t i = 0; i < sizeof ENDINGS / sizeof ENDINGS[0]; i++) {
+        if (strcmp(s, ENDINGS[i]) == 0)
+            return 1;
+    }
+    return 0;
+}
+
 static int words_match(const char *a, const char *b)
 {
     size_t prefix = 0;
@@ -101,7 +116,11 @@ static int words_match(const char *a, const char *b)
 
     size_t la = strlen(a), lb = strlen(b);
     size_t shorter = la < lb ? la : lb;
-    return prefix >= 5 && prefix + 2 >= shorter;
+    if (prefix < 5 || prefix + 2 < shorter)
+        return 0;
+    if (prefix == shorter)
+        return is_word_ending((la > lb ? a : b) + prefix);
+    return 1;
 }
 
 static int contains_phrase(const token_list *text, const token_list *phrase)

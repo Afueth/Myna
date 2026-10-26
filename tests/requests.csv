@@ -8,7 +8,7 @@ request,expected
 # UI and interaction
 close the menu when the user clicks anywhere else,outside-click-dismissal
 make the background blurry behind the popup,backdrop-overlay
-show a confirmation box before deleting,modal-dialog
+show a confirmation box before deleting,alert-dialog
 pressing esc should close the dialog,escape-key
 the popup should fade in and slide up,entry-exit-transition
 when the dialog opens put the cursor in the first field,focus-management
@@ -96,6 +96,48 @@ upload a big video without the page freezing,file-upload
 let users comment on posts,comments-system
 convert the date to the user's timezone,timezone-handling
 my app crashes when the list is empty,error-handling;empty-states
+#
+# Concepts added from W3C ARIA, WCAG and OWASP
+the delete icon has no text so screen readers say nothing,accessible-buttons
+let users tick the tasks they finished,checkbox
+pick one shipping method out of three,radio-group
+a switch to turn email notifications on and off,toggle-switch
+a fancy dropdown where you can select several tags,custom-select
+let users drag a handle to pick a price between 10 and 500,range-slider
+plus and minus buttons to change how many items are in the cart,number-input
+bold italic and link buttons above the text editor,toolbar
+show folders and subfolders that open and close,tree-view
+let users drag the divider to make the sidebar wider,resizable-panels
+tell the user right away that the payment failed,alert-message
+ask are you sure before deleting the project,alert-dialog
+make the whole website work with a screen reader,page-structure
+the checkout form should work with autofill and screen readers,accessible-forms
+add subtitles to our product videos,media-accessibility
+swipe left on a message to delete it,touch-gestures
+let people log in with their fingerprint instead of a password,passkeys
+bots keep creating fake accounts,bot-protection
+stop other websites from putting my page in an iframe,security-headers
+we store customers' ID numbers and need to keep them safe,data-encryption
+check that our npm packages have no known vulnerabilities,dependency-security
+build a graphql api for the mobile app,graphql-api
+the admin tool runs a shell command with the file name the user typed,injection-prevention
+add a chatbot that answers questions about our docs,llm-features
+keep login tokens safe in our android app,mobile-app-security
+each company should only see its own projects,multi-tenancy
+show a preview when someone pastes a link,ssrf-protection
+let users delete their account and all their data,user-data-privacy
+#
+# Concepts added from MASVS, Core Web Vitals, NIST and the API guidelines
+our api returns errors in a different shape on every endpoint,api-errors
+let clients sort and filter the orders list in the api,api-filtering
+we need to change the api without breaking the mobile app,api-versioning
+customers sometimes get charged twice when the network is slow,idempotency-keys
+the export endpoint times out because it takes several minutes,long-running-operations
+two admins edit the same product and one loses their changes,conditional-requests
+let api clients update hundreds of products in one call,batch-operations
+how should we send dates and prices in our json,api-data-formats
+our lighthouse score is bad and the site feels slow on phones,web-performance
+our banking app should not run on rooted phones,mobile-app-hardening
 #
 # Vague requests: only check that something useful matches
 make it faster,

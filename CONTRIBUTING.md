@@ -5,6 +5,11 @@ Thanks for your interest in improving myna!
 ## Ways to contribute
 
 - **Add concepts** to `data/concepts.csv` (see [docs/DATA_FORMAT.md](docs/DATA_FORMAT.md)).
+- **Improve checklists**: every concept has `requirements` and `done_when`
+  items, which the prompt builder and AI tools use. Add what's missing, fix
+  what's wrong, and check against the references in
+  [data/SOURCES.md](data/SOURCES.md) (see "Writing good checklists" in the
+  data format).
 - **Fix bugs** or **add features** — check [docs/ROADMAP.md](docs/ROADMAP.md) for ideas.
 - **Improve the docs.**
 

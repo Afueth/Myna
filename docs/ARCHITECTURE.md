@@ -6,9 +6,10 @@ lets future integrations (prompt builder, local API, editor plugins) reuse it.
 
 ```
 include/myna/   Public headers
-src/core/       Core library (myna_core): catalogue loading and search
+src/core/       Core library (myna_core): catalogue loading, search, prompts
 src/cli/        Interactive session, commands and output formatting
-                (terminal.c: colour and title; logo.c: generated logo)
+                (terminal.c: colour, title, clipboard; logo.c: generated logo;
+                mcp.c and json.c: the MCP server)
 src/main.c      Entry point; delegates to myna_cli_run()
 data/           The concept catalogue (CSV)
 assets/         Logo, Windows icon and resource script
@@ -21,6 +22,9 @@ assets/         Logo, Windows icon and resource script
 | concept     | `myna/concept.h`    | The `myna_concept` record: name, explanation, synonyms, triggers, related ids |
 | catalogue   | `myna/catalogue.h`  | Growable array of concepts; CSV parsing and loading             |
 | search      | `myna/search.h`     | Scored matching of a description, related suggestions, lookup by id |
+| prompt      | `myna/prompt.h`     | Builds an AI prompt, or a numbered review rubric, from chosen concepts: merged checklists without duplicates |
+| mcp         | `src/cli/mcp.h`     | MCP server over stdio (`myna mcp`): JSON-RPC dispatch and the three tools |
+| json        | `src/cli/json.h`    | Small strict JSON reader and writer used by the MCP server |
 | cli         | `myna/cli.h`        | Interactive session (`myna_repl`) and one-shot commands         |
 
 ## How a search works
@@ -50,3 +54,9 @@ assets/         Logo, Windows icon and resource script
   so the session can be driven by scripts and tests.
 - Search is a linear scan, which is fast for thousands of concepts. Indexing
   can come with 0.3 if needed.
+- The MCP server answers each message through `myna_mcp_handle()`, which takes
+  one line and returns one line, so tests drive it without pipes or processes.
+  The checking in `review_checklist` is done by the AI assistant, which can
+  read the code; Myna supplies the expert checklist.
+- The catalogue is looked up beside the executable before `./data`, because
+  AI tools start `myna mcp` inside the user's own project.
