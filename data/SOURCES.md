@@ -97,6 +97,16 @@ payments follow widely used practice, as documented by MDN Web Docs
 (<https://developer.mozilla.org/>), web.dev (<https://web.dev/>) and the
 documentation of the tools named in the explanations.
 
+## Source for each concept
+
+Concepts added across all 21 categories record the reference they are built
+on in [`concept_sources.csv`](concept_sources.csv): one row per concept with
+its id, category and source, such as OWASP ASVS, the Android core app quality
+guidelines, the Azure cloud design patterns, Pro Git, the Google Machine
+Learning Crash Course or Game Programming Patterns. Each was listed from its
+source, de-duplicated against the whole catalogue, written, and then checked
+by an independent review against the same source.
+
 ## Accuracy
 
 The checklists are a starting point, not legal or security advice. Specific

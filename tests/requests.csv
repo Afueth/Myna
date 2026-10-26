@@ -246,3 +246,1014 @@ users can add a quick note to any item with markdown formatting,rich-text-editor
 copy the share link with one click,copy-to-clipboard
 run tests automatically on every pull request,ci-cd-pipeline
 the photo gallery should let you swipe between pictures,carousel
+When I press Tab on my site I have no idea which button is selected,focus-visible-indicator
+Our fixed top bar hides the links when someone moves through the page with the keyboard,focus-not-obscured
+People keep hitting the wrong icon on mobile because they are so close together,target-size
+My layout falls apart when visitors enlarge the page in the browser,zoom-and-reflow
+Users with memory problems struggle with our login and can't paste their code,accessible-authentication
+Color blind people can't tell which items are in stock and which are sold out,color-independent-information
+How do I describe the photos on my site so blind visitors know what they show,image-alt-text
+Some users can't reorder the cards because it only works by dragging them,gesture-and-drag-alternatives
+The booking form logs people out before they finish and they lose everything,adjustable-time-limits
+The news banner on the homepage keeps sliding and there is no way to stop it,pause-autoplay-content
+Our game intro has a strobing light effect and I worry it could hurt someone,flash-seizure-safety
+Customers complain they have to type their address again on the next step,redundant-entry
+The screen reader pronounces our French quotes with an English voice,page-language
+Our help pages are full of technical words that normal customers don't understand,plain-language-content
+Our toggle switches vanish when someone uses the Windows contrast setting,forced-colors-mode
+Every article card just says Read more and screen reader users get lost,descriptive-link-text
+In my React app the screen reader stays silent when you go to another screen,spa-route-announcements
+How can I find out whether disabled people can actually use my website,accessibility-testing
+We need a page explaining what parts of our council website are not accessible yet,accessibility-statement
+A big client wants a document proving our software meets accessibility rules before they buy,accessibility-conformance-report
+The reports we export as PDF can't be read by people using screen readers,accessible-pdf-documents
+I want people to chat with our assistant and be able to stop it or ask it to try again,llm-chat-interface
+"our AI replies take ages to show up, can the text come in bit by bit",llm-response-streaming
+customers should be able to ask questions and get answers taken from our manuals,retrieval-augmented-generation
+how do I break up hundreds of PDFs so the AI can search them and stay current,rag-document-ingestion
+I need to turn product descriptions into numbers so I can find ones that mean the same thing,text-embeddings
+find documents that are about the same thing as the query even if the words differ,vector-search
+our AI search finds related stuff but misses part numbers people type exactly,hybrid-search-reranking
+people want to see which page of the handbook the bot got its answer from,ai-answer-citations
+the assistant should look things up online so it knows about this week's prices,llm-web-search-grounding
+can the model check stock levels by calling our inventory service,llm-tool-calling
+we want Claude and other assistants to be able to use our ticketing system,mcp-server-integration
+"I want the AI to write a draft, then review it, then format it as separate steps",llm-workflow-chaining
+"build an assistant that keeps working through a task, using tools, until it finishes",ai-agent-loop
+have one AI split a research question and send pieces to other AIs at the same time,multi-agent-orchestration
+the assistant writes scripts to crunch numbers and I need them run without risking our servers,agent-code-sandbox
+I want an AI that can log into a website and click through it to do a job for me,computer-use-agent
+"pull the invoice number, date and total out of emails as clean data for our database",llm-structured-output
+how should I word the instructions so the bot behaves the same way every time,prompt-engineering
+we keep editing prompts in the code and lose track of which one is live,prompt-versioning
+stop users getting our support bot to talk about violence or unrelated topics,ai-guardrails
+make sure customer names and phone numbers never get sent to the AI provider,llm-sensitive-data-redaction
+"the bot sometimes states fake facts with total confidence, how do I cut that down",hallucination-reduction
+before swapping models I want proof the answers did not get worse,llm-evals
+I have thousands of bot replies and want another model to mark them good or bad,llm-as-judge
+before launch we want to attack our chatbot to see if it leaks secrets,ai-red-teaming
+"Before we launch our AI helper, I need a document listing everything bad it might do and who fixes each problem",ai-risk-assessment
+My chat app crashes with an error once people have been chatting for a long time,context-window-management
+I want the assistant to recall that I am vegetarian when I come back next week,ai-long-term-memory
+We send the same 20 page manual with every question to the model and the bill is huge,prompt-caching
+"Lots of customers ask the bot the same thing in slightly different words, can we answer from stored replies",semantic-caching
+I need to run the AI over 50000 product descriptions and it does not have to be instant,llm-batch-processing
+Simple questions should go to a cheap AI and only the tricky ones to the expensive one,model-routing
+When Claude or OpenAI is having problems my app just shows a spinner forever,llm-provider-fallback
+The company that makes our AI model is shutting down the version we use next spring,model-version-pinning
+"I want a dashboard showing every prompt we sent to the AI, how long it took and what it cost",llm-observability
+The law says people must know the support agent on our site is not a human,ai-disclosure-labelling
+Pictures our app makes should carry hidden signed info proving a machine created them,content-provenance-credentials
+"Before the AI refunds a customer, a staff member should look at it and press okay",ai-human-review
+Put little up and down buttons under each answer the bot gives so I know if it helped,ai-response-feedback
+Users should see how certain the system is about each prediction and what it was based on,ai-explanations-confidence
+First-time users have no idea what to type into our AI box or what it is good at,ai-expectation-setting
+"While someone types a note, grey text should appear guessing the rest and pressing tab keeps it",inline-ai-suggestions
+Give me a short recap of a 40 page contract without inventing anything,ai-summarization
+"Incoming customer emails should be tagged billing, technical or sales automatically by AI",llm-text-classification
+Users upload a photo of an invoice and the AI pulls out the total and the date,llm-image-understanding
+People type what they want and our site draws a picture for them,ai-image-generation
+Our app should speak its replies in a human sounding voice,ai-text-to-speech
+I record interviews and want them written out with times next to each sentence,ai-speech-to-text
+I want customers to phone in and have a natural back and forth spoken chat with an AI,realtime-voice-agent
+my app needs to tell walkers the quickest way from one building to another on campus,shortest-path-dijkstra
+I want a table showing how long it takes to drive between each of our 40 warehouses,all-pairs-distance-matrix
+our build tool must figure out which modules to compile before others and complain about loops,topological-sort
+we need to connect all our farm sensors with as little cable as possible,minimum-spanning-tree
+flag customers who are probably the same person because they used the same card or phone,union-find-grouping
+how many cars per hour can get from the suburbs to downtown given each road's limit,max-flow-min-cut
+give each cleaner one house so the total travel cost for the whole team is smallest,assignment-problem
+students list the projects they like and supervisors rank students and we want fair pairs,stable-matching
+our couriers have 60 parcels a day and I want the app to plan their routes,route-optimization-tsp
+work out which accounts in our social graph are the most influential,pagerank-centrality
+show which tasks in the building plan will push back the handover date if they run late,critical-path-method
+the booking system let two people reserve the same court at the same time,interval-overlap-free-slots
+work out how many operating theatres we need for tomorrow's surgeries,interval-partitioning
+choose which marketing campaigns to fund so we get the biggest return for 50k,knapsack-selection
+our warehouse wants to use the fewest shipping cartons for each order,bin-packing
+make a weekly nurse schedule that follows labour laws and people's day-off requests,constraint-satisfaction-scheduling
+the factory wants to know how many of each product to make to earn the most from limited materials,linear-programming
+my pie chart labels add up to 99 percent instead of 100,proportional-allocation-rounding
+spin a prize wheel where the big prize comes up less often than the small ones,weighted-random-selection
+a product with a single 5-star review shows above ones with hundreds of 4.8 reviews,rating-confidence-ranking
+"the file list puts photo10 before photo2, it looks wrong",natural-sort-order
+I have a 200 GB log file and need it ordered by timestamp on a laptop,external-sort
+the dashboard should show 99th percentile page load time without keeping every request,streaming-quantiles
+the sensor should keep its own average and spread of readings without storing the history,online-mean-variance
+counting distinct daily users on our billions of events is using too much memory,hyperloglog
+I need to show the ten most searched phrases each hour without keeping every search in memory,count-min-sketch-heavy-hitters
+how do I keep 1000 random entries from a log file that is too big to load at once,reservoir-sampling
+"the random order of my quiz questions keeps putting the same ones first, how do I mix them properly",fisher-yates-shuffle
+my simulation gives different results each run and I need to be able to rerun exactly the same case,seeded-random-generation
+"I want to avoid hitting the database for usernames that definitely do not exist, using very little memory",bloom-filter
+I want to show users exactly which sentences were changed between the old and new version of a document,text-diff
+two staff edited the same record while offline and I need to keep both of their changes where possible,three-way-merge
+I want to save only what changed between two versions of a settings object instead of the whole thing,structured-data-diff
+people mistype product names in my shop search and I want to suggest the right one,string-similarity
+callers spell surnames differently over the phone and I need to find the customer anyway,phonetic-matching
+scrapers keep reposting our articles with tiny changes and I want to spot those copies automatically,near-duplicate-detection
+I want to show how many delivery drivers are in each part of the city and find drivers near a customer quickly,geohash-spatial-cells
+show each restaurant's distance from the user's current GPS position,great-circle-distance
+only allow orders from customers whose address falls inside our delivery area on the map,point-in-polygon-geofence
+my running app saves thousands of GPS points per run and the map gets slow to draw,polyline-simplification
+our delivery van tracks look like they drive through buildings and I want them to follow the actual streets,gps-map-matching
+our nightly export files are huge and I want them smaller without losing anything,lossless-compression
+how can I tell if an uploaded file got damaged on the way to the storage server,checksum-integrity
+warn people straight away when they mistype their bank account number in our form,check-digit-validation
+our backup storage keeps growing because people upload the same big files again and again,content-addressed-dedup
+our app re-downloads a 2 GB data file every week when only a little of it changes,rsync-delta-sync
+I need to check which rows differ between two database copies without sending all the data across,merkle-tree
+users drag tasks into their own order and I need to save that order without rewriting every row,fractional-indexing
+my sensor dashboard tries to draw a year of per-second readings and the browser freezes,time-series-downsampling
+our club wants members to order the candidates by preference and pick the winner fairly,ranked-choice-voting
+I run a 9-team darts league and need the app to work out the weekly games so each team faces all the others,round-robin-tournament
+my chess club app should build the knockout draw so the two best players can only face each other at the end,elimination-bracket-seeding
+our office app should randomly decide who buys a present for whom without anyone drawing their own name,random-derangement-pairing
+users type things like (price + 5) * 1.2 into a box and my app has to work out the answer safely,formula-evaluation
+Before we code the backend I want one YAML document that lists all our endpoints and what they return,openapi-description
+"Our services talk through Kafka and nobody knows what each message looks like, we need that written down properly",asyncapi-event-docs
+"Every event we put on the bus should carry the same id, origin and type fields so other teams can process them",cloudevents-format
+Our microservices should talk to each other with proto definitions and streaming instead of JSON over HTTP,grpc-api
+I removed a field from our .proto file and now older mobile apps crash when reading messages,protobuf-schema-evolution
+Clients should call our server by sending a method name and params in JSON and get back a result or an error code,json-rpc-api
+The same endpoint should give back a spreadsheet file or JSON depending on what the caller asks for,content-negotiation
+The mobile app wants to change only the user's nickname without sending the whole profile back,partial-update-patch
+When fetching an invoice the caller should be able to get the customer details in the same response,expand-related-resources
+"Our phone app downloads all contacts every time, it should just get the ones that were changed or removed",delta-sync-api
+Someone sent a GraphQL request nested twenty levels deep and it took our server down,graphql-query-limits
+Our GraphQL server should only run the queries our own app ships with and nothing else,graphql-persisted-queries
+Loading a list of posts with their authors in GraphQL fires hundreds of SQL selects,graphql-batching-dataloader
+We have ten microservices and want one front door that checks logins and limits traffic before passing requests on,api-gateway
+Customers want a JavaScript and Python package so they don't have to write raw HTTP calls to our service,client-sdk
+Our shop calls a shipping company's service and when it is slow our checkout hangs,third-party-api-integration
+A nightly job on one server needs to call our billing service securely with no person logged in,service-to-service-auth
+Outside developers want to build apps that read our users' calendars once the user says yes,oauth-provider-for-api
+A customer sent isAdmin true in the profile update request and it actually worked,property-level-authorization
+Our partner wants proof that each HTTP call really came from us and the body was not changed on the way,signed-api-requests
+We need a website for developers explaining every endpoint of our service with copy-paste examples,api-reference-docs
+The frontend team wants a pretend server that returns sample data until the real backend exists,api-mocking
+"The backend team renamed a field and the mobile app broke in production, we want tests that catch that",api-contract-testing
+"Every team names endpoints and errors differently, we want rules checked automatically on each spec",api-design-linting
+"Our endpoint crashes when people post JSON with missing or wrong fields, it should refuse them with a clear message",json-schema-request-validation
+my app sends 2 GB videos and when the wifi drops people have to start all over again,resumable-uploads
+customers want to pause a download of a big report and pick it up later from our api,file-download-endpoint
+partners need a way to try our payments api without being charged anything,api-sandbox-mode
+let callers check if creating an order would fail before it actually gets created,validate-only-requests
+"I have three copies of my web server and want visitors split between them, skipping any that crash",load-balancing
+When lots of people visit at once I want more servers to start up by themselves and shut down later,horizontal-scaling
+Our orders table has billions of rows and one database machine can no longer keep up with the writes,database-sharding
+Every time we add a new cache machine almost every key ends up on a different machine,consistent-hashing
+Our payment service falls over when a flash sale sends thousands of orders in one minute,queue-based-load-leveling
+"When a user signs up, the email, billing and analytics services should each find out without the signup code calling them",publish-subscribe
+I want to keep all clickstream events for a week so new systems can read them from the beginning,event-streaming
+One broken message gets retried endlessly and I want to set it aside so I can look at it later,dead-letter-queue
+Our broker sometimes sends the same order event again and the customer gets charged a second time,idempotent-consumer
+"Sometimes we save the order but crash before telling the queue, so the warehouse never hears about it",transactional-outbox
+"If the hotel booking fails after we charged the card and reserved the flight, everything should be undone",saga-pattern
+"Our dashboard queries are heavy, so I want a separate copy of the data shaped just for reading",cqrs
+Instead of overwriting the account balance I want to store each deposit and withdrawal and add them up,event-sourcing
+"Updates for the same shipment must be handled one after another, but different shipments can go at the same time",ordered-message-processing
+"Our videos are too big to put in a queue message, so how do we hand them to the processing service",claim-check
+Enterprise customers' reports should be generated before free users' reports when there is a backlog,priority-queue
+"Our single big codebase is slowing everyone down and we want separate services for billing, catalog and shipping",microservices-decomposition
+The billing team keeps breaking things by changing tables that the shipping code also reads,database-per-service
+"Our containers get new addresses every deploy, so other services cannot know where to call them",service-discovery
+We want encrypted traffic and retries between all our microservices without changing each app,service-mesh
+"When the image service hangs, all our web threads end up stuck waiting and the whole site freezes",bulkhead-isolation
+Our reader pulls data faster than the writer can save it and the program eventually runs out of memory,backpressure
+"When we get more traffic than the servers can handle, I'd rather turn some people away than make everyone time out",load-shedding
+"If the recommendations service is down, the product page should still show without that section",graceful-degradation
+A call to the partner service sometimes never answers and our request just sits there waiting,timeouts-deadlines
+"I want the load balancer to stop sending users to a server that has frozen, what should each server expose?",health-checks
+"Our three replicas need one of them to act as the coordinator that hands out work, and another must take over automatically if it dies",leader-election
+"If one of our servers or a whole data center goes offline, the website should keep working without anyone stepping in",high-availability
+How do we keep our app running if the entire AWS region in Europe goes down?,multi-region-deployment
+We want to split our platform into separate identical copies so a bad release only breaks things for some customers,cell-based-architecture
+"One customer sent requests that crashed every server we have, how can we stop a single client from taking down all the others?",shuffle-sharding
+"Our old ordering system is too risky to rewrite all at once, how do we swap it out bit by bit?",strangler-fig-migration
+We have to talk to an ancient mainframe with weird field names and I do not want that mess in our new code,anti-corruption-layer
+I want to build my backend out of small cloud functions so I never have to look after servers,serverless-architecture
+"Our traffic doubles every year, how do I work out how much hardware we will need before we run out?",capacity-planning
+my orders page fires a separate database call for every customer shown,n-plus-one-queries
+our app keeps crashing with a message saying the database has no free connection slots,connection-pooling
+I need to figure out which SQL statements are making the database sluggish,slow-query-analysis
+the database itself should refuse to save an order that points to a customer who does not exist,database-constraints
+two staff members editing the same booking at once overwrite each other's changes,row-level-locking
+the nightly sync gets started on all three servers and runs three times,advisory-locks
+save the product if it is new but just change it if we already have that SKU,upsert
+loading a 5 million line spreadsheet into postgres takes all night,bulk-data-loading
+every new developer machine needs the default roles and a list of countries filled in,database-seeding
+keep a ready-made copy of the monthly sales totals so the report opens instantly,materialized-views
+whenever a row in the orders table changes I want the database to write the old version somewhere,database-triggers
+each product has different extra attributes and I do not want a column for every one,json-columns
+should my records use numbers like 1 2 3 or long random strings as their identifiers,primary-key-strategy
+spread the SELECT traffic across copies of our database so the main one is not overloaded,read-replica-routing
+our events table is enormous and I want to throw away last year's rows without a giant delete,table-partitioning
+one bad report query locked the whole site for ten minutes and nothing stopped it,query-timeouts
+store categories that can have subcategories many levels deep and fetch a whole branch,hierarchical-data
+show restaurants within walking distance of where the user is standing,geospatial-queries
+the cart total comes out as 19.999999 instead of 20.00,money-handling
+our accountant says invoice numbers must run 1 2 3 with none missing,gapless-sequence-numbers
+someone signed up twice using the same email but once with capital letters,case-insensitive-uniqueness
+make postgres itself hide other companies' records from each customer,row-level-security
+when we deploy a new version some users get errors because the old server is killed mid request,graceful-shutdown
+let customers answer a notification email and have their answer show up as a comment,inbound-email-processing
+we keep sending emails to addresses that do not exist and our provider warned us,email-bounce-handling
+"Our database keeps growing because we never get rid of password reset links and logs from years ago, how do we clean them up regularly?",data-retention-cleanup
+"Every night I want to grab orders from our shop database and the CRM, tidy them up and put them somewhere analysts can query",batch-etl-pipeline
+Clicks from our app go into Kafka and I want running totals updated within a few seconds of each click,stream-processing-pipeline
+"Whenever a row in our Postgres orders table is added, edited or removed, the search index should get the same change",change-data-capture
+"Our managers keep running heavy reports on the live app database and slowing it down, we need a separate place for analysis",data-warehouse
+We want a cheap place in cloud storage to keep all our raw exports and logs so we can analyse them later with different tools,data-lake
+Our Parquet files in S3 need proper updates and deletes and we want to look at the table as it was last week,open-table-format
+"How should I split my warehouse into a raw copy of sources, a cleaned version and final tables for the dashboards",medallion-architecture
+"I need to lay out tables for sales reporting so people can break revenue down by product, store and month",star-schema
+"When a customer changes region, last year's sales should still show under the region they were in back then",slowly-changing-dimensions
+I want to record how much stock each warehouse holds at the close of every day so we can chart it over the year,periodic-snapshot-fact-table
+"For each insurance claim we want to know how many days passed between filing, approval and payout",accumulating-snapshot-fact-table
+Marketing and finance both report by customer but their customer lists and labels never line up,conformed-dimensions
+Reports need to group by our fiscal quarters and leave out bank holidays,date-dimension
+"Some deals have three salespeople and when I join them the revenue triples, how do I split it fairly",bridge-table
+"Sometimes a purchase shows up in our feed before the new customer's details do, and those sales get lost",late-arriving-data
+"Every few months we bring in another source system and I am tired of remodelling the warehouse, I need a design that keeps every version of every source",data-vault-modeling
+I have ten data jobs that must run in a certain order and I want to see which one broke and retry just that one,pipeline-orchestration
+We changed how revenue is calculated and now need to recompute the last two years of daily figures,pipeline-backfill
+"When our nightly job fails and I start it again, half the rows end up in the table twice",idempotent-data-loads
+"Reloading the whole events table takes six hours, I only want to bring in what changed since yesterday",incremental-load
+Our queue redelivers some messages so the same purchase event sometimes lands in the table more than once,data-deduplication
+John Smith in the CRM and Jon Smith in the billing system are the same person and I want one record for him,entity-resolution
+I want the pipeline to stop automatically if an order id is blank or repeated before the numbers hit the dashboard,data-quality-checks
+"The backend team keeps dropping columns from the table my reports depend on, I want that blocked unless we agree first",data-contracts
+I need to add a new field to the messages on our event topic without crashing the services that already read them,schema-evolution
+"Our Iceberg tables now have millions of little files and queries crawl, how do we keep them tidy over time?",table-compaction
+"When the CFO asks where the revenue figure on a dashboard comes from, I want to show every table and job it passed through",data-lineage
+Analysts keep asking me which of our hundreds of warehouse tables has the right customer info and who to ask about it,data-catalog
+I want to get an email if the orders table has not been refreshed by 8am or suddenly has half the usual rows,data-freshness-monitoring
+I need to count sensor readings in 5 minute buckets from Kafka but some readings show up minutes after they were taken,event-time-windowing
+Each payment event coming through our stream should get the merchant name and country attached from another source,stream-joins
+When our Flink job crashes and comes back it should carry on exactly where it stopped without counting things twice,stream-checkpointing
+"I want a Kafka topic that always holds the current address for every customer, and older addresses can disappear",log-compaction
+Sales wants the churn score we calculate in Snowflake to show up on each account in HubSpot,reverse-etl
+"Write a job that copies all our Zendesk tickets into BigQuery every night, picking up only the ones that changed",api-data-extraction
+A supplier drops a price list into our S3 bucket every morning and we need to load each one once and move it to an archive,file-landing-ingestion
+"We dump everything as CSV into the lake and scanning it costs a fortune, what format and file layout should we use instead?",columnar-file-format
+"Marketing and finance each report a different monthly recurring revenue figure, I want one agreed calculation used everywhere",semantic-layer
+Before deploying my SQL model I want to feed it three fake orders and confirm the discount column comes out right,transformation-unit-tests
+"Load tonight's data somewhere hidden, run our checks on it, and only switch the reporting table over if they all pass",write-audit-publish
+Our Spark job joining clicks to users runs for hours because one task gets almost all the data,distributed-join-tuning
+"From raw page view events I want to work out visits, splitting them whenever someone goes quiet for half an hour",sessionization
+After moving our Oracle tables to the cloud warehouse I need proof that every row and total arrived intact,data-reconciliation
+"We just got a new vendor data feed, I want a quick overview of what each column contains and how much is missing",data-profiling
+"Phone numbers, dates and country names from our three systems are all written differently and I need them consistent",data-cleansing
+"Our webhook payloads have nested objects and lists of line items, how do I turn them into proper tables to query?",semi-structured-data-flattening
+I built a Windows and Mac program and need something people can download that puts it on their computer properly,desktop-installer
+When I release a new version I want the copies people already have to grab it on their own,desktop-auto-update
+Mac users who download my app get a warning that Apple cannot check it for malicious software,macos-notarization
+Apple wants my Mac app to only touch the folders and network access it actually declares,macos-app-sandbox
+How do I get my desktop program listed so people can install it from the Microsoft or Apple store,desktop-app-store-publishing
+A big company wants to push our app to 2000 laptops and control its options centrally,enterprise-desktop-deployment
+Our app runs through translation on the new ARM Macs and Surface laptops and feels sluggish,universal-binaries
+I want a little icon by the clock so the program can sit quietly in the background,system-tray-icon
+I want a fully styled top strip on my window instead of the plain Windows frame,custom-title-bar
+Files saved by my program should open in it when someone double-clicks them in Explorer,file-type-associations
+A button on our website should launch the installed desktop program on a specific page,custom-url-protocol
+Every time a user opens a file a whole new copy of my program starts up,single-instance-app
+Users should be able to pull photos from their desktop straight into my program window,os-file-drag-and-drop
+My editor needs proper save and save as and should ask before quitting if work was not saved,document-save-lifecycle
+Show the last few files people worked on so they can jump back into them,recent-documents
+If someone edits the same file in another editor my app should notice instead of clobbering it,external-file-change-detection
+Users want to have two projects open at once in separate windows of my app,multiple-windows
+My app always opens in the middle of the screen at a small size no matter where I left it,window-state-persistence
+Everything in my Windows program looks fuzzy on high resolution laptop screens,high-dpi-scaling
+Show download progress on the app icon at the bottom of the screen and an unread count on the Mac,taskbar-dock-integration
+Pop up a message from the operating system when a new message arrives while my program is in the background,desktop-notifications
+I want a key combo that opens my app's quick search even while people are in another program,global-keyboard-shortcuts
+Give users an option so the program opens by itself every time they turn on their PC,launch-at-login
+We need a part of our product that keeps syncing even when nobody is signed in to the computer,background-os-service
+My Electron app needs to ship and run a small Go program that does the heavy work,sidecar-executable
+my windows program saves its config next to the exe and users get permission errors,app-data-location
+my desktop app keeps the login token in a json file and I want it protected properly,desktop-secure-credential-storage
+how do I make sure a website loaded in my electron window cannot touch the user's files,webview-app-security
+the computer falls asleep halfway through a big video render in my app,power-management
+when windows restarts overnight for updates my editor forgets everything that was open,graceful-shutdown-session-restore
+users want to print the invoice view from my desktop program on A4 paper,desktop-printing
+we need a check-in screen at reception that visitors cannot escape from,kiosk-mode
+customers at big companies say our app shows a certificate error and never connects,system-proxy-certificates
+I want to put a new version live by flipping everything over at once and be able to flip back if it breaks,blue-green-deployment
+How can I try my rewritten service on real visitor requests without anyone seeing its answers,dark-launch
+Our feature branches live for weeks and merging them is painful so how should the team work instead,trunk-based-development
+Every CI run downloads all packages again and takes ages so how do I keep them between runs,build-caching
+Our test job takes forty minutes so I want to spread it over several CI runners,ci-test-parallelization
+I want anyone to be able to rebuild our release and get exactly the same file to prove nothing was tampered with,reproducible-builds
+Where should we keep our Docker images so production always pulls the exact build we tested,artifact-registry
+How do I decide whether the next release should be 2.0 or 1.5,semantic-versioning
+I want to stop people pushing straight to the main branch without a review,branch-protection
+Our app broke because a library released a new version overnight so how do I freeze the versions,dependency-pinning
+I do not want to keep AWS access keys in our GitHub secrets for deployments,ci-oidc-cloud-credentials
+Our database password has not changed in years and I want to change it without taking the app down,secret-rotation
+I want to stop setting up cloud servers by hand and describe them in files instead,infrastructure-as-code
+Two of us ran terraform at the same time and the state got messed up,iac-remote-state
+Someone keeps editing settings in the AWS console and I want to notice when the cloud no longer matches our code,infrastructure-drift-detection
+I want a rule that automatically rejects any storage bucket that is open to the public,policy-as-code
+I want the cluster to update itself whenever we merge a change to the config repository,gitops
+How should I set up a staging site so what we test is exactly what goes live,deployment-environments
+Reviewers should get a live link to try each pull request before it is merged,preview-environments
+New developers spend two days installing tools before they can run our project,dev-containers
+After each deploy I want a quick automatic check of the main pages that undoes the release if it fails,post-deployment-verification
+My manager wants numbers showing how quickly and safely our team ships changes,dora-metrics
+Some of our tests fail now and then for no reason and block everyone from merging,flaky-test-management
+Our tests need believable customer records but we cannot use real people's details,test-data-management
+My pods keep getting killed for running out of memory and I do not know what numbers to set,container-resource-limits
+Kubernetes says my container should not run as root user,pod-security-standards
+I bought a domain name and want it to open my web app,dns-configuration
+our servers have not had security updates in months,os-patch-management
+I want to count how many requests and errors my API gets per minute,application-metrics
+a request goes through five services and I cannot tell which one is slow,distributed-tracing
+I want to see which functions eat the most CPU on our live servers,continuous-profiling
+how do we decide how much downtime is acceptable for our service,service-level-objectives
+our alerts wake people up for blips that fix themselves,slo-burn-rate-alerts
+I need one screen that shows whether each backend service is OK,monitoring-dashboard
+I want an email if my website stops responding,synthetic-monitoring
+our nightly backup script stopped and nobody noticed for weeks,job-heartbeat-monitoring
+we need a plan for what everyone does when production goes down,incident-response
+how do we write up what went wrong after yesterday's outage,postmortem
+we need to take turns being responsible for alerts outside work hours,on-call-rotation
+I want written steps for the team to follow when a disk full alert fires,runbooks
+can my server cope with ten thousand people at once on launch day,load-testing
+I want to kill random servers to check the app keeps running,chaos-engineering
+our cloud bill doubled and we do not know why,cloud-cost-monitoring
+we cannot tell which team owns half the machines in our cloud account,resource-tagging
+I want cheaper machines for video rendering jobs that can be interrupted,spot-instances
+my board has a little thermometer chip and I want to get the room temperature from it in degrees,sensor-reading
+I need my microcontroller to tell me what voltage is coming out of this potentiometer knob,adc-sampling
+two of our devices show different temperatures in the same room and I want to correct each one,sensor-calibration
+"the numbers from my light sensor wobble all the time, how do I make them steady",sensor-signal-filtering
+when I click the switch once my counter goes up by three,button-debouncing
+I want one pin to switch a relay and another pin to read a door contact,gpio-pin-configuration
+my code needs to respond the moment a signal arrives on a pin without slowing everything else,interrupt-handling
+I need something to happen exactly every 100 microseconds on the chip,hardware-timers
+I want to make an LED slowly get brighter and dimmer,pwm-output
+my robot needs to drive two wheels at different speeds and stop if something jams,motor-control
+our sensor gadget runs on two AA cells and they are empty after a week,low-power-sleep-modes
+sometimes the device just locks up and nobody is there to unplug it,watchdog-timer
+whenever the radio turns on the gadget restarts and sometimes loses its settings,brownout-detection
+I want the device to tell users how much charge is left before it dies,battery-monitoring
+our gadget charges from USB and I need it to stop safely when the cell is full or too warm,battery-charging-control
+we have devices installed at customers and need to send them a bug fix without visiting,ota-firmware-update
+I want to make sure the chip will only start firmware that we signed ourselves,secure-boot
+I need a small program at startup that picks the good firmware copy and can recover a broken one,bootloader
+someone could desolder the memory chip and copy our code and I want to prevent that,flash-encryption
+on shipped units nobody should be able to plug in a programmer and poke around,debug-port-lockdown
+the private key for our device certificate should be impossible to pull off the board,hardware-key-storage
+right now every unit we sell ships with admin admin as the login,unique-device-credentials
+when a new unit is powered on the first time it should sign itself up with our cloud account,device-provisioning
+our smart plug has no screen so customers need to enter their router details from their phone,wifi-provisioning
+the production line needs to load the code and write each unit's serial number and keys,factory-programming
+"When someone sells my gadget, they need a way to wipe everything and make it like new for the next person",device-factory-reset
+"My board forgets the user's chosen brightness every time it is unplugged, how do I keep it",non-volatile-config-storage
+I want my weather station to write temperature readings onto a memory card every minute without corrupting it,sd-card-data-logging
+Units out in the field sometimes restart and I have no idea what code was running when they died,firmware-core-dump
+"My microcontroller has to read a sensor every 10 ms while also running the display and network, how should I organise the code",rtos-task-design
+An interrupt gets a new reading and I need to hand it to the main processing loop running in another thread safely,inter-task-communication
+One of my threads crashes weirdly and I suspect it is running out of its memory space,stack-overflow-detection
+My firmware runs fine for a week then fails to create things because memory is all chopped up,static-memory-allocation
+"Copying audio samples byte by byte uses all my processor time, can the hardware move them for me",dma-transfers
+I bought a pressure sensor chip and need clean reusable code to talk to it from my firmware,peripheral-device-driver
+My temperature chip is wired with just two data lines and sometimes the whole thing freezes,i2c-communication
+The little screen I connected with four wires shows scrambled pixels,spi-communication
+My GPS module sends text lines through its TX pin and I need to read them reliably,uart-serial-communication
+I need several controllers in a tractor to send each other short messages on one shared cable,can-bus-communication
+I have to pull the power usage numbers out of a factory energy meter over RS-485,modbus-communication
+When I plug my board into a laptop it should appear as a keyboard that types for you,usb-device-interface
+My heart rate gadget needs to send its readings to a phone wirelessly at short range,ble-gatt-service
+"After the home router reboots, my smart sensor never comes back on the internet",wifi-station-connection
+My tracker is out in the countryside with no internet except through a SIM card,cellular-modem-connectivity
+A soil sensor miles from the farmhouse needs to send a few bytes a day on a tiny battery,lorawan-device
+"I want my smart light to be controllable from Apple, Google and Amazon home apps",matter-smart-home-device
+Users should be able to type mything.local in the browser instead of hunting for the IP,local-network-discovery
+Hundreds of sensors need to push readings to a central server and also receive settings back,mqtt-messaging
+The dashboard should show a red dot when one of our machines loses its connection,device-connection-status
+My tiny battery sensor needs something like HTTP but much lighter and running over UDP,coap-messaging
+I need a standard protocol so our server can configure and update thousands of battery sensors on NB-IoT,lwm2m-device-management
+Users should be able to change the thermostat target in the app even if the thermostat is offline right now,device-shadow
+My sensors need to push their readings and battery level up to our cloud dashboard every few minutes,device-telemetry
+How do I let the app tell a single smart lock to open and know if it actually did,cloud-to-device-commands
+We want to reboot ten thousand devices gradually and halt if lots of them fail,fleet-remote-jobs
+I need a list of all our deployed devices that I can filter by model and firmware version,device-registry
+When the cellular link drops the device should keep the measurements and upload them later,store-and-forward-buffering
+Our Zigbee and Modbus sensors have no internet so one box should forward their data to the cloud,iot-gateway
+After a reboot my ESP32 thinks it is 1970 and TLS connections fail,device-time-sync
+I want to show the temperature on a little OLED screen attached to my microcontroller,embedded-display-output
+Every pull request should flash the firmware onto a test board and run the tests automatically,firmware-hardware-testing
+"When my form has several mistakes I want a box at the top listing them, with links to each field",error-summary
+"If someone picks Other in my dropdown of options, a text box should pop up so they can tell me what they mean",conditional-questions
+Before people fill in the whole application I want to ask a few questions to see if they are allowed to apply,eligibility-questions
+We text users a six digit number at login and they need somewhere to type it in,security-code-input
+Users need to type how much they earn per year in pounds,currency-amount-input
+"My checkout needs boxes for the customer's credit card number, expiry and the three digits on the back",payment-card-fields
+We pay refunds straight into people's bank so the form needs their sort code and account number,bank-account-fields
+People have to type their national insurance number and it keeps failing when they add spaces,reference-number-input
+The contract page should let the customer sign with their finger or mouse before submitting,signature-field
+Sign up form needs a tick box saying they accept our terms and a separate one for newsletters,consent-checkbox
+Survey question asking people how much they agree with a statement from 1 to 5,rating-scale-question
+HR wants to collect optional diversity data like ethnicity and disability on job applications,equality-information-questions
+Let customers say whether they would rather we phone them or email them,contact-preferences
+New members should pick a unique name for their account and see right away if someone already has it,username-field
+Address form needs a dropdown to pick which nation the person lives in,country-select
+"Customers who double-click the order button create two orders, and refreshing the thank you page sends the form again",form-submission-handling
+If someone edits their profile and then hits the back button I want to remind them they did not save,unsaved-changes-warning
+"Applicants should be able to list every job they had in the last five years, adding one after another",repeating-field-group
+On iPhone the code box shows letters instead of numbers and it keeps capitalising the first letter,virtual-keyboard-hints
+I made my own fancy toggle component but its value does not get sent when the form is posted,custom-form-controls
+My signup form looks cluttered with labels on the left and every box the same huge width,form-layout
+"I'm writing a small game from scratch and need the part that keeps reading keys, moving things and redrawing the screen",game-loop
+My little game runs twice as fast on my friend's new monitor than on my laptop,fixed-timestep
+There's a horizontal line ripping across the picture when the camera turns and the motion feels uneven,frame-pacing-vsync
+When I open the menu with Escape the enemies keep attacking me in the background,game-pause
+"I want my code to just ask if the player wants to jump, whether they used space or the A button",input-action-mapping
+Players should be able to pick their own keys for every action in the options menu,control-remapping
+"Make my PC game work properly with an Xbox pad, including when it gets unplugged",gamepad-support
+My phone game needs a thumb stick and fire button drawn on the screen,on-screen-touch-controls
+I want up to four friends to play together on one TV with their own pads,local-multiplayer-split-screen
+My player keeps walking straight through the walls of the level,collision-detection
+Fast projectiles sometimes fly right through thin walls without hitting them,continuous-collision-detection
+I need to know if the guard can actually see the player or if a wall is in the way,raycasting
+When the hero steps onto the glowing pad the next level should start,trigger-zones
+In my brawler one punch takes off health several times and sometimes hurts the attacker,hitbox-hurtbox
+I want barrels and crates that tumble and roll when you knock into them,rigid-body-physics
+How do I make a drawbridge hang from chains that swing when hit,physics-joints
+When a soldier gets shot he should collapse loosely instead of playing a canned death animation,ragdoll-physics
+I'm making a racing game and my cars either roll over or feel like they're on ice,vehicle-physics
+My hero gets stuck on tiny bumps and can't walk down ramps without bouncing,character-controller
+"Jumping in my side-scroller feels stiff, players complain the button doesn't respond at the edge of platforms",platformer-jump
+Creating and destroying hundreds of shots every second makes the frame rate hiccup,object-pooling
+"I want to build creatures by snapping together parts like health, speed and AI instead of a giant class tree",entity-component-system
+Our designer wants to add new swords and tweak monster numbers in a spreadsheet without asking me,data-driven-game-content
+Units on my tile map need to find the quickest way to a clicked square avoiding rocks and swamps,grid-pathfinding-astar
+The zombies in my 3D level need to walk around tables and through doorways to reach the player,navigation-mesh
+thousands of zombies all need to walk toward my castle without each one calculating its own route,flow-field-pathfinding
+my villagers keep walking into each other and getting stuck in narrow streets,crowd-avoidance
+I want a group of birds that fly around together and look natural,steering-behaviors
+my strategy board is made of hexagons and I need to know which tiles touch each other,hexagonal-grid
+the hero should only see the parts of the dungeon that are not hidden behind walls,field-of-view
+in my RTS players should not see the enemy army until their units get close,fog-of-war
+my monster should wander around until it spots the player then run at them and attack,state-machine-ai
+I want designers to build enemy brains visually with fallbacks if the first plan fails,behavior-tree
+my soldiers should decide whether to heal reload or take cover depending on what is going on,utility-ai
+I want enemies that work out on their own how to get a weapon before attacking,goal-oriented-action-planning
+the guards should notice the player when they are in front of them or hear them running,npc-perception
+the zombie game should throw more enemies when players are doing great and calm down after a big fight,enemy-spawn-director
+players talk to shopkeepers and their answers change what happens later in the story,branching-dialogue
+before the boss fight the camera should fly around and show a short scene the player can skip,cutscenes
+make random hills lakes and mountains for every new world the player starts,noise-terrain-generation
+every time you play the rogue game the rooms and hallways should be different but always beatable,procedural-dungeon-generation
+I drew a small sample of tiles and want the computer to make bigger maps in the same style,wave-function-collapse
+chests should give common stuff most of the time and a very rare sword once in a while,loot-drop-tables
+players should be able to quit and come back later to the exact same spot with all their items,save-game-system
+my game progress on the steam deck should show up when I play on my desktop,cloud-save
+switching to the next stage freezes the screen for several seconds,level-loading
+the map is so big it cannot all be in memory at once so pieces should appear as you walk,open-world-streaming
+I want to sell a new campaign for my game later without making people reinstall,dlc-asset-bundles
+fans want to make their own maps and share them with other players,mod-support
+my little knight should play its running frames from one image strip,sprite-animation
+My 2D game has hundreds of small sprite images and I want to put them together into bigger sheets so it runs faster,sprite-atlas
+In my top-down game the hero shows up on top of the tree trunk when standing above it,sprite-sorting
+My retro art looks fuzzy and some pixels are fatter than others when I scale the window,pixel-perfect-rendering
+How do I make my game work on both a wide monitor and a phone with a cutout at the top,resolution-aspect-scaling
+I want an options screen where players can lower the visual quality if their computer struggles,graphics-settings-menu
+I want to animate my 2D character by moving arms and legs pieces instead of drawing every frame,skeletal-animation
+My character instantly snaps from standing to running instead of easing into it,animation-state-machine
+When my character walks the legs move but the body glides like it is on ice,root-motion
+I want my character's feet to sit properly on steps and hills instead of hovering,inverse-kinematics
+I want to design my levels by placing little square blocks on a grid like old Zelda games,tilemap
+When I paint grass next to dirt I have to place every border piece by hand,autotiling
+I want the mountains in the back to move slower than the ground as my player runs,parallax-scrolling
+How do I add sparks and puffs of smoke when the car crashes,particle-effects
+My open world has too many detailed buildings in the distance and the frame rate drops,level-of-detail
+The game keeps drawing everything in the other rooms even though the player cannot see them,occlusion-culling
+I want a whole field full of grass and flowers without the game crawling,gpu-instancing
+My game freezes for a moment the first time each new spell is cast,shader-precompilation
+How do I find out which part of my game is making it drop below 60 frames,game-performance-profiling
+In my side scroller the view should track the hero but not wobble with every tiny step,2d-follow-camera
+The view behind my adventure hero clips into the cave walls when I back up,third-person-camera
+I am making a shooter and need the player to aim the view by moving the mouse,first-person-camera
+I want the view to rattle when a big bomb goes off nearby,camera-shake
+Players should be able to turn the background tunes down but keep the voices loud,audio-mixing-buses
+I want players to know an enemy is sneaking up on their left just by listening,spatial-audio
+The soundtrack should build up when a fight starts and calm down afterwards,adaptive-music
+When lots of zombies groan at the same time the audio becomes a loud mess and the same groan repeats,sound-effect-management
+I need a bag where the player keeps potions and weapons with a limited number of spaces,inventory-system
+I want a potion that makes the hero run 20 percent faster for ten seconds and armour that adds defence,character-attributes-modifiers
+My mage has a fireball that costs mana and can only be used again after a few seconds,abilities-cooldowns
+Players should be able to save their match and watch it back later from any point,game-replay
+In my online shooter people are editing their game to give themselves infinite ammo and I want the server to be in charge,authoritative-game-server
+When I press forward in my online game the character waits a moment before moving,client-side-prediction
+The other cars in my online racing game jerk forward every time an update comes in,snapshot-interpolation
+Players complain they clearly shot someone on their screen but the hit did not count,lag-compensation
+My strategy game has huge armies and I only want to send the clicks between computers,deterministic-lockstep
+I am making a 2D fighting game and want online matches to feel as responsive as playing on the same couch,rollback-netcode
+My game sends everything over UDP but some important events like a player dying never arrive,reliable-udp-messaging
+Each player needs too many kilobytes per second because I send every object's full position each tick,network-bandwidth-optimization
+In my battle royale with 100 players I should not send data about people on the other side of the map,network-relevancy
+Before release I want to see how my multiplayer game behaves for someone on a slow shaky connection,network-condition-simulation
+I need to run many copies of my server program in the cloud and give one to each new match,dedicated-game-servers
+My friends cannot join the game I host from my house unless I open ports on my router,nat-traversal-relay
+Before a match starts I want a room where friends wait together and press a button when they are set,game-lobby
+Players press play and the game should find fair opponents near them without waiting too long,matchmaking
+I want each player to have a number that shows how strong they are and changes when they win or lose,skill-rating
+People are using programs that aim for them and I need a way to catch and remove them,anti-cheat
+My mobile game has gold and diamonds that players earn and spend in a shop,virtual-currency-economy
+My boss wants AI to predict which customers will leave but I am not sure what exactly we should be predicting or if we even need it,ml-problem-framing
+Before trusting my model I want to see how it does against just guessing the usual answer every time,baseline-model
+I have a spreadsheet of labelled examples and need to set some aside so I can fairly check the model at the end,train-validation-test-split
+"My dataset is small, so I want to test the model several times on different parts and average the result",cross-validation
+My model scored almost perfect in testing but is useless on real customers and I think something gave away the answer,data-leakage-prevention
+The model gets everything right on the data it learned from but does badly on anything new,overfitting-regularization
+I want training to halt by itself once it stops getting better and keep the best version,early-stopping
+I have a chart of loss going over time and need to understand what it is telling me about my training,loss-curve-diagnosis
+Partway through training my deep network's error value suddenly stops being a number and never recovers,training-instability-gradients
+I want to automatically try lots of learning rates and depths and pick whichever works best,hyperparameter-tuning
+"One column is salary in the thousands and another is a rating from 1 to 5, and the model struggles with that",feature-scaling
+A lot of my training rows have blank fields and I need to deal with them before fitting a model,missing-value-imputation
+I want the model to treat people in their twenties differently from people in their sixties instead of using exact age,feature-binning
+"My data has a city column with text values, how do I feed it to the model",categorical-feature-encoding
+I have millions of product ids and want the model to learn which products are alike,learned-embeddings
+I want to sort support emails into topics using word counts rather than a big AI model,text-feature-extraction
+I have hundreds of columns and suspect most of them do not help the predictions at all,feature-selection
+I want to squash 300 related measurements down to a handful so I can plot them and train faster,dimensionality-reduction
+I keep forgetting to apply the same cleaning steps in production that I used when training,preprocessing-pipeline
+I need a team of people to mark thousands of photos as damaged or not and want the answers to be reliable,data-labeling
+I only have a few hundred photos and want to create varied copies so the model learns better,data-augmentation
+I want to start from a model someone already trained on millions of images and adapt it to my product photos,transfer-learning
+Only one in a thousand transactions is fraud and my model just says nothing is fraud,class-imbalance
+"How do I tell how good my spam detector really is, beyond just percent correct",classification-metrics
+My model gives a score from 0 to 1 and I need to decide at what number we actually block the payment,classification-threshold
+"our churn model says 90 percent for lots of customers but far fewer actually leave, can we fix the numbers",probability-calibration
+I need a model that puts each incoming email into exactly one of six folders,multiclass-classification
+"a recipe can be vegan, gluten free and quick at the same time and I want the model to mark all of them",multilabel-classification
+my house price model is done and I need to know how many dollars off it usually is,regression-metrics
+instead of saying delivery takes 30 minutes I want to say it will probably be between 25 and 40,prediction-intervals
+the model scores well overall but I suspect it does poorly for people on older phones,sliced-evaluation
+I want to go through the cases my classifier got wrong and figure out what to fix first,model-error-analysis
+we need to show our credit scoring model does not disadvantage older applicants,model-fairness-evaluation
+the business wants to know which customer details influence the churn prediction the most,global-feature-importance
+a customer asks why their insurance quote came out so high and we want to tell them the main reasons,per-prediction-explanations
+I want tests that fail if swapping a customer's first name changes the sentiment score,behavioral-model-testing
+before a newly trained model replaces the live one it should prove it is not worse,pre-deployment-model-validation
+last week a column came in empty and we trained a broken model without noticing,training-data-validation
+the model looked great in the notebook but makes odd predictions on the live website,training-serving-skew
+let me know when the kind of requests hitting our model starts looking different from last month,feature-drift-detection
+we only learn if a loan defaulted months later and want to see if the model is still accurate,model-performance-monitoring
+our recommender keeps learning only from items it already put at the top of the page,feedback-loop-prevention
+I have trained dozens of versions and lost track of which learning rate gave the best score,experiment-tracking
+every time I retrain on the same data I get slightly different accuracy and need it to be identical,reproducible-training
+an auditor asked exactly which records our fraud model was trained on last March,training-data-versioning
+I need one place that shows which model version is live and lets us switch back quickly,model-registry
+my model takes three days to train and I lose everything if the server reboots,model-training-checkpoints
+I trained a model in Python and need to load it inside a different service,model-serialization
+I want the whole process from fresh data to a trained and evaluated model to run with one trigger,ml-training-pipeline
+our demand model goes stale every few weeks so it should rebuild itself with the latest data,continuous-training
+several teams compute the same customer features for their models and I want one place to keep them,feature-store
+our model training takes a week on one GPU and I want to use the eight we have,distributed-training
+I read I can use 16 bit numbers to train faster and fit bigger batches,mixed-precision-training
+my GPU usage is only 30 percent because reading the images is the bottleneck,training-input-pipeline
+I want our app to send a request and get the price prediction back right away,online-prediction-endpoint
+every evening work out each subscriber's risk of leaving and keep the results in a table,batch-prediction
+the GPU server handles one request at a time and wastes capacity,inference-request-batching
+convert the model weights to int8 so it loads faster on cheap hardware,model-quantization
+our big model is accurate but too expensive so we want a tiny one that mimics it,knowledge-distillation
+the image classifier should run inside the mobile app with no server,on-device-inference
+we need a page explaining what our model should and should not be used for,model-card
+write up where our training images came from and how they were labelled,dataset-documentation
+we train on medical records and must prove the model cannot expose any patient,differentially-private-training
+improve the prediction model using data on people's phones without uploading it,federated-learning
+show shoppers products that customers with similar baskets bought,collaborative-filtering
+suggest recipes with the same ingredients and cuisine as ones the user saved,content-based-filtering
+we have ten million videos and need to pick a few hundred to rank for each user,recommendation-candidate-generation
+the home feed shows five items from the same seller in a row and needs mixing up,recommendation-reranking
+people who just signed up get useless suggestions because we know nothing about them,recommendation-cold-start
+we only have clicks and add to cart events not star ratings to build suggestions,implicit-feedback-training
+which score should I use to compare two recommenders on their top 10 results,ranking-metrics
+divide our shoppers into groups with similar buying habits for marketing,clustering-segmentation
+flag insurance claims that look nothing like the usual ones,anomaly-detection
+warn me when daily signups are much lower than expected for that day of the week,time-series-anomaly-detection
+estimate how many orders the bakery will get each day next quarter,time-series-forecasting
+I want to know whether my demand prediction model would have worked well over the last two years,forecast-backtesting
+my per-shop sales predictions never sum to the company-wide number,hierarchical-forecasting
+I need software that marks where each forklift is in warehouse camera pictures,object-detection
+I want to upload one photo and have the site make small and big versions of it when they are needed,image-transformation-service
+"when our product photos turn into square thumbnails the shoe gets cut in half, can it keep the shoe in the middle",smart-cropping
+people should be able to pick which part of their photo shows in the little circle next to their name,image-cropper
+"pictures people upload from their phones show up on their side, and I don't want to reveal where they were taken",exif-metadata
+when my customers send pictures straight from an iPhone the website says it can't read the file,heic-image-conversion
+our product photos look much duller on the site than the files the photographer sent us,image-color-profiles
+"someone could upload a booby-trapped picture to crash our servers, how do we open uploads safely",untrusted-media-processing
+videos people upload from their phones won't play on some computers and take forever to load,video-transcoding
+"our videos keep stopping to load on slow mobile connections, they should just lower the quality",adaptive-bitrate-streaming
+when someone drags along the bar of the video I want little pictures to pop up showing that part,video-thumbnails
+let users cut a ten second bit out of a long recording and post just that part,video-trimming
+videos shot on new iPhones look all faded and grey once they're on our site,hdr-video
+we want to broadcast our weekly show from OBS to everyone who visits the site,live-streaming
+the live auction video is half a minute behind real life so people bid too late,low-latency-live-streaming
+"people who join our webinar late should be able to go back to the start, and watch it all afterwards",live-to-vod-recording
+a film distributor will only give us their movies if nobody can just download the video files,drm-content-protection
+I'd like a looping clip to play in the background of our homepage as soon as someone lands there,media-autoplay
+users want to keep the lecture playing in a tiny window while they take notes in another app,picture-in-picture
+when my podcast app is playing and the phone is locked there are no controls or episode picture,media-session-controls
+people want to watch our classes on their living room TV by tapping a button in the app,media-casting
+subscribers want to save episodes on their phone to watch on a flight with no wifi,offline-media-download
+we have the film dubbed in Spanish and German and want viewers to choose which one they hear,multi-language-audio-tracks
+our training videos are an hour long and people want to skip straight to the bit about invoices,video-chapters
+I want to send a friend a link that opens the episode right at the funny part,media-timestamp-links
+people complain our videos stall a lot but we have no idea how often or on which phones,video-qoe-metrics
+I want to earn money by playing a short commercial before people watch my videos,video-ad-insertion
+users should be able to leave a spoken message using their mic on my site,media-recording
+what file type and quality should I save my uploaded songs in,audio-encoding
+listeners complain that some of my episodes are much quieter than others,loudness-normalization
+I want to show the shape of each sound clip so people can jump to a part,audio-waveform
+how do I get my show listed in podcast apps,podcast-feed
+every picture people download from my gallery should have my studio name on it,media-watermarking
+let people hide the messy room behind them during a webcam meeting,background-removal
+when someone taps a link to a recipe it should open that recipe inside our phone app,deep-links
+I want links to our website to go straight into the app for people who have it installed,verified-app-links
+new users who install from a friend's invite should land on the invite screen after the first open,deferred-deep-links
+our mobile site should show a strip at the top telling iPhone visitors they can get the app,smart-app-banner
+how do I get my iPhone app approved and live for everyone to download,ios-app-store-submission
+I finished my Android app and need to get it onto the Play Store,google-play-publishing
+the store wants me to say what personal info my app gathers,app-privacy-labels
+Apple sent an email saying my upload needs a file declaring why I use certain APIs,privacy-manifest
+I need to show the iPhone popup asking if the app can follow people for ads,app-tracking-transparency
+I want a few friends to try my app on their phones before it goes public,mobile-beta-testing
+my release build fails because the certificate for publishing the app is wrong,mobile-app-signing
+Google says my app must be updated to the newer Android version by August,android-target-sdk-upgrade
+people complain the app takes too much space on their phone,app-size-reduction
+older versions of the app break with the new server so users must get the latest one,in-app-updates
+I want to politely ask happy users to leave stars in the store,app-review-prompt
+players should be able to buy a pack of gems inside the game,in-app-purchases
+charge a monthly fee in the app with a week free at the start,in-app-subscriptions
+customers should check out in the app with the card already on their phone,apple-pay-google-pay
+concert tickets should go into the phone's wallet app and update if the venue changes,wallet-passes
+show today's tasks on the phone home screen without opening the app,home-screen-widgets
+show the food delivery countdown on the locked iPhone screen,live-activities
+holding down the app icon should offer to start a new note,app-shortcuts
+users should flip our VPN on and off from the swipe-down panel,quick-settings-tiles
+let people tell their phone assistant to log a workout in our app,voice-assistant-actions
+notes saved in the app should show up when people search from the iPhone home screen,system-search-indexing
+I want people to check their stats from their Apple Watch without taking out their phone,smartwatch-companion-app
+customers should be able to pay at our cafe by scanning a code without downloading the whole app,app-clips-instant-apps
+our podcast app should work on the screen in people's cars,car-app-integration
+the app needs to refresh its content every few hours even if nobody opens it,mobile-background-tasks
+users upload long videos and it fails when they switch to another app,background-file-transfer
+the workout tracker gets killed by Android after a few minutes in my pocket,foreground-service
+let users set a reminder to drink water every two hours that works offline,local-notifications
+people complain they get too many promo alerts and want to keep only order updates,notification-channels
+reviews say our app eats the battery even when it is not being used,battery-optimization
+let someone pick a few pictures from their phone without giving us their whole gallery,photo-picker
+users need to open a spreadsheet stored on their phone and save the edited copy back,scoped-storage-file-access
+the courier app has to keep sending the driver's position while the phone is locked,background-location-tracking
+send a coupon when someone walks near one of our shops,geofencing
+build our own shooting screen with a shutter button and filters instead of the stock camera,in-app-camera
+staff should point the phone at a box and get the product code,barcode-qr-scanning
+customers photograph signed contracts and we need clean flat pages,document-scanning
+visitors tap their phone on a sticker at the museum exhibit to see info,nfc-tag-reading
+our app needs to talk to a heart rate strap and a smart scale,bluetooth-le-connection
+make the phone give a little buzz when the payment goes through,haptic-feedback
+pull the number of steps and sleep hours from the phone's health app,health-data-integration
+let shoppers see how a sofa would look in their living room through the camera,augmented-reality
+calls in our chat app should ring like a normal phone call even when the app is closed,voip-call-integration
+banking app should ask for the user's face before showing the account,biometric-app-lock
+the iPhone keychain does not offer the saved password on our login screen,credential-autofill
+how do I let users log in with their Microsoft account in our iPhone app securely,native-app-oauth
+Apple says my iPhone app needs a way for people to get rid of their account,in-app-account-deletion
+I don't want people taking screenshots of the card number screen in my app,sensitive-screen-protection
+my Android app loads our help pages inside a screen and the page calls functions in the app,secure-webview
+when someone taps a link to an article it should open without kicking them out to Chrome,in-app-browser
+how do I tell if the same phone installed my app twice without using the IMEI,device-identifiers
+music keeps playing and GPS keeps running after the user switches to another app,app-lifecycle-handling
+users fill in a long form then answer a phone call and everything they typed is gone,state-restoration
+my app looks huge and empty on an iPad and a Galaxy Fold,adaptive-layouts-large-screens
+the top of my screen is hidden under the camera hole on new Android phones,edge-to-edge-display
+when I tap the comment box at the bottom it disappears behind the typing keys,soft-keyboard-handling
+pressing the phone's back gesture jumps out of the app instead of to the previous page,back-and-up-navigation
+I want my logo to show while the app opens without a white flash,splash-screen
+it takes almost 6 seconds before the home screen appears when the app opens,app-startup-performance
+the feed stutters when I flick through it on older phones,rendering-jank
+Google Play warns that my app freezes and shows a not responding popup,app-hangs-anr
+the crashes in my dashboard show gibberish method names like a.b.c,crash-symbolication
+my logo gets chopped into a circle on some Android phones,app-icons
+show a banner when the phone loses signal and sync again when it is back,network-connectivity-handling
+I need to keep thousands of notes saved locally on the phone and change the table later,on-device-database
+when users get a new phone their settings come over but they get stuck logged out,app-data-backup
+our customer's IT team wants to set the server URL for all their staff phones remotely,managed-app-configuration
+we are building a learning game for 6 year olds and want it in the store,kids-app-compliance
+I need one page to promote our new app and get people to join the waitlist,landing-page
+what should go on the front of our company website so visitors know where to go,homepage
+show three plans with their prices so customers can pick one and pay,pricing-page
+let shoppers put a few laptops next to each other and see how they differ,product-comparison-page
+each item in my store needs its own page with pictures sizes and a buy button,product-detail-page
+customers keep asking how to reach us so I need a page with phone email and hours,contact-page
+a page answering the questions customers keep asking our support team,faq-page
+after someone searches my site show what was found and what to do if nothing turns up,search-results-page
+a screen where users can change things like theme and notifications,settings-page
+a page where new visitors can register for an account,sign-up-page
+the first page of our online application telling people what documents to have ready,start-page
+explain the whole process of opening a business as numbered stages with links,step-by-step-guide-page
+we need a page explaining what personal information we collect and why,privacy-notice-page
+our German customers say the website needs an impressum with company details,legal-notice-imprint-page
+list all the third party libraries our mobile app uses with their licenses,open-source-licences-page
+a public page where customers can check if our service is having an outage,status-page
+publish what changed in every version of our software,changelog-page
+a nice layout for reading our blog posts with the author and date,article-page
+build a docs website with a sidebar of chapters and links to sections,documentation-page
+what to show when a logged in user opens a page they are not allowed to see,access-denied-page
+people should be able to stop our newsletter emails from the link at the bottom,unsubscribe-page
+I want people to collect several things they want to buy and see the total before paying,shopping-cart
+I need a place to list all the things my shop sells with pictures and descriptions,product-catalog
+my shirts come in small medium and large and in red or blue and each needs its own stock,product-variants
+how do I keep count of what is left in the warehouse so I never sell something I do not have,inventory-tracking
+when someone is paying for a concert seat nobody else should be able to grab it for a few minutes,temporary-reservation-holds
+let customers buy a book that comes out next month and send it when it is released,pre-orders-backorders
+sell a shampoo and conditioner together for one price but still count each bottle,product-bundles
+show that a jacket used to cost more and is now cheaper,sale-pricing
+customers should be able to type a special word to get money off their order,discount-codes
+the more licences a company buys the less each one should cost,tiered-volume-pricing
+let people buy a present card with money on it that a friend can spend in my shop,gift-cards
+instead of refunding to the card I want to give the customer money to spend next time,customer-credit-balance
+how much VAT should I add when someone from Germany buys from my UK shop,sales-tax-vat
+visitors from Japan should see prices in yen and pay in yen,multi-currency-pricing
+work out how much posting the parcel costs based on where it goes and how heavy it is,shipping-rates
+I want to print the postage sticker for each parcel from my admin screen,shipping-labels
+staff need to see every purchase and whether it has been paid sent or cancelled,order-management
+some items of one purchase are in another warehouse so they go out in two boxes,order-fulfillment
+buyers keep emailing to ask where their parcel is,order-tracking
+customers buy on the website and come to the shop to get their things,store-pickup
+our grocery shop delivers in town and customers pick a time between 5 and 7 pm,local-delivery-slots
+a buyer got the wrong size and wants to send it back for a different one,returns-exchanges
+send an email to people who put things in the basket but never paid,abandoned-cart-recovery
+let users tap a heart to keep products they like for another day,save-for-later
+buyers should be able to say what they thought of a product and give it a score,ratings-and-reviews
+I want shoppers to post questions on a product page and other buyers to reply,questions-and-answers
+show a row of other items people might like under each product,recommendations
+after someone buys my ebook they should get a link to download it,digital-downloads
+customers should be able to look at what they ordered before and order it again,customer-order-history
+get my store's products to show up in Google Shopping ads,product-feed
+stop people placing orders with stolen cards,order-fraud-screening
+accept tap and chip cards from walk-in customers in my store,point-of-sale
+let diners leave something extra for the waiter when they pay,tips-gratuity
+let supporters give whatever amount they like to our charity,donations
+charge members automatically every month for their plan,subscription-billing
+let new users try the app for two weeks before paying,free-trials
+customers switching to a bigger plan mid-month should pay only the difference,plan-upgrades-proration
+when a renewal card is declined keep trying and email the customer,failed-payment-recovery
+members should be able to quit or freeze their plan from their account,subscription-cancellation
+bill customers for how many API requests they make each month,usage-based-billing
+charge companies based on how many people are on their team,per-seat-billing
+only customers on the pro plan should be able to export reports,plan-entitlements
+give customers a page to change their card and see past bills,customer-billing-portal
+send customers a proper numbered bill with tax details,invoices-and-receipts
+send a business customer a price offer they can sign off on,sales-quotes
+a shopper sent an item back and I need to return what they paid,refunds
+a customer told their bank to reverse a payment and I need to respond,chargebacks-disputes
+keep the customer's card so they do not need to type it again,saved-payment-methods
+reserve the money when they order but only take it when it ships,authorize-and-capture
+vendors joining my marketplace must prove who they are before getting paid,seller-onboarding-kyc
+my site connects buyers with local bakers and I want to keep 10% of every order and send the rest to the baker,marketplace-split-payments
+creators on my platform need to get their earnings sent to their bank every Friday,seller-payouts
+customers should choose a free half hour with one of our hairdressers and not clash with other customers,appointment-booking
+guests pick arrival and departure days for my cabin and must stay at least two nights,rental-reservations
+I am running a conference and need to sell passes and scan them when people arrive,event-ticketing
+after someone signs up for the webinar give them a file so it shows up in their Outlook,calendar-invites-ics
+pull the busy times from the coach's Google account so clients cannot book over them,calendar-sync
+the yoga class happens every Tuesday and Thursday but we skip it over Christmas,recurring-events
+people should be able to subscribe to other members and see who subscribes to them,follow-system
+when you open the app you see the latest posts from everyone you are connected to,social-feed
+let readers put a heart or a smiley on a message and show how many did it,reactions-and-likes
+when someone writes a colleague's name with the at sign that colleague should get an alert,mentions
+words starting with the pound sign should become clickable topics,hashtags
+when a website address is pasted into a message show its picture and headline underneath,link-previews
+every member gets their own page with a photo and a short description about themselves,user-profiles
+writers should decide if a post is for everyone or just for the people who follow them,post-visibility
+ask the community a question with four answers and count the votes until Sunday,polls
+a section showing what everybody is talking about today,trending-content
+I want to stop a specific person from ever contacting me or seeing my stuff,block-and-mute
+add a way for people to tell us about abusive or illegal posts,content-reporting
+our staff need a screen to go through complaints and suspend or ban bad accounts,moderation-queue
+"hide any comment that contains swear words, and let people choose words they never want to see",keyword-content-filter
+buyers and sellers should be able to message each other privately inside the app,in-app-chat
+show the sender when the other person has actually seen their message,read-receipts
+show three animated dots while the other person is writing a reply,typing-indicators
+I want a little dot next to each teammate's name telling me if they are around right now,presence-indicators
+people should be able to change or remove a chat message after they hit send,message-edit-delete
+add a box on our site where visitors can type to a real support person,live-chat-support
+we need a system to keep track of every customer complaint and who is handling it,support-tickets
+build a section with answers to common problems so customers can help themselves,help-center
+after someone finishes an order ask them how happy they were with it,in-app-surveys
+first time someone logs in walk them through the main screens,product-tour
+let people give a coworker access to their report so they can view or edit it,resource-sharing
+multiple users should be able to type in the same note at once without overwriting each other,collaborative-editing
+reviewers should mark their proposed wording changes so the author can approve them,suggested-edits
+keep older copies of each document so I can roll back to last week's text,version-history
+admins should send an email that lets a new colleague join our workspace,team-invitations
+when an employee leaves we need to hand their projects to someone else,ownership-transfer
+I want to get told whenever someone adds a comment to a ticket I care about,watch-subscriptions
+let users pick whether they get alerts by email or phone and silence them at night,notification-preferences
+instead of an email for every comment send people one roundup each morning,email-digest
+put a form in the footer so visitors can get our monthly newsletter after confirming their address,newsletter-signup
+we want to send a promotion to our whole customer list without landing in spam,marketing-email-campaigns
+our marketing team needs to update website text and pages themselves,content-management-system
+writers should be able to work on an article and check how it looks before it goes live,draft-and-publish
+set an article to appear on the site next Monday at 9am automatically,scheduled-publishing
+editors need one place to find all the pictures they uploaded before,media-library
+group blog posts by topic so readers can browse everything about one subject,content-taxonomy
+let each company add its own extra columns like contract number to customer records,custom-fields
+readers get three free articles and then have to subscribe to keep reading,paywall-metered-access
+Clients should be able to put their name on a rental agreement from their laptop and I need proof they did it,electronic-signatures
+I want customers to get money off when a friend they brought along makes a purchase,referral-program
+Shoppers who buy often should collect something they can trade in for free stuff later,loyalty-program
+My language learning app should give people little trophies for practising every day,achievements-badges
+Players want to see where they stand compared to everyone else after a game,leaderboards
+My staff need a private screen where they can fix customer orders and change records,admin-panel
+As the owner I need to lock out an account that broke our rules and maybe turn it back on later,user-management
+"When a customer says something looks broken, our helpdesk should be able to view their account as they see it",user-impersonation
+Companies should be able to show they really own their website address before they get extra features,domain-verification
+"Bots keep trying thousands of passwords on my users' accounts, how do I make them stop after a few tries",failed-login-throttling
+When someone signs up I want to refuse passwords that hackers already know from leaks,breached-password-screening
+My login page tells people the email isn't registered and I heard that's a security problem,account-enumeration-prevention
+I want users to just get an email with a button that signs them in instead of typing a password,magic-link-login
+A customer dropped their phone in the sea and can't get the six digit code anymore so how do we let them back in,lost-mfa-account-recovery
+Before someone deletes their account or changes bank details I want them to prove it's really them again,step-up-authentication
+I need a settings screen where people type their old password and pick a new one,change-password
+People want to move their account over to a new work email address,change-email-address
+"Users complain they have to sign in again every time they reopen the browser, add a checkbox to keep them in",remember-me-login
+Show users a list of the phones and laptops logged into their account with a button to kick each one out,active-sessions-management
+Send people an email if their password gets changed or someone logs in from a computer we haven't seen,security-notifications
+Only ask for the text message code when the login looks suspicious like from another country,risk-based-authentication
+A user made an account with email and password and now wants to also log in with their Google account,account-linking
+Is it safe to keep the login token for my React app in local storage or should it go somewhere else,spa-token-storage
+My command line tool needs users to log in but it can't open a browser window itself,oauth-device-authorization
+Big company customers want their employee accounts created and removed automatically from their company directory,scim-user-provisioning
+Our lending app must confirm that each borrower is who they say they are using a photo of their ID,identity-verification
+My site sells wine so visitors must prove they are adults before they can see the shop,age-verification
+Kids under 13 use my learning game and I need their mum or dad to say yes before we store anything about them,parental-consent
+Staff should only see files from their own department and region and only during office hours,attribute-based-access-control
+I want sharing like Google Drive where whoever can see a folder can see everything inside it,relationship-based-access-control
+I changed the order number in the address bar and could see someone else's order,object-level-authorization
+Refunds over a thousand dollars should need a second staff member to sign off before they go through,dual-authorization
+Our auditor wants proof that every few months we check who has access to production and remove what is not needed,access-reviews
+I want to give customers a download link to their private report that stops working after an hour,expiring-signed-urls
+After login we send people back to whatever page is in the link and I worry someone could abuse that,open-redirect-prevention
+Users ask for a document by its name and I am scared they could grab our config files instead,path-traversal-prevention
+How do I make sure the files people send us are not viruses or disguised programs,upload-content-validation
+People can upload their own web pages to our platform and I do not want them stealing the logins of other users,user-content-sandbox-domain
+One of our email checking patterns made the whole server hang when someone pasted a weird long string,redos-prevention
+When our admins open the exported customer spreadsheet something could run hidden commands,csv-injection-prevention
+We load a library from a public CDN and want to be sure nobody swapped the file,subresource-integrity
+How should I make the codes in our invitation emails so nobody can guess them,secure-random-tokens
+A developer put our payment provider key in the repository by mistake,secret-scanning
+I want a chat where even our own company cannot read what users say to each other,end-to-end-encryption
+Partners need to be sure the reports we send them came from us and were not edited,digital-signatures
+Our internal services should only talk to each other and reject anything else on the network,mutual-tls
+When people install our app they get a scary warning that the maker cannot be verified,code-signing
+Customers want proof that the binary we ship was really built from our public source code,build-provenance
+I am worried a stranger could open a pull request that steals our deployment passwords,ci-pipeline-security
+Can a tool automatically read our code and point out security holes before we merge,static-security-testing
+I want a tool that attacks our test website automatically every night to find weaknesses,dynamic-security-testing
+A big client wants an outside company to try hacking our app before they sign,penetration-testing
+Before we build the new payments feature I want to think through how bad guys might abuse it,threat-modeling
+A stranger emailed saying they found a hole in our site and we had no idea where reports should go,vulnerability-disclosure-policy
+We have hundreds of security warnings from scanners and no idea which to fix first,vulnerability-management
+We think someone broke into our server last night what should we do right now,security-incident-response
+A spreadsheet with customer addresses was emailed to the wrong person do we need to tell anyone,data-breach-notification
+I want to know when someone is trying lots of passwords or suddenly becomes an admin,security-event-logging
+Our log files show the passwords of users and credit card numbers in plain text,log-data-redaction
+"Hackers keep sending SQL injection junk at our login form, can we put something in front of the site that blocks those requests?",web-application-firewall
+"Our website crashed last night when someone sent millions of requests at it, how do we keep it up next time?",ddos-protection
+"Customers say they got phishing emails that look like they came from our company address, how do we stop that?",email-domain-authentication
+"We deleted an old marketing site on our cloud host but the promo.example.com address still points there, is that a problem?",subdomain-takeover-prevention
+"Our support agents should only see the end of a customer's card number on their screen, not the whole thing",sensitive-data-masking
+"A customer wants their data gone but it is inside backups we cannot edit, is there a way to make it unreadable?",crypto-shredding
+I need people to tick separate boxes for newsletters and partner offers and keep proof of what they agreed to,consent-management
+"California users need a way to say we must not sell their info, and the browser setting for that should work too",global-privacy-control-opt-out
+"A user emailed asking for everything we store about them, what do we have to send and how fast?",subject-access-request
+We want to give researchers our usage dataset but nobody in it should be identifiable,data-anonymisation
+Analysts need to join events per user without ever seeing who the user actually is,pseudonymisation
+"We are launching location tracking for a health app, do we need some kind of privacy risk review first?",data-protection-impact-assessment
+Our lawyer asked for a document listing every way we use customer personal data and where it ends up,records-of-processing
+"Nobody knows which of our databases and buckets hold people's personal details, how do we find and tag them?",data-classification
+"A German client says their customer records must never leave Europe, how do we guarantee that?",data-residency
+I want power users to hit a shortcut and type the name of any action to run it,command-palette
+my web editor needs File Edit and View menus across the top like Word,menubar
+the Publish button should also have a little arrow with schedule and save draft choices,split-button
+show how much of their 5 GB storage allowance each customer has used,meter-gauge
+admins need to tick lots of users in the table and deactivate them in one go,bulk-actions-bar
+let people hold shift and click to pick a whole run of photos in the gallery,range-selection
+users should be able to change prices directly in the product table cells like a spreadsheet,editable-data-grid
+clicking an order in the table should open its line items right underneath it,expandable-table-rows
+when scrolling the big report table the column titles and customer name column should stay put,frozen-table-columns
+let each user drag column widths and turn off columns they do not need in the orders table,table-column-customization
+our pricing table is unreadable on phones because it has eight columns,responsive-tables
+the log viewer has 50000 lines and the browser chokes when it renders them all,virtual-scrolling
+analysts want a tighter layout option so more records fit without scrolling,ui-density
+show the applicant's answers as label and value rows with a way to change each one,summary-list
+make it obvious which words are clickable and warn when one goes to another site,link-styles
+let users click the project name in the header to rename it right there,inline-edit
+our store has hundreds of categories and the top nav needs a big panel with grouped links,mega-menu
+on desktop show the contacts list with the selected person's info on the right but separate screens on mobile,list-detail-layout
+set up heading and paragraph sizes that shrink nicely on small screens,typography-scale
+each client company should see the dashboard in their own logo colours,custom-themes
+when you tap a product photo it should smoothly expand into the product page,view-transitions
+make the feature sections slide in gently as the visitor scrolls down the page,scroll-driven-animation
+when I change the sort order the cards should glide to their new spots instead of jumping,layout-animation
+our buttons and list items all look different when hovered or clicked and need consistent feedback,interaction-states
+build a floor plan viewer where users can zoom with the wheel and drag to look around,zoom-pan-canvas
+I want comments to say how long ago they were written instead of the full date,relative-time
+my contacts screen should have the names split by first letter with a letter bar on the side,grouped-list
+add a button so people can watch the video using their entire monitor,fullscreen-mode
+the little menu I open near the bottom of the screen gets cut off and I want it to pop up above instead,floating-element-positioning
+people should be able to pick a smiley or other little icon to put in their chat message,emoji-picker
+I have several buttons on my form and I am not sure which one should look the most important,button-hierarchy
+when someone changes settings I want a bar to show up at the top with save or throw away the changes,contextual-save-bar
+our app needs to work for Arabic speakers where everything reads from the other side,rtl-layout
+I want a box on my site where students can type programs with colors and line numbers,code-editor
+I want people to be able to put my website on their phone like a real app,installable-web-app
+After we release a new version some customers still get the old site until they close every tab,service-worker-update-flow
+Add a button that lets visitors send our recipe to WhatsApp or Messages using the phone's own menu,web-share
+People should be able to pick my notes app when they hit Share in their photo gallery,web-share-target
+The tablet keeps going to sleep while people read the step by step instructions,screen-wake-lock
+When I crunch a large spreadsheet in the browser everything locks up until it finishes,web-workers
+Build a feature so a doctor and a patient can talk face to face over camera inside our website,webrtc-video-call
+During a meeting in our app the host should be able to show everyone what is on their desktop,screen-sharing
+Our map asks for the user's location the moment the page opens and most people say no,browser-permission-requests
+I want Google to display star ratings and the price under my product listings,structured-data
+Google lists the same article under three different web addresses with different query strings,canonical-urls
+Our test server keeps showing up when people search for our company name,crawl-index-control
+French visitors in Canada keep landing on our France pages from Google,multilingual-seo-hreflang
+Our blog post addresses look like /post?id=8842 and I want something people can read,seo-url-structure
+We are rebranding and moving everything to a new domain without losing our Google traffic,site-migration-redirects
+The little picture beside my site name in the browser is blank and blurry on iPhones,favicons-app-icons
+Every release I have to tell customers to press Ctrl+F5 to see the changes,http-cache-headers
+The big banner photo appears late because the browser discovers it only after loading the stylesheet,resource-hints
+Can the article a reader is most likely to click next already be ready so it appears with no wait,prerender-speculation-rules
+Headings appear invisible for a second and then everything shifts when our brand typeface arrives,web-font-loading
+Visitors stare at an empty white page for two seconds before anything appears,render-blocking-resources
+The marketing tags and the support chat bubble made our homepage score drop badly,third-party-scripts
+Our single page app downloads 3 MB of scripts before anyone can click anything,javascript-bundle-size
+When shoppers return from a product to the list they lose where they were and it loads again,back-forward-cache
+The side menu slides in jerkily on cheaper Android phones,animation-performance
+"my dashboard tab gets heavier and laggy if I leave it open all day, how do I find what is piling up",memory-leak-detection
+I want to know how quickly pages actually load on our customers' phones and get warned when it drops,real-user-monitoring
+our CI should reject a pull request that makes the homepage download too much script,performance-budget
+"when someone types fast in the search box, an older answer sometimes replaces the newer one",request-cancellation
+"in my single-page app, pressing back leaves the site and reloading a screen shows not found",client-side-routing
+people should be able to send a colleague a link that opens the product list with the same filters applied,url-state
+"if a user signs out in one tab, the other open tabs of the app should also sign out",cross-tab-sync
+stop hitting the server every few seconds while nobody is looking at the tab,page-visibility
+my online text editor should open a document from the laptop and save changes into that same document,file-system-access
+I want a web page that sends commands to a microcontroller plugged into the computer,browser-hardware-access
+we have an image library written in C++ and want it to run inside the web page fast,webassembly-module
+build a star rating element once and drop it into both the React app and plain HTML pages,web-components
+show a partner's booking page inside ours and let it tell our page when booking is done,iframe-embedding
+customers should paste a small code on their own sites to show our live chat bubble,embeddable-widget
+the checkout works on my laptop but some older iPhones only show a white screen,browser-compatibility
+"when a customer prints their order confirmation, the menus and footer should not appear on paper",print-stylesheet
+"German shoppers should see prices like 1.299,00 EUR instead of the US style",locale-number-formatting
+names starting with accented letters end up at the bottom of the alphabetical list,locale-aware-sorting
+someone visiting from Spain with a Spanish browser should land on the Spanish version first,locale-detection
+usernames with emoji get cut in half and a few names show as weird symbols after saving,unicode-text-handling
+add a microphone icon so people can fill the message box by talking,speech-recognition-input
+"let readers press a button and hear the blog post spoken, with a way to pause it",text-to-speech
+my feature branch is way out of date and I want my commits to sit on top of the newest main,git-rebase
+I have ten messy work-in-progress commits and want them as one tidy commit before sharing,rewrite-commit-history
+we fixed a bug on main and need the same fix in last year's version,git-cherry-pick
+the app worked a month ago and now crashes and I don't know which change did it,git-bisect
+a change we merged yesterday broke production and I need to take it back out safely,git-revert-commit
+I accidentally staged the wrong files and want to start my commit over,undo-local-git-changes
+I did a hard reset and my last day of work vanished,recover-lost-commits
+git stopped my merge because the same file was edited on both sides,merge-conflict-resolution
+I want to mark the exact commit we shipped as version 2.0,git-tags
+our project needs to include a shared repository from another team at a fixed version,git-submodules
+I want to pull the docs folder out into a separate project and keep its history,git-subtree-repo-split-merge
+our game repo has huge texture files and cloning takes forever,git-lfs
+the dist folder and my local config keep showing up as changes to commit,gitignore
+teammates on Windows make every line of a file show as modified,line-endings-gitattributes
+I pushed a file containing our database password last week,remove-sensitive-data-from-history
+I need to fix an urgent bug without stashing my half-finished feature,git-worktree
+I only need one small folder from a gigantic company repository,sparse-checkout-partial-clone
+my commits should show they were really made by me,signed-commits
+I want to push to GitHub from my laptop without typing credentials,git-ssh-keys
+our team argues about how to name branches and when to merge them,branching-strategy
+I found a bug in a library on GitHub and want to send them my fix,fork-workflow
+I finished my changes on a branch and want the team to look at them before they go in,pull-request
+people keep reporting bugs without saying how to reproduce them,issue-pr-templates
+I am asked to look over a colleague's change and don't know what to check,code-review
+the payments folder should always need approval from the payments team,codeowners
+should pull requests be squashed or kept as separate commits when they go into main,pr-merge-methods
+"approved changes keep breaking main when they land together, I want them tested in order before merging",merge-queue
+I want a standard way to write commit messages so release notes can be made from them,commit-message-conventions
+set up a tool that warns about mistakes in our javascript before we run it,linting
+make everyone's code look the same without arguing about spaces in code review,code-formatting
+run checks on my machine automatically every time I try to commit,pre-commit-hooks
+put our web app mobile app and shared code in a single repository,monorepo
+write a guide telling volunteers how to send us changes to the project,contributing-guidelines
+what should go in the main description file people see when they open my github project,repository-readme
+I want to publish my code so others can reuse it but need to decide the legal terms,open-source-license

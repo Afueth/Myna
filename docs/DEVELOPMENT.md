@@ -47,6 +47,26 @@ printf 'close the popup when I click outside\nD\n1\nQ\n' | ./build/myna
 3. Check with `gcc --version`, then build with `mingw32-make` and run
    `.\build\myna.exe`.
 
+### Without a C compiler (WebAssembly)
+
+If Windows blocks programs you compile (Smart App Control reports "An
+Application Control policy has blocked this file"), build Myna as
+WebAssembly instead. It needs only [Node.js](https://nodejs.org) 20 or later:
+
+```powershell
+cd wasm
+npm install      # downloads Clang compiled to WebAssembly (about 100 MB)
+npm run build    # writes build/wasm/myna.wasm and the test programs
+npm test
+.\myna.cmd search "close the popup when I click outside"
+```
+
+`wasm\myna.cmd` takes the same commands as `myna`, including `mcp`. Node's
+WASI cannot read folders on Windows, so `wasm/run.mjs` merges
+`data/concepts/*.csv` into `build/wasm/concepts.csv` and loads that. For the
+same reason, the folder-loading check in `test_search` fails in this build.
+The clipboard is not available, so `P` prints the prompt.
+
 ## Logo and icon
 
 `assets/myna-logo.png` is the source logo. Two files are generated from it and

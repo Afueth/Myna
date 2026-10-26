@@ -1,0 +1,14 @@
+{
+  "name": "myna-wasm",
+  "private": true,
+  "description": "Build and run Myna as WebAssembly on Node.js, without a native C compiler",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --no-warnings run.mjs ../build/wasm/test_prompt.wasm && node --no-warnings run.mjs ../build/wasm/test_mcp.wasm /myna/build/wasm/concepts.csv && node --no-warnings run.mjs ../build/wasm/test_search.wasm /myna/build/wasm/concepts.csv",
+    "start": "node --no-warnings run.mjs"
+  },
+  "devDependencies": {
+    "@yowasp/clang": "22.0.0-git20542-10"
+  }
+}

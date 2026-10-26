@@ -29,3 +29,6 @@ __pycache__/
 
 # Saved Myna reviews
 .myna/
+
+# WebAssembly build tools
+wasm/node_modules/

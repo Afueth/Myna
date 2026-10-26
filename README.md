@@ -175,7 +175,8 @@ More details are in [Download and install](#download-and-install) below.
 
 ## What Myna knows today
 
-Myna knows **187 concepts** from everyday app development, including:
+Myna knows **1,198 concepts** in 21 categories, from everyday app development
+to games, devices and data, including:
 
 - **Interface:** popups, menus, drawers, bottom sheets, cards, tags, tabs, sliders, tree views, rich text editors, dark mode, loading states
 - **Forms and pages:** names, addresses, phone numbers, passwords, dates of birth, check-your-answers, confirmation and error pages
@@ -186,8 +187,12 @@ Myna knows **187 concepts** from everyday app development, including:
 - **Performance:** Core Web Vitals, images, lazy loading
 - **AI features:** chatbots, document Q&A and AI agents, built safely
 - **Releases:** feature flags, gradual rollouts, A/B tests, rollbacks, CI/CD, dependencies
+- **Product features:** carts and checkout, subscriptions, chat, feeds, bookings, invitations, admin panels
+- **System design:** queues, sharding, replication, circuit breakers, sagas, event sourcing
+- **Working on code:** Git (stash, rebase, bisect), pull requests, code review, versioning
+- **Beyond apps:** algorithms, data pipelines, machine learning, games, desktop apps, embedded and IoT devices, media processing
 
-**Every concept comes with a checklist**: about 1,480 requirements and "done
+**Every concept comes with a checklist**: about 11,150 requirements and "done
 when" checks in total, built on trusted references:
 
 | Reference | Covered |

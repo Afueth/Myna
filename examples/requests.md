@@ -11,7 +11,7 @@ Run `myna` with no arguments:
 $ myna
 MYNA - Developer Intent Engine
 ==============================
-187 concepts loaded. Type Q to quit.
+1198 concepts loaded. Type Q to quit.
 
 Describe what you want to implement:
 > Release a feature to only 10% of users
