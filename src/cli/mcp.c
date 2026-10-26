@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #ifdef _WIN32
 #include <fcntl.h>
@@ -14,8 +15,12 @@
 #include "myna/version.h"
 
 #include "json.h"
+#include "report.h"
 
 #define MODERN_VERSION "2026-07-28"
+#define MAX_REPORT_RESULTS 100
+#define MAX_REPORT_TEXT 500
+#define MAX_PATH_TEXT 1000
 #define MAX_RESULTS 5
 #define MAX_SUGGESTIONS 3
 #define MAX_IDS 10
@@ -41,7 +46,9 @@ static const char INSTRUCTIONS[] =
     "Before building such a feature, call find_concepts with the user's request "
     "in plain words, then get_checklist with the ids you will implement, and "
     "follow its requirements. After writing the code, call review_checklist "
-    "with the same ids and check the code against every item.";
+    "with the same ids and check the code against every item. Then call "
+    "report_review with your verdicts, so the user can see the review in "
+    "their editor.";
 
 #define ID_LIST_SCHEMA                                                          \
     "\"concept_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},"      \
@@ -80,7 +87,34 @@ static const char TOOLS[] =
     "\"description\":{\"type\":\"string\",\"description\":\"What was built, in "
     "plain words. Used to find concepts when concept_ids is empty.\"}},"
     "\"additionalProperties\":false},"
-    READ_ONLY "}"
+    READ_ONLY "},"
+    "{\"name\":\"report_review\",\"title\":\"Report review results\","
+    "\"description\":\"After checking code against review_checklist, report "
+    "your verdict for each item. Myna saves the review in the project, in "
+    ".myna/review.json, so the user can see it in their editor.\","
+    "\"inputSchema\":{\"type\":\"object\",\"properties\":{"
+    "\"project_dir\":{\"type\":\"string\",\"description\":\"Absolute path of "
+    "the project's root folder.\"},"
+    "\"summary\":{\"type\":\"string\",\"description\":\"What was reviewed, in "
+    "a few words, such as Settings page.\"}," ID_LIST_SCHEMA
+    "\"results\":{\"type\":\"array\",\"minItems\":1,\"maxItems\":100,"
+    "\"description\":\"One entry per rubric item.\",\"items\":{\"type\":"
+    "\"object\",\"properties\":{"
+    "\"item\":{\"type\":\"string\",\"description\":\"The checklist item, as "
+    "written in the rubric.\"},"
+    "\"number\":{\"type\":\"integer\",\"minimum\":1,\"description\":\"The "
+    "item's number in the rubric.\"},"
+    "\"verdict\":{\"type\":\"string\",\"enum\":[\"pass\",\"fail\","
+    "\"not_applicable\"]},"
+    "\"file\":{\"type\":\"string\",\"description\":\"File that shows it, "
+    "relative to project_dir.\"},"
+    "\"line\":{\"type\":\"integer\",\"minimum\":1},"
+    "\"note\":{\"type\":\"string\",\"description\":\"For a fail: what is "
+    "wrong and how to fix it.\"}},"
+    "\"required\":[\"item\",\"verdict\"],\"additionalProperties\":false}}},"
+    "\"required\":[\"project_dir\",\"results\"],\"additionalProperties\":false},"
+    "\"annotations\":{\"readOnlyHint\":false,\"destructiveHint\":false,"
+    "\"idempotentHint\":true,\"openWorldHint\":false}}"
     "]";
 
 void myna_mcp_init(myna_mcp_state *st)
@@ -395,6 +429,8 @@ static void tool_checklist(json_buf *text, int *is_error, const myna_catalogue *
 
     if (review) {
         append_built(text, myna_build_review(chosen, n, NULL, 0), 1, cat, NULL, chosen, n);
+        textf(text, "\nWhen you have checked every item, call report_review with "
+                    "project_dir, the concept_ids and one result per numbered item.\n");
         return;
     }
 
@@ -406,6 +442,199 @@ static void tool_checklist(json_buf *text, int *is_error, const myna_catalogue *
     for (size_t i = 0; i < n; i++)
         textf(text, "%s\"%s\"", i ? ", " : "", chosen[i]->id);
     textf(text, "] and check the code against every item.\n");
+}
+
+/* A whole number of at least 1, or 0 if `v` is not one. */
+static long positive_int(const json_value *v)
+{
+    if (!v || v->type != JSON_NUMBER)
+        return 0;
+    char *end;
+    long n = strtol(v->text, &end, 10);
+    return (*end == '\0' && n > 0) ? n : 0;
+}
+
+/* An optional string member: returns 1 and sets *out (NULL if absent) when
+ * valid, 0 when it is not a string or longer than `max`. */
+static int optional_text(const json_value *obj, const char *key, size_t max, const char **out)
+{
+    const json_value *v = json_get(obj, key);
+    *out = NULL;
+    if (!v)
+        return 1;
+    if (v->type != JSON_STRING || strlen(v->text) > max)
+        return 0;
+    *out = v->text;
+    return 1;
+}
+
+static const char *const VERDICTS[] = {"pass", "fail", "not_applicable"};
+
+static int verdict_index(const char *s)
+{
+    for (int i = 0; s && i < 3; i++) {
+        if (strcmp(s, VERDICTS[i]) == 0)
+            return i;
+    }
+    return -1;
+}
+
+/* Check one entry of report_review's results. Writes the reason to `text`
+ * and returns 0 if it is invalid. */
+static int check_result(json_buf *text, const json_value *r, int index)
+{
+    const char *item, *file, *note;
+    const json_value *line = json_get(r, "line"), *number = json_get(r, "number");
+
+    if (r->type != JSON_OBJECT) {
+        textf(text, "results[%d] must be an object with item and verdict.", index);
+        return 0;
+    }
+    if (!optional_text(r, "item", MAX_REPORT_TEXT, &item) || !item || !*item) {
+        textf(text, "results[%d] needs the checklist item as text (max %d characters).",
+              index, MAX_REPORT_TEXT);
+        return 0;
+    }
+    if (verdict_index(json_string(json_get(r, "verdict"))) < 0) {
+        textf(text, "results[%d] needs a verdict: pass, fail or not_applicable.", index);
+        return 0;
+    }
+    if (!optional_text(r, "file", MAX_PATH_TEXT, &file) ||
+        !optional_text(r, "note", MAX_REPORT_TEXT, &note) ||
+        (line && !positive_int(line)) || (number && !positive_int(number))) {
+        textf(text, "results[%d]: file and note must be short strings, and line and "
+                    "number whole numbers of at least 1.", index);
+        return 0;
+    }
+    return 1;
+}
+
+static void tool_report(json_buf *text, int *is_error, const json_value *args)
+{
+    const char *dir, *summary;
+    const json_value *ids = json_get(args, "concept_ids");
+    const json_value *results = json_get(args, "results");
+    int counts[3] = {0, 0, 0}, n = 0;
+
+    *is_error = 1;
+    if (!optional_text(args, "project_dir", MAX_PATH_TEXT, &dir) || !dir || !*dir) {
+        textf(text, "Pass project_dir: the absolute path of the project's root folder.");
+        return;
+    }
+    if (!optional_text(args, "summary", MAX_REPORT_TEXT, &summary)) {
+        textf(text, "summary must be a short string (max %d characters).", MAX_REPORT_TEXT);
+        return;
+    }
+    if (ids && ids->type != JSON_ARRAY) {
+        textf(text, "concept_ids must be an array of strings.");
+        return;
+    }
+    if (!results || results->type != JSON_ARRAY || !results->child) {
+        textf(text, "Pass results: one entry per rubric item, each with item and verdict.");
+        return;
+    }
+    for (const json_value *r = results->child; r; r = r->next, n++) {
+        if (n == MAX_REPORT_RESULTS) {
+            textf(text, "Too many results (max %d).", MAX_REPORT_RESULTS);
+            return;
+        }
+        if (!check_result(text, r, n))
+            return;
+        counts[verdict_index(json_string(json_get(r, "verdict")))]++;
+    }
+
+    char stamp[32];
+    time_t now = time(NULL);
+    strftime(stamp, sizeof stamp, "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
+
+    /* The saved review: one line of JSON. */
+    json_buf out;
+    char num[24];
+    json_buf_init(&out);
+    json_raw(&out, "{\"tool\":\"myna\",\"version\":\"" MYNA_VERSION "\",\"created\":");
+    json_str(&out, stamp);
+    json_raw(&out, ",\"summary\":");
+    json_str(&out, summary ? summary : "");
+    json_raw(&out, ",\"concepts\":[");
+    int first = 1;
+    for (const json_value *v = ids ? ids->child : NULL; v; v = v->next) {
+        if (v->type != JSON_STRING)
+            continue;
+        json_raw(&out, first ? "" : ",");
+        json_str(&out, v->text);
+        first = 0;
+    }
+    snprintf(num, sizeof num, "%d", counts[0]);
+    json_raw(&out, "],\"counts\":{\"pass\":");
+    json_raw(&out, num);
+    snprintf(num, sizeof num, "%d", counts[1]);
+    json_raw(&out, ",\"fail\":");
+    json_raw(&out, num);
+    snprintf(num, sizeof num, "%d", counts[2]);
+    json_raw(&out, ",\"not_applicable\":");
+    json_raw(&out, num);
+    json_raw(&out, "},\"results\":[");
+    for (const json_value *r = results->child; r; r = r->next) {
+        const char *keys[] = {"item", "verdict", "file", "note"};
+        json_raw(&out, r == results->child ? "{" : ",{");
+        for (int k = 0; k < 4; k++) {
+            const char *s = json_string(json_get(r, keys[k]));
+            if (!s)
+                continue;
+            json_raw(&out, k ? "," : "");
+            json_str(&out, keys[k]);
+            json_raw(&out, ":");
+            json_str(&out, s);
+        }
+        const char *numkeys[] = {"number", "line"};
+        for (int k = 0; k < 2; k++) {
+            long v = positive_int(json_get(r, numkeys[k]));
+            if (!v)
+                continue;
+            snprintf(num, sizeof num, ",\"%s\":%ld", numkeys[k], v);
+            json_raw(&out, num);
+        }
+        json_raw(&out, "}");
+    }
+    json_raw(&out, "]}");
+
+    char saved[1100], err[1200];
+    if (out.failed) {
+        textf(text, "Out of memory while saving the review.");
+        json_buf_free(&out);
+        return;
+    }
+    if (myna_save_review(dir, out.data, saved, sizeof saved, err, sizeof err) != 0) {
+        textf(text, "Could not save the review: %s", err);
+        json_buf_free(&out);
+        return;
+    }
+    json_buf_free(&out);
+
+    *is_error = 0;
+    textf(text, "Saved the review%s%s: %d passed, %d failed, %d not applicable.\n"
+                "Saved to: %s\n", summary ? " of " : "", summary ? summary : "",
+          counts[0], counts[1], counts[2], saved);
+    if (counts[1] == 0) {
+        textf(text, "\nEverything that applies passed.\n");
+        return;
+    }
+    textf(text, "\nFailed:\n");
+    for (const json_value *r = results->child; r; r = r->next) {
+        if (verdict_index(json_string(json_get(r, "verdict"))) != 1)
+            continue;
+        const char *file = json_string(json_get(r, "file"));
+        const char *note = json_string(json_get(r, "note"));
+        long line = positive_int(json_get(r, "line"));
+        textf(text, "- %s", json_string(json_get(r, "item")));
+        if (file && line)
+            textf(text, " (%s:%ld)", file, line);
+        else if (file)
+            textf(text, " (%s)", file);
+        textf(text, "%s%s\n", note ? ": " : "", note ? note : "");
+    }
+    textf(text, "\nFix the failed items, check them again, and call report_review with "
+                "the new results.\n");
 }
 
 static void handle_tools_call(json_buf *b, const json_value *id, const myna_catalogue *cat,
@@ -432,6 +661,8 @@ static void handle_tools_call(json_buf *b, const json_value *id, const myna_cata
         tool_checklist(&text, &is_error, cat, args, 0);
     } else if (strcmp(name, "review_checklist") == 0) {
         tool_checklist(&text, &is_error, cat, args, 1);
+    } else if (strcmp(name, "report_review") == 0) {
+        tool_report(&text, &is_error, args);
     } else {
         json_buf msg;
         json_buf_init(&msg);

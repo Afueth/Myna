@@ -5,7 +5,7 @@ CPPFLAGS += -Iinclude
 BUILD   := build
 CORE    := src/core/catalogue.c src/core/search.c src/core/prompt.c
 CLI     := src/main.c src/cli/cli.c src/cli/terminal.c src/cli/logo.c \
-           src/cli/json.c src/cli/mcp.c
+           src/cli/json.c src/cli/mcp.c src/cli/report.c
 HEADERS := $(wildcard include/myna/*.h src/cli/*.h)
 
 # On Windows without a POSIX shell, make runs recipes through cmd.exe.
@@ -42,8 +42,8 @@ $(BUILD)/test_search: tests/test_search.c $(CORE) $(HEADERS) | $(BUILD)
 $(BUILD)/test_prompt: tests/test_prompt.c $(CORE) $(HEADERS) | $(BUILD)
 	$(CC) $(CPPFLAGS) $(CFLAGS) tests/test_prompt.c $(CORE) -o $@
 
-$(BUILD)/test_mcp: tests/test_mcp.c src/cli/json.c src/cli/mcp.c $(CORE) $(HEADERS) | $(BUILD)
-	$(CC) $(CPPFLAGS) -Isrc/cli $(CFLAGS) tests/test_mcp.c src/cli/json.c src/cli/mcp.c $(CORE) -o $@
+$(BUILD)/test_mcp: tests/test_mcp.c src/cli/json.c src/cli/mcp.c src/cli/report.c $(CORE) $(HEADERS) | $(BUILD)
+	$(CC) $(CPPFLAGS) -Isrc/cli $(CFLAGS) tests/test_mcp.c src/cli/json.c src/cli/mcp.c src/cli/report.c $(CORE) -o $@
 
 test: $(BUILD)/test_search $(BUILD)/test_prompt $(BUILD)/test_mcp
 	./$(BUILD)/test_search data/concepts.csv

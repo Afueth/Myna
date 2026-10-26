@@ -32,8 +32,12 @@ developers.
 - [x] MCP server (`myna mcp`) with `find_concepts`, `get_checklist` and
       `review_checklist`, for both the 2026-07-28 protocol and earlier
       `initialize`-based versions
+- [x] `report_review` MCP tool: the assistant reports its verdicts, and Myna
+      saves them in the project as `.myna/review.json` for editors to show
 - [ ] Measure whether AI-written code passes more checklist items with Myna
-      connected than without
+      connected than without (round 1 done, see `docs/COMPARISON.md`)
+- [x] VS Code extension that shows saved reviews, with Myna in the sidebar
+      (`vscode-extension/`, not yet on the Marketplace)
 - [ ] Try the prompts with real AI assistants and refine the wording
 
 ## 0.1 — Vocabulary Search

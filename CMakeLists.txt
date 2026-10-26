@@ -24,6 +24,7 @@ set(MYNA_CLI_SOURCES
     src/cli/logo.c
     src/cli/json.c
     src/cli/mcp.c
+    src/cli/report.c
 )
 if(WIN32)
     # Embeds the icon in myna.exe.
@@ -44,7 +45,7 @@ add_executable(test_prompt tests/test_prompt.c)
 target_link_libraries(test_prompt PRIVATE myna_core)
 add_test(NAME test_prompt COMMAND test_prompt)
 
-add_executable(test_mcp tests/test_mcp.c src/cli/json.c src/cli/mcp.c)
+add_executable(test_mcp tests/test_mcp.c src/cli/json.c src/cli/mcp.c src/cli/report.c)
 target_include_directories(test_mcp PRIVATE src/cli)
 target_link_libraries(test_mcp PRIVATE myna_core)
 add_test(NAME test_mcp

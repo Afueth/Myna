@@ -1,0 +1,150 @@
+/* Uses VS Code's theme colours, so the view matches light, dark and high-contrast themes. */
+
+body {
+    padding: 0 12px 16px;
+    color: var(--vscode-foreground);
+    font-family: var(--vscode-font-family);
+    font-size: var(--vscode-font-size);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bird {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin: 8px auto 0;
+}
+
+/* The speech bubble, with its tail pointing up at the bird. */
+.bubble {
+    position: relative;
+    padding: 10px 12px;
+    border: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+    border-radius: 10px;
+    background: var(--vscode-editorWidget-background);
+}
+
+.bubble::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: calc(50% - 6px);
+    width: 12px;
+    height: 12px;
+    border-top: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+    border-left: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+    background: var(--vscode-editorWidget-background);
+    transform: rotate(45deg);
+}
+
+.bubble p {
+    margin: 0;
+}
+
+.bubble .headline {
+    font-weight: 600;
+}
+
+.bubble .details {
+    margin-top: 4px;
+    color: var(--vscode-descriptionForeground);
+}
+
+.bubble.happy .headline::before {
+    content: '\2714\FE0E  ';
+    color: var(--vscode-testing-iconPassed, var(--vscode-charts-green));
+}
+
+.bubble.worried .headline::before {
+    content: '\26A0\FE0E  ';
+    color: var(--vscode-editorWarning-foreground);
+}
+
+h2 {
+    margin: 6px 0 0;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.results {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.results li + li {
+    margin-top: 4px;
+}
+
+.result {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+}
+
+button.result {
+    cursor: pointer;
+}
+
+button.result:hover {
+    background: var(--vscode-list-hoverBackground);
+}
+
+button:focus-visible {
+    outline: 1px solid var(--vscode-focusBorder);
+    outline-offset: 1px;
+}
+
+.fail .result {
+    border-left: 3px solid var(--vscode-editorWarning-foreground);
+}
+
+.number {
+    color: var(--vscode-descriptionForeground);
+}
+
+.where {
+    color: var(--vscode-textLink-foreground);
+    font-family: var(--vscode-editor-font-family);
+    font-size: 0.92em;
+}
+
+.note {
+    color: var(--vscode-descriptionForeground);
+}
+
+button.primary {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 2px;
+    background: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    font: inherit;
+    cursor: pointer;
+}
+
+button.primary:hover {
+    background: var(--vscode-button-hoverBackground);
+}
+
+details summary {
+    cursor: pointer;
+    color: var(--vscode-descriptionForeground);
+}
+
+details .results {
+    margin-top: 4px;
+}

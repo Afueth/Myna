@@ -124,6 +124,7 @@ way AI coding assistants connect to tools. Once connected, the assistant can:
 | Understand the request | `find_concepts` | The concepts behind your plain-language request |
 | Before writing code | `get_checklist` | What a good version must do, and how to check it works |
 | After writing code | `review_checklist` | A numbered review rubric to mark PASS or FAIL against the code |
+| After checking | `report_review` | Saves the result in your project (`.myna/review.json`), so you can see what passed and what to fix |
 
 Setup is one line in Claude Code:
 
@@ -135,6 +136,9 @@ Setup for Cursor, VS Code and others is in [docs/MCP.md](docs/MCP.md).
 
 Not using MCP? `myna review modal-dialog` prints the same review rubric to
 paste into any AI chat next to your code.
+
+**See the review in VS Code:** the [Myna extension](vscode-extension/) shows
+the latest review next to your files, with warnings on the exact lines.
 
 ## Who is it for?
 

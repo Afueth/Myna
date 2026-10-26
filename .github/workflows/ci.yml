@@ -36,3 +36,18 @@ jobs:
           python-version: "3.12"
       - name: Validate catalogue
         run: python scripts/check_catalogue.py data/concepts.csv
+
+  vscode-extension:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vscode-extension
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check syntax
+        run: node --check extension.js && node --check review.js && node --check media/view.js
+      - name: Test
+        run: npm test

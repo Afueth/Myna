@@ -6,6 +6,15 @@
 
 #include "json.h"
 #include "mcp.h"
+#include "report.h"
+
+#ifdef _WIN32
+#include <direct.h>
+#define remove_dir(path) _rmdir(path)
+#else
+#include <unistd.h>
+#define remove_dir(path) rmdir(path)
+#endif
 
 static int failures = 0;
 
@@ -214,6 +223,80 @@ static void test_errors(const myna_catalogue *cat)
     free(r);
 }
 
+static char *read_text_file(const char *path)
+{
+    FILE *fp = fopen(path, "rb");
+    if (!fp)
+        return NULL;
+    static char buf[8192];
+    size_t n = fread(buf, 1, sizeof buf - 1, fp);
+    fclose(fp);
+    buf[n] = '\0';
+    return buf;
+}
+
+static void test_report_review(const myna_catalogue *cat)
+{
+    const char *dir = "myna-report-test";
+    myna_mcp_state st;
+    myna_mcp_init(&st);
+    st.legacy = 1;
+    char *r;
+
+    CHECK(myna_ensure_dir(dir) == 0);
+
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\"}");
+    CHECK(has(r, "\"name\":\"report_review\""));
+    free(r);
+
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"report_review\",\"arguments\":{\"project_dir\":\"myna-report-test\","
+                       "\"summary\":\"Menu\",\"concept_ids\":[\"dropdown-menu\"],\"results\":["
+                       "{\"number\":1,\"item\":\"Opens with Enter\",\"verdict\":\"pass\"},"
+                       "{\"number\":2,\"item\":\"Stays on screen\",\"verdict\":\"fail\","
+                       "\"file\":\"app.js\",\"line\":9,\"note\":\"No positioning\"}]}}}");
+    CHECK(has(r, "\"isError\":false"));
+    CHECK(has(r, "1 passed, 1 failed, 0 not applicable"));
+    CHECK(has(r, "Stays on screen (app.js:9): No positioning"));
+    free(r);
+
+    /* The saved review is one line of valid JSON with the counts and results. */
+    char *saved = read_text_file("myna-report-test/.myna/review.json");
+    CHECK(saved != NULL);
+    if (saved) {
+        CHECK(strchr(saved, '\n') == strrchr(saved, '\n')); /* only the final newline */
+        json_value *v = json_parse(saved);
+        CHECK(v != NULL);
+        const json_value *counts = json_get(v, "counts");
+        CHECK(counts && strcmp(json_get(counts, "fail")->text, "1") == 0);
+        CHECK(strcmp(json_string(json_get(v, "summary")), "Menu") == 0);
+        json_free(v);
+    }
+    CHECK(read_text_file("myna-report-test/.myna/history.jsonl") != NULL);
+
+    /* Mistakes the model can fix come back as tool errors. */
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"report_review\",\"arguments\":{\"project_dir\":\"no-such-folder-x\","
+                       "\"results\":[{\"item\":\"x\",\"verdict\":\"pass\"}]}}}");
+    CHECK(has(r, "\"isError\":true") && has(r, "not an existing folder"));
+    free(r);
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":4,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"report_review\",\"arguments\":{\"project_dir\":\"myna-report-test\","
+                       "\"results\":[{\"item\":\"x\",\"verdict\":\"maybe\"}]}}}");
+    CHECK(has(r, "\"isError\":true") && has(r, "needs a verdict"));
+    free(r);
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":5,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"report_review\",\"arguments\":{\"project_dir\":\"myna-report-test\","
+                       "\"results\":[{\"item\":\"x\",\"verdict\":\"fail\",\"line\":0}]}}}");
+    CHECK(has(r, "\"isError\":true"));
+    free(r);
+
+    remove("myna-report-test/.myna/review.json");
+    remove("myna-report-test/.myna/history.jsonl");
+    remove_dir("myna-report-test/.myna");
+    remove_dir(dir);
+}
+
 int main(int argc, char **argv)
 {
     const char *dataset = argc > 1 ? argv[1] : "data/concepts.csv";
@@ -230,6 +313,7 @@ int main(int argc, char **argv)
     test_legacy_session(&cat);
     test_modern_requests(&cat);
     test_errors(&cat);
+    test_report_review(&cat);
     myna_catalogue_free(&cat);
 
     if (failures) {

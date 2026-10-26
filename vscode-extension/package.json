@@ -1,0 +1,99 @@
+{
+  "name": "myna",
+  "displayName": "Myna",
+  "description": "See how your AI's code did against Myna's expert checklists, right next to your files.",
+  "version": "0.1.0",
+  "publisher": "afueth",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Afueth/Myna"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "accessibility",
+    "security",
+    "checklist",
+    "code review",
+    "ai",
+    "mcp"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "myna",
+          "title": "Myna",
+          "icon": "media/activity.png"
+        }
+      ]
+    },
+    "views": {
+      "myna": [
+        {
+          "type": "webview",
+          "id": "myna.review",
+          "name": "Review"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "myna.refresh",
+        "title": "Refresh Review",
+        "category": "Myna",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "myna.copyFixRequest",
+        "title": "Copy Fix Request for Your AI",
+        "category": "Myna",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "myna.showReview",
+        "title": "Show Review",
+        "category": "Myna"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "myna.copyFixRequest",
+          "when": "view == myna.review",
+          "group": "navigation"
+        },
+        {
+          "command": "myna.refresh",
+          "when": "view == myna.review",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "myna.refresh"
+        },
+        {
+          "command": "myna.copyFixRequest"
+        },
+        {
+          "command": "myna.showReview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node --test test/review.test.js"
+  }
+}

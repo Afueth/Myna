@@ -8,6 +8,8 @@ checklists by themselves:
    the feature needs.
 2. **After** writing code, it asks Myna for a review checklist and checks its
    own work against every item.
+3. It **reports the result** back to Myna, which saves it in your project, so
+   you can see what passed and what still needs fixing.
 
 You don't have to copy prompts or remember to open Myna.
 
@@ -71,13 +73,41 @@ and arguments (`mcp`). For Claude Desktop, add the Cursor-style
 | `find_concepts` | You ask for a feature in plain words | The matching concepts with ids, explanations, and related concepts to consider |
 | `get_checklist` | Before writing code | The requirements and "done when" checks for the chosen concepts |
 | `review_checklist` | After writing code | A numbered rubric to mark PASS, FAIL or NOT APPLICABLE against the code |
+| `report_review` | After checking the code | Saves the verdicts in your project and returns a summary of what failed |
 
-All three only read Myna's catalogue. They never change files, and they make
-no network requests.
+The first three only read Myna's catalogue. `report_review` writes to one
+place only: a `.myna` folder in the project folder the assistant names. None
+of the tools make network requests.
 
 To nudge an assistant into using Myna, you can say so in your request, for
 example: *"Use Myna's checklist to build a dropdown menu, then review it with
 Myna."*
+
+## Saved reviews
+
+Each `report_review` call writes two files:
+
+- `.myna/review.json`: the latest review, one line of JSON
+- `.myna/history.jsonl`: every review, one per line
+
+```json
+{
+  "tool": "myna",
+  "version": "0.2.0",
+  "created": "2026-10-26T13:08:03Z",
+  "summary": "Settings page",
+  "concepts": ["toggle-switch", "dropdown-menu"],
+  "counts": {"pass": 28, "fail": 2, "not_applicable": 0},
+  "results": [
+    {"number": 14, "item": "Keep the menu on screen near the edges of the window",
+     "verdict": "fail", "file": "app.js", "line": 156,
+     "note": "No positioning logic, the menu can open off-screen"}
+  ]
+}
+```
+
+Editors and other tools can read these files to show the review. If you
+don't want them in version control, add `.myna/` to your `.gitignore`.
 
 ## Without MCP
 
