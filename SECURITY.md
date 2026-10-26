@@ -8,7 +8,9 @@ Only the latest release on `main` receives security fixes.
 
 Please **do not** open a public issue for security problems.
 
-Email **[INSERT SECURITY CONTACT]** with:
+Report it privately through
+[GitHub's private vulnerability reporting](https://github.com/Afueth/Myna/security/advisories/new),
+or email **afueththomas@outlook.com**, with:
 
 - a description of the issue and its impact,
 - steps or a file that reproduces it (for example a crafted catalogue CSV),

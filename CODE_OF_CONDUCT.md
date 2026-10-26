@@ -22,7 +22,7 @@ religion, or sexual identity and orientation.
 
 ## Enforcement
 
-Report unacceptable behaviour to the maintainers at **[INSERT CONTACT EMAIL]**.
+Report unacceptable behaviour to the maintainers at **afueththomas@outlook.com**.
 All reports will be reviewed promptly and kept confidential. Maintainers may
 remove, edit or reject contributions, and may temporarily or permanently ban
 contributors who violate this code.
