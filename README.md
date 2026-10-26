@@ -211,9 +211,10 @@ exactly where you can help.
 
 ## Help make Myna smarter
 
-**You don't need to know C to contribute.** Myna's knowledge lives in one
-simple file, [data/concepts.csv](data/concepts.csv). Each line is a concept
-with a short explanation and the everyday phrases people use for it.
+**You don't need to know C to contribute.** Myna's knowledge lives in simple
+CSV files in [data/concepts/](data/concepts/), one per category such as
+`ui.csv` or `security.csv`. Each line is a concept with a short explanation
+and the everyday phrases people use for it.
 
 - **Myna didn't understand your request?** [Open an issue](https://github.com/Afueth/Myna/issues/new/choose)
   with the sentence you typed. That's already a useful contribution.
@@ -279,7 +280,7 @@ myna review <id>...           Print a checklist for reviewing finished code
 myna mcp                      Run as an MCP server for AI coding tools
 myna show <id>                Show one concept in full
 myna list                     List every concept
-myna -d FILE ...              Use a different catalogue file
+myna -d PATH ...              Use a different catalogue folder or file
 ```
 
 In the interactive session, type a description, then `P` to build a prompt

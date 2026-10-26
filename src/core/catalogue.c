@@ -1,3 +1,7 @@
+#if !defined(_WIN32) && !defined(__APPLE__)
+#define _POSIX_C_SOURCE 200809L /* opendir, readdir */
+#endif
+
 #include "myna/catalogue.h"
 
 #include <ctype.h>
@@ -5,7 +9,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#else
+#include <dirent.h>
+#endif
+
 #define LINE_MAX_LEN 8192
+#define PATH_MAX_LEN 1024
+#define MAX_CATALOGUE_FILES 256
 /* id..related are required; requirements and done_when are optional. */
 #define MIN_FIELD_COUNT 6
 #define MAX_FIELD_COUNT 8
@@ -200,6 +213,91 @@ int myna_catalogue_load_csv(myna_catalogue *cat, const char *path)
     }
 
     fclose(fp);
+    return loaded;
+}
+
+static int ends_with_csv(const char *name)
+{
+    size_t len = strlen(name);
+    return len > 4 && strcmp(name + len - 4, ".csv") == 0;
+}
+
+static int compare_names(const void *a, const void *b)
+{
+    return strcmp(*(char *const *)a, *(char *const *)b);
+}
+
+/* Append a copy of `name` to `names` if it is a .csv file and there is room. */
+static void add_csv_name(char **names, int *n, int max, const char *name)
+{
+    if (*n >= max || !ends_with_csv(name))
+        return;
+    size_t len = strlen(name) + 1;
+    char *copy = malloc(len);
+    if (copy) {
+        memcpy(copy, name, len);
+        names[(*n)++] = copy;
+    }
+}
+
+/* Collect the names of the .csv files in `dir`. Returns the number found, or
+ * -1 if `dir` is not a folder that can be read. */
+static int list_csv_files(const char *dir, char **names, int max)
+{
+    int n = 0;
+#ifdef _WIN32
+    char pattern[PATH_MAX_LEN];
+    WIN32_FIND_DATAA found;
+    if (snprintf(pattern, sizeof pattern, "%s/*.csv", dir) >= (int)sizeof pattern)
+        return -1;
+    DWORD attrs = GetFileAttributesA(dir);
+    if (attrs == INVALID_FILE_ATTRIBUTES || !(attrs & FILE_ATTRIBUTE_DIRECTORY))
+        return -1;
+    HANDLE h = FindFirstFileA(pattern, &found);
+    if (h == INVALID_HANDLE_VALUE)
+        return 0;
+    do {
+        if (!(found.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+            add_csv_name(names, &n, max, found.cFileName);
+    } while (FindNextFileA(h, &found));
+    FindClose(h);
+#else
+    DIR *d = opendir(dir);
+    if (!d)
+        return -1;
+    struct dirent *entry;
+    while ((entry = readdir(d)) != NULL)
+        add_csv_name(names, &n, max, entry->d_name);
+    closedir(d);
+#endif
+    qsort(names, (size_t)n, sizeof *names, compare_names);
+    return n;
+}
+
+int myna_catalogue_load(myna_catalogue *cat, const char *path)
+{
+    char *names[MAX_CATALOGUE_FILES];
+    int n = list_csv_files(path, names, MAX_CATALOGUE_FILES);
+    if (n < 0)
+        return myna_catalogue_load_csv(cat, path);
+
+    /* Every file is loaded in name order; any file that cannot be read makes
+     * the whole load fail. */
+    int loaded = n == 0 ? -1 : 0;
+    size_t skipped = 0;
+    for (int i = 0; i < n; i++) {
+        char file[PATH_MAX_LEN];
+        int fits = snprintf(file, sizeof file, "%s/%s", path, names[i]) < (int)sizeof file;
+        int r = (loaded >= 0 && fits) ? myna_catalogue_load_csv(cat, file) : -1;
+        if (r < 0) {
+            loaded = -1;
+        } else {
+            loaded += r;
+            skipped += cat->skipped;
+        }
+        free(names[i]);
+    }
+    cat->skipped = skipped;
     return loaded;
 }
 

@@ -19,7 +19,7 @@ Using Make instead (on Windows with MSYS2 the command is `mingw32-make`):
 ```sh
 make          # builds build/myna
 make test     # builds and runs build/test_search
-make check    # validates data/concepts.csv
+make check    # validates data/concepts/
 make coverage # reports which example requests Myna answers badly
 make clean
 ```
@@ -30,7 +30,7 @@ make clean
 ./build/myna                                  # interactive session
 ./build/myna search blur the background       # one-shot search
 ./build/myna show modal-dialog
-./build/myna -d path/to/other.csv list
+./build/myna -d path/to/other.csv list    # a folder or one CSV file
 ```
 
 To try the interactive session non-interactively, pipe input into it:

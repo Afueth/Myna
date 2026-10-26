@@ -1,6 +1,6 @@
 # Example requests
 
-All examples use the bundled `data/concepts.csv`. On Windows, run the program
+All examples use the bundled catalogue in `data/concepts/`. On Windows, run the program
 as `.\build\myna.exe`.
 
 ## Interactive session
@@ -100,7 +100,7 @@ Requirements:
 ```console
 $ myna list                 # every concept id and name
 $ myna show escape-key      # one concept in full
-$ myna -d my-concepts.csv   # use a different catalogue
+$ myna -d my-concepts.csv   # use a different catalogue (a folder or one file)
 ```
 
 ## Exit codes

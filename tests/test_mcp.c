@@ -299,14 +299,14 @@ static void test_report_review(const myna_catalogue *cat)
 
 int main(int argc, char **argv)
 {
-    const char *dataset = argc > 1 ? argv[1] : "data/concepts.csv";
+    const char *dataset = argc > 1 ? argv[1] : "data/concepts";
     myna_catalogue cat;
 
     test_json_parse();
     test_json_write_escapes();
 
     myna_catalogue_init(&cat);
-    if (myna_catalogue_load_csv(&cat, dataset) < 0) {
+    if (myna_catalogue_load(&cat, dataset) < 0) {
         fprintf(stderr, "cannot load %s\n", dataset);
         return 1;
     }

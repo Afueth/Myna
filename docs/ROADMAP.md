@@ -15,6 +15,58 @@ developers.
 | 0.7 — Local API | Expose the engine over a local HTTP API. | HTTP fundamentals, networking, API boundaries |
 | 1.0 — Integrations | Editor integrations and packaged releases. | Editor workflows, packaging, documentation, releases, contributions |
 
+## Catalogue growth
+
+The catalogue grows from 187 concepts to about 2,900, in categories that each
+get their own file under `data/concepts/`. A concept lives in exactly one
+category, chosen by the question the user is asking, and links to concepts in
+other categories through `related`. Each batch is built from the sources in
+`data/SOURCES.md`, de-duplicated against the whole catalogue, and comes with
+test requests in `tests/requests.csv`.
+
+Language syntax, computer science theory and framework-specific APIs are out
+of scope: there is nothing to build, so there is no checklist, and their
+names are easy to search for already. Framework mappings come in 0.5.
+
+### Categories
+
+| Category | Covers | Now | Target |
+|----------|--------|-----|--------|
+| `ui` | Components and interactions: dialogs, menus, tabs, cards, sliders, toasts | 61 | 300 |
+| `forms` | Inputs and form behaviour: validation, dates, addresses, passwords, uploads | 15 | 100 |
+| `pages` | Page types: landing hero, footer, 404, error, confirmation, check answers | 10 | 50 |
+| `accessibility` | Focus, keyboard, contrast, ARIA, screen readers, captions | 9 | 50 |
+| `web` | Browser side: performance, SEO, offline, storage, internationalization | 11 | 100 |
+| `mobile` | iOS and Android: gestures, push, deep links, in-app purchases, app security | 8 | 200 |
+| `product` | Common app features: payments, comments, chat, search, cart, onboarding, admin | 11 | 350 |
+| `ai` | LLM features: chatbots, RAG, streaming, tool use, guardrails, evals | 1 | 100 |
+| `backend` | Inside one app: jobs, databases, transactions, caching, retries, audit logs | 12 | 150 |
+| `architecture` | System design: load balancing, sharding, queues, microservices, circuit breakers | 2 | 175 |
+| `api` | REST, GraphQL, webhooks, versioning, errors, rate limits | 14 | 150 |
+| `security` | Authentication, sessions, passkeys, encryption, injection, privacy | 20 | 200 |
+| `devops` | Shipping and running: CI/CD, feature flags, canary releases, rollback, monitoring | 13 | 150 |
+| `workflow` | Working on the code: Git, pull requests, code review, versioning, linting | 0 | 70 |
+| `algorithms` | Problems people describe in plain words: shortest route, ranking, matching, scheduling, deduplication | 0 | 150 |
+| `data-engineering` | Pipelines, ETL, data warehouses, change data capture, data quality | 0 | 120 |
+| `games` | Game loop, collision detection, pathfinding, save games, multiplayer sync | 0 | 150 |
+| `desktop` | Installers, auto-update, system tray, file associations, native menus | 0 | 80 |
+| `machine-learning` | Training and serving models: data splits, overfitting, feature scaling, model monitoring | 0 | 120 |
+| `embedded` | Embedded and IoT: sensors, firmware updates over the air, low power, MQTT | 0 | 100 |
+| `media` | Video transcoding, image processing, audio and video streaming, thumbnails | 0 | 80 |
+| **Total** | | **187** | **about 2,900** |
+
+### Steps
+
+- [x] Better matching for a large catalogue: stricter word variants, filler
+      words inside phrases, rare words weighted higher, phrases whose words
+      are apart, and a minimum score
+- [x] Fail the catalogue check when unrelated concepts share a term
+- [x] First UI batch from component.gallery, GOV.UK and USWDS (42 concepts)
+- [x] Split the catalogue into one file per category, merged at load time
+- [ ] Add `platforms` and `sources` columns, and raise the trigger limit
+- [ ] Build a de-duplicated inventory of candidate concepts for each category
+- [ ] Batches for every category
+
 ## 0.2 — Prompt Builder and MCP
 
 - [x] Optional `requirements` and `done_when` columns in the catalogue
@@ -52,6 +104,5 @@ developers.
 
 ## Ideas for later
 
-- Multiple catalogue files merged at load time
 - JSON output (`--json`) for scripting and editor integrations
 - Prebuilt index for large catalogues

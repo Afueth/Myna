@@ -14,7 +14,7 @@
 #include "mcp.h"
 #include "terminal.h"
 
-#define DEFAULT_CATALOGUE "data/concepts.csv"
+#define DEFAULT_CATALOGUE "data/concepts"
 #define MAX_RESULTS 5
 #define MAX_SUGGESTIONS 3
 #define INPUT_MAX 500
@@ -31,7 +31,7 @@ typedef enum { INPUT_OK, INPUT_EMPTY, INPUT_TOO_LONG, INPUT_EOF } input_status;
 static void print_usage(const char *prog)
 {
     fprintf(stderr,
-            "Usage: %s [-d FILE] [command]\n"
+            "Usage: %s [-d PATH] [command]\n"
             "\n"
             "With no command, starts an interactive session.\n"
             "\n"
@@ -44,7 +44,7 @@ static void print_usage(const char *prog)
             "  mcp                    Run as an MCP server for AI coding tools (stdio)\n"
             "\n"
             "Options:\n"
-            "  -d FILE                Catalogue CSV (default: " DEFAULT_CATALOGUE ")\n"
+            "  -d PATH                Catalogue folder or CSV file (default: " DEFAULT_CATALOGUE ")\n"
             "  -h, --help             Show this help\n"
             "  -v, --version          Show the version\n",
             prog);
@@ -421,15 +421,6 @@ int myna_repl(const myna_catalogue *cat, FILE *in, FILE *out)
     return 0;
 }
 
-static int file_exists(const char *path)
-{
-    FILE *fp = fopen(path, "r");
-    if (!fp)
-        return 0;
-    fclose(fp);
-    return 1;
-}
-
 /* MYNA_DATA wins, then data/ beside the executable's folder, then ./data.
  * The executable's own data comes before ./data because AI tools start
  * `myna mcp` inside the user's project, which may have a data/ folder of its
@@ -451,7 +442,7 @@ static const char *find_catalogue(const char *prog, char *buf, size_t size)
         sep = bsep;
     if (sep) {
         snprintf(buf, size, "%.*s/../%s", (int)(sep - prog), prog, DEFAULT_CATALOGUE);
-        if (file_exists(buf))
+        if (myna_path_exists(buf))
             return buf;
     }
     return DEFAULT_CATALOGUE; /* ./data, relative to the current folder */
@@ -555,9 +546,9 @@ int myna_cli_run(int argc, char **argv)
 
     myna_catalogue cat;
     myna_catalogue_init(&cat);
-    if (myna_catalogue_load_csv(&cat, data_path) < 0) {
+    if (myna_catalogue_load(&cat, data_path) < 0) {
         fprintf(stderr, "Could not read catalogue: %s\n"
-                        "Run Myna from the project folder, or pass -d path/to/concepts.csv\n",
+                        "Run Myna from the project folder, or pass -d path/to/catalogue\n",
                 data_path);
         return 1;
     }

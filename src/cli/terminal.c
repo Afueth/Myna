@@ -16,6 +16,7 @@
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 #endif
 #else
+#include <sys/stat.h>
 #include <unistd.h>
 #endif
 
@@ -85,6 +86,16 @@ int myna_executable_path(char *buf, size_t size)
     (void)buf;
     (void)size;
     return 0;
+#endif
+}
+
+int myna_path_exists(const char *path)
+{
+#ifdef _WIN32
+    return GetFileAttributesA(path) != INVALID_FILE_ATTRIBUTES;
+#else
+    struct stat st;
+    return stat(path, &st) == 0;
 #endif
 }
 

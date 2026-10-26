@@ -4,7 +4,7 @@ Thanks for your interest in improving myna!
 
 ## Ways to contribute
 
-- **Add concepts** to `data/concepts.csv` (see [docs/DATA_FORMAT.md](docs/DATA_FORMAT.md)).
+- **Add concepts** to the right category file in `data/concepts/` (see [docs/DATA_FORMAT.md](docs/DATA_FORMAT.md)).
 - **Improve checklists**: every concept has `requirements` and `done_when`
   items, which the prompt builder and AI tools use. Add what's missing, fix
   what's wrong, and check against the references in
@@ -20,7 +20,7 @@ Thanks for your interest in improving myna!
 3. Run the checks:
    ```sh
    cmake -S . -B build && cmake --build build && ctest --test-dir build
-   python scripts/check_catalogue.py data/concepts.csv
+   python scripts/check_catalogue.py data/concepts
    ```
 4. Open a pull request describing what changed and why.
 

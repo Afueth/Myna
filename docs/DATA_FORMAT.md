@@ -1,7 +1,21 @@
 # Catalogue data format
 
-The catalogue is a UTF-8 CSV file, by default `data/concepts.csv`. It is the
-heart of Myna: search quality depends far more on good data than on code.
+The catalogue is a folder of UTF-8 CSV files, by default `data/concepts/`. It
+is the heart of Myna: search quality depends far more on good data than on
+code.
+
+## Categories
+
+Each file holds one category, such as `ui.csv`, `forms.csv`, `security.csv`
+or `architecture.csv`; the full list and what belongs where is in
+[ROADMAP.md](ROADMAP.md#categories). Myna loads every `.csv` file in the
+folder in name order, and treats them as one catalogue: ids must be unique
+across all files, and `related` can point to a concept in any category. Put a
+concept in the category of the question the user is asking: how it looks and
+behaves (`ui`), how to build it on the server (`backend`), how the pieces fit
+together (`architecture`), or how to ship and run it (`devops`).
+
+`-d` (or `MYNA_DATA`) can point to another folder, or to a single CSV file.
 
 ## Layout
 
@@ -101,7 +115,7 @@ change adds or removes what a concept covers, update this file too. See
 ## Validation
 
 ```sh
-python scripts/check_catalogue.py data/concepts.csv
+python scripts/check_catalogue.py data/concepts
 ```
 
 The checker reports wrong field counts, empty or over-long values, invalid or

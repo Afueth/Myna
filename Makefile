@@ -46,12 +46,12 @@ $(BUILD)/test_mcp: tests/test_mcp.c src/cli/json.c src/cli/mcp.c src/cli/report.
 	$(CC) $(CPPFLAGS) -Isrc/cli $(CFLAGS) tests/test_mcp.c src/cli/json.c src/cli/mcp.c src/cli/report.c $(CORE) -o $@
 
 test: $(BUILD)/test_search $(BUILD)/test_prompt $(BUILD)/test_mcp
-	./$(BUILD)/test_search data/concepts.csv
+	./$(BUILD)/test_search data/concepts
 	./$(BUILD)/test_prompt
-	./$(BUILD)/test_mcp data/concepts.csv
+	./$(BUILD)/test_mcp data/concepts
 
 check:
-	$(PYTHON) scripts/check_catalogue.py data/concepts.csv
+	$(PYTHON) scripts/check_catalogue.py data/concepts
 
 # Report how well the catalogue answers the requests in tests/requests.csv.
 coverage: $(BUILD)/myna

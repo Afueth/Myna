@@ -98,8 +98,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("requests", nargs="?", type=Path,
                         default=ROOT / "tests" / "requests.csv")
-    parser.add_argument("-d", "--data", type=Path, default=ROOT / "data" / "concepts.csv",
-                        help="catalogue CSV (default: data/concepts.csv)")
+    parser.add_argument("-d", "--data", type=Path, default=ROOT / "data" / "concepts",
+                        help="catalogue folder or CSV file (default: data/concepts)")
     parser.add_argument("--myna", type=Path, help="path to the myna program")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="also list the requests that are ok")

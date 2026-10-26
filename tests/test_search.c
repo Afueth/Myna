@@ -221,11 +221,36 @@ static void test_find_by_id(const myna_catalogue *cat)
 
 /* ---- bundled dataset ---- */
 
+/* A folder loads every category file; one file and a missing path work too. */
+static void test_load_folder_or_file(const char *folder)
+{
+    myna_catalogue all, one;
+    char file[1024];
+
+    myna_catalogue_init(&all);
+    myna_catalogue_init(&one);
+    snprintf(file, sizeof file, "%s/ui.csv", folder);
+    int total = myna_catalogue_load(&all, folder);
+    int ui = myna_catalogue_load(&one, file);
+    CHECK(ui > 0);
+    CHECK(total > ui);
+    CHECK(myna_find_by_id(&one, "modal-dialog") != NULL);
+    CHECK(myna_find_by_id(&one, "rest-api") == NULL);
+    CHECK(myna_find_by_id(&all, "rest-api") != NULL);
+    myna_catalogue_free(&all);
+    myna_catalogue_free(&one);
+
+    myna_catalogue missing;
+    myna_catalogue_init(&missing);
+    CHECK(myna_catalogue_load(&missing, "no/such/catalogue") < 0);
+    myna_catalogue_free(&missing);
+}
+
 static void test_dataset(const char *path)
 {
     myna_catalogue cat;
     myna_catalogue_init(&cat);
-    int loaded = myna_catalogue_load_csv(&cat, path);
+    int loaded = myna_catalogue_load(&cat, path);
     if (loaded < 0) {
         fprintf(stderr, "Could not read %s\n", path);
         failures++;
@@ -290,7 +315,7 @@ static void test_dataset(const char *path)
 
 int main(int argc, char **argv)
 {
-    const char *dataset = argc > 1 ? argv[1] : "data/concepts.csv";
+    const char *dataset = argc > 1 ? argv[1] : "data/concepts";
 
     test_parse_fields_and_lists();
     test_parse_checklist_columns();
@@ -313,6 +338,7 @@ int main(int argc, char **argv)
     test_find_by_id(&cat);
     myna_catalogue_free(&cat);
 
+    test_load_folder_or_file(dataset);
     test_dataset(dataset);
 
     if (failures) {

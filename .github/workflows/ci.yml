@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Validate catalogue
-        run: python scripts/check_catalogue.py data/concepts.csv
+        run: python scripts/check_catalogue.py data/concepts
 
   vscode-extension:
     runs-on: ubuntu-latest

@@ -21,6 +21,9 @@ void myna_terminal_set_title(const char *title);
  */
 int myna_executable_path(char *buf, size_t size);
 
+/* Returns 1 if `path` names an existing file or folder. */
+int myna_path_exists(const char *path);
+
 /* Returns 1 if `stream` is an interactive terminal rather than a file or pipe. */
 int myna_stream_is_terminal(FILE *stream);
 

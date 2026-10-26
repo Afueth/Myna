@@ -31,6 +31,15 @@ int myna_concept_parse(const char *line, myna_concept *out);
  */
 int myna_catalogue_load_csv(myna_catalogue *cat, const char *path);
 
+/*
+ * Load a catalogue from `path`: either one CSV file, or a folder whose .csv
+ * files (one per category) are loaded in name order. Malformed lines are
+ * skipped and counted in `cat->skipped`.
+ * Returns the number of concepts loaded, or -1 if the path, or any file in
+ * the folder, cannot be read, or the folder has no .csv files.
+ */
+int myna_catalogue_load(myna_catalogue *cat, const char *path);
+
 /* Release all memory held by the catalogue. */
 void myna_catalogue_free(myna_catalogue *cat);
 

@@ -1,6 +1,6 @@
 # Sources
 
-Every concept in `concepts.csv` has a checklist (`requirements` and
+Every concept in `concepts/` has a checklist (`requirements` and
 `done_when`). The items are short and written in Myna's own words, not copied
 from the sources. They are built on the references below, and
 [`source_coverage.csv`](source_coverage.csv) records which concept covers

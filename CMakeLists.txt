@@ -39,7 +39,7 @@ enable_testing()
 add_executable(test_search tests/test_search.c)
 target_link_libraries(test_search PRIVATE myna_core)
 add_test(NAME test_search
-    COMMAND test_search ${CMAKE_CURRENT_SOURCE_DIR}/data/concepts.csv)
+    COMMAND test_search ${CMAKE_CURRENT_SOURCE_DIR}/data/concepts)
 
 add_executable(test_prompt tests/test_prompt.c)
 target_link_libraries(test_prompt PRIVATE myna_core)
@@ -49,4 +49,4 @@ add_executable(test_mcp tests/test_mcp.c src/cli/json.c src/cli/mcp.c src/cli/re
 target_include_directories(test_mcp PRIVATE src/cli)
 target_link_libraries(test_mcp PRIVATE myna_core)
 add_test(NAME test_mcp
-    COMMAND test_mcp ${CMAKE_CURRENT_SOURCE_DIR}/data/concepts.csv)
+    COMMAND test_mcp ${CMAKE_CURRENT_SOURCE_DIR}/data/concepts)
