@@ -314,6 +314,7 @@ powershell -ExecutionPolicy Bypass -File scripts/install-shortcut.ps1
 - [Architecture](docs/ARCHITECTURE.md): how Myna is built
 - [Data format](docs/DATA_FORMAT.md): how concepts are written
 - [Using Myna in AI tools (MCP)](docs/MCP.md): setup for Claude Code, Cursor, VS Code and more
+- [Does Myna make AI code better?](docs/COMPARISON.md): blind tests with and without Myna
 - [Development](docs/DEVELOPMENT.md): building, testing and measuring coverage
 - [Roadmap](docs/ROADMAP.md): where Myna is heading
 
