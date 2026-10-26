@@ -175,9 +175,10 @@ More details are in [Download and install](#download-and-install) below.
 
 ## What Myna knows today
 
-Myna knows **145 concepts** from everyday app development, including:
+Myna knows **187 concepts** from everyday app development, including:
 
-- **Interface:** popups, menus, tooltips, tabs, checkboxes, sliders, tree views, forms, dark mode, loading states
+- **Interface:** popups, menus, drawers, bottom sheets, cards, tags, tabs, sliders, tree views, rich text editors, dark mode, loading states
+- **Forms and pages:** names, addresses, phone numbers, passwords, dates of birth, check-your-answers, confirmation and error pages
 - **Accessibility:** page structure, keyboard use, contrast, captions, touch gestures
 - **Accounts and security:** sign-in, passkeys, roles, sessions, security headers, injection, SSRF
 - **Data and backend:** APIs (errors, versioning, retries, ETags, batches), GraphQL, caching, search, jobs, databases, multi-tenancy
@@ -186,7 +187,7 @@ Myna knows **145 concepts** from everyday app development, including:
 - **AI features:** chatbots, document Q&A and AI agents, built safely
 - **Releases:** feature flags, gradual rollouts, A/B tests, rollbacks, CI/CD, dependencies
 
-**Every concept comes with a checklist**: about 1,080 requirements and "done
+**Every concept comes with a checklist**: about 1,480 requirements and "done
 when" checks in total, built on trusted references:
 
 | Reference | Covered |
@@ -198,6 +199,7 @@ when" checks in total, built on trusted references:
 | [Core Web Vitals](https://web.dev/articles/vitals) (web.dev) | All 3 metrics and their supporting metrics |
 | [NIST SP 800-63B](https://pages.nist.gov/800-63-4/sp800-63b.html) | Password, session and authenticator rules |
 | API guidelines: [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457), [Microsoft](https://github.com/microsoft/api-guidelines), [Zalando](https://opensource.zalando.com/restful-api-guidelines/), [Google AIPs](https://google.aip.dev/general) | Every topic for building APIs |
+| Design systems: [component.gallery](https://component.gallery/components/), [GOV.UK](https://design-system.service.gov.uk/patterns/), [USWDS](https://designsystem.digital.gov/components/overview/) | 127 of 136 components and patterns |
 
 [data/source_coverage.csv](data/source_coverage.csv) shows which concept
 covers each item, and [data/SOURCES.md](data/SOURCES.md) explains what was
@@ -324,4 +326,12 @@ powershell -ExecutionPolicy Bypass -File scripts/install-shortcut.ps1
 
 ## License
 
-MIT. See [LICENSE](LICENSE). Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+© 2026 Afueth.
+
+- **Code:** MIT. See [LICENSE](LICENSE).
+- **Concept data** (everything in [`data/`](data/)): CC BY 4.0. You can use
+  it anywhere, including in commercial products, as long as you credit Myna.
+  See [data/LICENSE](data/LICENSE).
+
+Contributions are accepted under the [Contributor License Agreement](CLA.md).
+Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).

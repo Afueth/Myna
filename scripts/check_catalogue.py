@@ -92,6 +92,42 @@ def check(path: Path) -> list[str]:
             elif rel == row["id"].strip():
                 errors.append(f"{path}:{lineno}: concept lists itself as related")
 
+    errors += check_shared_terms(path, rows)
+    return errors
+
+
+def stem(word: str) -> str:
+    """Strip suffixes the way src/core/search.c does."""
+    if len(word) > 3 and word.endswith("s") and not word.endswith("ss"):
+        word = word[:-1]
+    if len(word) >= 6 and word.endswith("ing"):
+        word = word[:-3]
+    elif len(word) >= 6 and word.endswith("ed"):
+        word = word[:-2]
+    return word
+
+
+def term_key(term: str) -> str:
+    return " ".join(stem(w) for w in re.findall(r"[a-z0-9]+|%", term.lower()))
+
+
+def check_shared_terms(path: Path, rows: list) -> list[str]:
+    """A name, synonym or trigger that two concepts share makes search
+    ambiguous, so it is only allowed between related concepts."""
+    errors = []
+    owners = {}
+    for lineno, row in rows:
+        cid = row["id"].strip()
+        terms = [row["name"]] + split_list(row["synonyms"]) + split_list(row["triggers"])
+        for key in {term_key(t) for t in terms} - {""}:
+            owners.setdefault(key, []).append((lineno, cid))
+    related = {row["id"].strip(): set(split_list(row["related"])) for _, row in rows}
+    for key, users in owners.items():
+        for i, (lineno, a) in enumerate(users):
+            for _, b in users[:i]:
+                if b not in related.get(a, set()) and a not in related.get(b, set()):
+                    errors.append(f"{path}:{lineno}: '{a}' and '{b}' share the term "
+                                  f"'{key}'; make it specific to one, or relate them")
     return errors
 
 

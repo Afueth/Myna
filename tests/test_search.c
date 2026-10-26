@@ -140,6 +140,22 @@ static void test_word_variants_match(const myna_catalogue *cat)
     CHECK(has_id(m, myna_search(cat, "turning off a features", m, 5), "flags"));
 }
 
+static void test_filler_words_inside_phrase(const myna_catalogue *cat)
+{
+    myna_match m[5];
+    size_t n = myna_search(cat, "press the escape button", m, 5);
+    CHECK(n >= 1 && strcmp(m[0].concept->id, "escape") == 0);
+    CHECK(n >= 1 && strcmp(m[0].matched[0], "press escape") == 0);
+}
+
+static void test_phrase_words_apart(const myna_catalogue *cat)
+{
+    myna_match m[5];
+    size_t n = myna_search(cat, "toggle the feature on", m, 5);
+    CHECK(n >= 1 && strcmp(m[0].concept->id, "flags") == 0);
+    CHECK(n >= 1 && strcmp(m[0].matched[0], "feature toggle") == 0);
+}
+
 static void test_percent_example_ranks_phrases_first(const myna_catalogue *cat)
 {
     myna_match m[5];
@@ -264,6 +280,10 @@ static void test_dataset(const char *path)
     n = myna_search(&cat, "show a graph of sales per month", m, 5);
     CHECK(has_id(m, n, "data-visualization"));
     CHECK(!has_id(m, n, "graphql-api"));
+    /* Words that only share a start are different words. */
+    n = myna_search(&cat, "add our contact links to the page footer", m, 5);
+    CHECK(has_id(m, n, "site-footer"));
+    CHECK(!has_id(m, n, "containerization"));
 
     myna_catalogue_free(&cat);
 }
@@ -283,6 +303,8 @@ int main(int argc, char **argv)
     test_empty_and_meaningless_queries(&cat);
     test_case_and_punctuation_ignored(&cat);
     test_word_variants_match(&cat);
+    test_filler_words_inside_phrase(&cat);
+    test_phrase_words_apart(&cat);
     test_percent_example_ranks_phrases_first(&cat);
     test_duplicate_terms_count_once(&cat);
     test_max_results_keeps_best(&cat);

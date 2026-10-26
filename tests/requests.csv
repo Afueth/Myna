@@ -124,3 +124,125 @@ our banking app should not run on rooted phones,mobile-app-hardening
 make it faster,
 it should feel more modern,
 make the app more secure,
+show the user's initials in a circle when they have no photo,avatar
+put a little red dot with the number of unread messages on the inbox icon,notification-badge
+let users add skills as tags they can remove with an x,tags-chips
+show the products as a grid of cards with an image and price,content-card
+let the admin choose a brand colour for their workspace,color-picker
+the mobile menu should slide in from the left side,side-drawer
+on phones show the share options in a panel that slides up from the bottom,bottom-sheet
+add a footer with privacy policy and contact links,site-footer
+build a landing page with a big headline and a sign up button at the top,hero-section
+clicking the info icon should open a small popup with more details,popover
+users need to write blog posts with bold text lists and links,rich-text-editor
+let users switch between list view and grid view,segmented-control
+show how many characters are left in the bio field,character-count
+the delete buttons need hidden text for screen readers saying which item they delete,visually-hidden-text
+let customers rate the product from one to five stars,star-rating
+users pick an appointment time in 15 minute slots,time-picker
+ask for the user's date of birth,date-of-birth-input
+automatically add spaces to the card number as they type,input-mask
+add a way to change the language of the site,language-selector
+add an on this page menu that highlights the section you're reading,table-of-contents
+the admin dashboard needs a collapsible menu on the left,side-navigation
+show a banner at the top of every page about scheduled downtime on sunday,announcement-banner
+show code examples with syntax highlighting and a copy button,code-snippet
+grey out the submit button until the form is filled,disabled-states
+long product titles should be cut off with three dots after two lines,text-truncation
+show whether each order is pending shipped or delivered,status-indicator
+add a round plus button in the bottom right corner to create a new note,floating-action-button
+the app needs icons at the bottom for home search and profile,bottom-navigation
+let users drag the feed down to reload it,pull-to-refresh
+our icons look blurry and screen readers read them out,icon-system
+we need a shipping address form with postcode lookup,address-form
+the form asks for first name and last name,name-fields
+users should enter their mobile number with a country code,phone-number-input
+add an eye icon to show the password while typing,password-field
+catch typos like gmial.com when people enter their email,email-input
+let users review all their answers before they submit the application,check-answers-page
+show a checklist of setup steps that can be done in any order,task-list-page
+after payment show a thank you page with an order number,confirmation-page
+make a custom page for broken links,not-found-page
+show a friendly page when the site is down for maintenance,service-unavailable-page
+our domestic violence support site needs a button to leave the site fast,quick-exit
+add a bell icon that lists the user's notifications,notification-center
+add a footer with our contact links,site-footer
+change the language of the app to french,language-selector
+show the user's initials when they have no photo,avatar
+let people log in with their google account,single-sign-on
+the save button should be disabled while the form is sending,disabled-states
+send the user a code by text message when they log in,two-factor-auth
+show a little popup asking are you sure before removing the item,alert-dialog
+keep the user signed in for 30 days,session-management
+the list should load more items as you scroll down,infinite-scroll
+make the app work without internet,offline-support
+let users upload a photo for their profile,file-upload
+show the price with the right currency for each country,internationalization
+the dashboard needs a chart of sales over the last year,data-visualization
+let the user undo the last change,undo-redo
+search should still find results with typos,full-text-search
+store the user's preferences in the browser,browser-storage
+nobody should be able to see other customers' orders,authorization
+the page takes 8 seconds to load on mobile,web-performance
+email the user a receipt after they pay,transactional-email
+run a cleanup job every night at 2am,scheduled-jobs
+users should be able to sort the table by clicking the column header,table-sorting
+the button text is hard to read on the blue background,color-contrast
+let users pick a country from a long list with search,autocomplete
+show a warning when the session is about to expire,session-management
+the menu should close when you press escape,escape-key
+put the filters on the left side of the results,faceted-search
+make the font bigger on small screens,responsive-layout
+let users reorder the list by dragging,drag-and-drop
+add a dark theme toggle,dark-mode
+users need to verify their email address before using the app,email-verification
+show a notification in the corner that disappears after a few seconds,toast-notification
+limit each user to 100 requests per minute,rate-limiting
+encrypt the users' personal data in the database,data-encryption
+users forgot their password and need a link to reset it,password-reset
+the chatbot should answer questions using our documents,llm-features
+the app should send a notification to the phone when an order ships,push-notifications
+let users export their data as a spreadsheet,data-export
+keep a record of who changed what in the admin panel,audit-log
+show how far along the upload is,progress-indicator
+the app should show the time in the user's own time zone,timezone-handling
+show a spinner while the data is loading,loading-states
+the website should show up higher on google,seo
+deploy the new version to a few users first,canary-release
+make the images load faster,image-optimization
+when stripe calls our server after a payment,webhooks
+let the user choose a date for the booking,date-picker
+show the address on a map,maps-geolocation
+the text field should show an error if the email is wrong,form-validation
+users should be able to swipe a list item to delete it,touch-gestures
+show the steps of the checkout and which one you're on,multi-step-form
+hide the sidebar menu behind a button on phones,side-navigation
+show a red number on the cart icon,notification-badge
+users should be able to tag posts with topics,tags-chips
+check that the password is strong enough,password-field
+the form should remember what the user typed if they leave,autosave
+lock the account after too many wrong passwords,authentication
+let customers pay every month automatically,payments
+the api should tell clients which version they are using,api-versioning
+users should only see the data of their own company,multi-tenancy
+show who is online right now,status-indicator
+add a search bar to the top of the page,search-input
+make sure a double click doesn't charge the card twice,idempotency-keys
+send a weekly summary email to every user,scheduled-jobs
+when the server crashes we want to be told right away,error-monitoring
+let users comment on articles and reply to each other,comments-system
+translate the whole website into german,internationalization
+the dropdown should list the options as you type,autocomplete
+put the newest posts first and load older ones with a button,pagination
+show a bar along the top while the page loads,progress-indicator
+stop bots from creating fake accounts,bot-protection
+store uploaded files in the cloud,file-storage
+generate an invoice as a pdf,pdf-generation
+test the new checkout with half of our visitors,ab-testing
+keep the menu visible when scrolling down,sticky-header
+the app crashes when there is no network,offline-support
+let people sign in with a fingerprint,passkeys
+users can add a quick note to any item with markdown formatting,rich-text-editor
+copy the share link with one click,copy-to-clipboard
+run tests automatically on every pull request,ci-cd-pipeline
+the photo gallery should let you swipe between pictures,carousel

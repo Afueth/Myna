@@ -32,15 +32,24 @@ assets/         Logo, Windows icon and resource script
 1. **Tokenize.** The description is lowercased and split into words. Letters
    and digits form words, `%` is its own word, everything else separates.
    Simple suffixes are stripped (`users` → `user`, `clicking` → `click`).
-2. **Match terms.** Each concept's name, synonyms and triggers are tokenized
+2. **Weigh words.** Each word of the description gets a weight from how many
+   concepts use it: a word used by one or two concepts (`passkey`) weighs 4,
+   one used by many (`page`) weighs 1.
+3. **Match terms.** Each concept's name, synonyms and triggers are tokenized
    the same way and looked for as consecutive words in the description. Close
-   variants match (`animate` ↔ `animation`).
-3. **Score.** Each matched term adds `4 + 4 × content words`, plus a bonus for
-   the concept's name. Filler words don't count, and a term repeated in the
-   data scores once.
-4. **Rank.** The top 5 concepts by score are returned; ties keep catalogue
+   variants that differ only by a common ending match (`animate` ↔
+   `animation`, but not `contact` ↔ `container`), and filler words such as
+   `the` may sit between the words (`change the language` matches `change
+   language`).
+4. **Score.** A term found in order adds `4 +` the weights of its words, plus
+   a bonus for the concept's name. A term whose words are all present but
+   apart adds only the weights. Words left over that appear somewhere in the
+   concept's terms add a little: rare words and name words only. Filler words
+   never count, a term repeated in the data scores once, and totals below 2
+   are dropped as noise.
+5. **Rank.** The top 5 concepts by score are returned; ties keep catalogue
    order.
-5. **Suggest.** Related concepts of the results that aren't results
+6. **Suggest.** Related concepts of the results that aren't results
    themselves are offered as "Also consider".
 
 ## Design notes

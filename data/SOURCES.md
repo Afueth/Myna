@@ -18,6 +18,9 @@ push.
 | [Core Web Vitals](https://web.dev/articles/vitals) (web.dev) | 3 metrics, 3 supporting metrics and the assessment rule | All 7 | None |
 | [NIST SP 800-63B-4](https://pages.nist.gov/800-63-4/sp800-63b.html) | 14 rules for passwords, sessions and authenticators | 13 | Biometric attempt limits, which the platform enforces |
 | API guidelines | 106 topics and proposals | 69 | 37, see below |
+| [component.gallery](https://component.gallery/components/) | 59 components | 56 | File, Quote and Separator, plain elements with no behaviour to check |
+| [GOV.UK Design System](https://design-system.service.gov.uk/patterns/) | 30 patterns | 27 | Bank details, equality information and National Insurance numbers, which are UK-specific |
+| [U.S. Web Design System](https://designsystem.digital.gov/components/overview/) | 47 components | 44 | Banner and Identifier, which are US government identity, and Summary box, a styled box with no behaviour to check |
 
 **W3C ARIA Authoring Practices** describes how UI components such as menus,
 tabs, dialogs, sliders and tree views should behave with a keyboard and with
@@ -57,6 +60,19 @@ Left out are event-streaming chapters, Azure- and Google-specific proposals,
 proposals specific to protocol buffers and gRPC, and the guides' own
 process documents.
 
+**Design systems** supply the names of everyday components and the patterns
+around them. [component.gallery](https://component.gallery/components/)
+records what each component is called across dozens of design systems, which
+feeds Myna's synonyms. The [GOV.UK Design System](https://design-system.service.gov.uk/patterns/)
+and the [U.S. Web Design System](https://designsystem.digital.gov/components/overview/)
+are openly licensed and backed by user research. Their guidance shapes the
+checklists for forms (names, addresses, phone numbers, passwords, dates) and
+for pages such as check your answers, confirmation and error pages. IBM's
+[Carbon](https://carbondesignsystem.com/patterns/overview/) patterns and
+Google's [Material](https://developer.android.com/develop/ui/compose/components)
+components were checked for anything the three lists miss, such as bottom
+sheets, floating action buttons and disabled states.
+
 ### OWASP cheat sheets left out, and why
 
 These don't describe features someone asks Myna to build, so including them
@@ -88,3 +104,10 @@ numbers (such as a 4.5:1 contrast ratio or a one-hour reset link) come from
 the sources above or common practice; adjust them to your own requirements.
 All items have been through an independent review against the sources.
 Found something wrong or missing? Please open an issue or a pull request.
+
+## License
+
+© 2026 Afueth. The data in this folder is licensed under
+[CC BY 4.0](LICENSE): reuse it freely, including commercially, but credit
+"Myna (https://github.com/Afueth/Myna) by Afueth". The references above
+belong to their owners and are not covered by this license.

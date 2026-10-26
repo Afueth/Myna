@@ -1,0 +1,23 @@
+Myna concept catalogue
+
+Copyright (c) 2026 Afueth
+
+The files in this folder (concepts.csv, source_coverage.csv and SOURCES.md)
+are licensed under the Creative Commons Attribution 4.0 International License
+(CC BY 4.0). The full license text is at:
+
+    https://creativecommons.org/licenses/by/4.0/legalcode
+
+You may share and adapt this data for any purpose, including commercially, as
+long as you give appropriate credit, link to the license and say whether you
+made changes. A suitable credit is:
+
+    Concept data from Myna (https://github.com/Afueth/Myna) by Afueth,
+    licensed under CC BY 4.0.
+
+The code in the rest of this repository is licensed separately under the MIT
+License; see ../LICENSE.
+
+The checklists are written in Myna's own words. The references they were
+checked against (W3C, OWASP, NIST, GOV.UK, USWDS and others, listed in
+SOURCES.md) belong to their owners and are not covered by this license.

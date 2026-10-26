@@ -45,7 +45,13 @@ description:
 - `%` counts as a word, so the trigger `% of users` matches "10% of users".
 - Longer phrases score higher than single words, so prefer specific triggers
   such as `blur the background` over `background`.
-- Common filler words (`the`, `it`, `make`, `only`…) never match on their own.
+- A whole phrase in order scores most. Small words such as `the` or `their`
+  may sit inside it, so `change language` also matches "change the language".
+  A phrase whose words are all present but apart still scores, though less.
+- Words used by few concepts count for more than words used by many, so a
+  telling word in a name or trigger helps even outside a full phrase.
+- Common filler words (`the`, `it`, `make`, `should`…) never match on their
+  own.
 
 ## Writing good checklists
 
@@ -72,8 +78,9 @@ into a precise one, so they are the most valuable part of a concept.
 
 ## Source coverage
 
-`data/source_coverage.csv` records which concepts cover each W3C ARIA
-pattern, WCAG 2.2 A/AA success criterion and OWASP cheat sheet:
+`data/source_coverage.csv` records which concepts cover each item of the
+sources in `data/SOURCES.md`, such as W3C ARIA patterns, WCAG 2.2 success
+criteria, OWASP cheat sheets and design system components:
 
 ```
 source,item,concepts,note
@@ -83,7 +90,8 @@ OWASP,Drone Security,,excluded: specialised domain
 ```
 
 Each row is one item of a source: `source` is a short name (`APG`, `WCAG`,
-`OWASP`, `MASVS`, `CWV`, `NIST` or `API`), `item` is its name, and `concepts`
+`OWASP`, `MASVS`, `CWV`, `NIST`, `API`, `Gallery`, `GOVUK` or `USWDS`), `item`
+is its name, and `concepts`
 lists the `;`-separated ids of the concepts whose checklists cover it. An
 item with no concepts must have a note starting with `excluded:`. Keep the
 file plain CSV with no comment lines, so CSV viewers can open it. When a
@@ -97,7 +105,9 @@ python scripts/check_catalogue.py data/concepts.csv
 ```
 
 The checker reports wrong field counts, empty or over-long values, invalid or
-duplicate ids, lists over their limit, and related ids that don't exist. It
-also checks `source_coverage.csv`: every concept it names must exist, and
+duplicate ids, lists over their limit, and related ids that don't exist. A
+name, synonym or trigger used by two concepts is reported too, unless one
+lists the other as related: a phrase that means two unrelated things makes
+search ambiguous, so make it specific to one of them. It also checks `source_coverage.csv`: every concept it names must exist, and
 every item without concepts must be marked as excluded. CI
 runs it on every push.

@@ -32,4 +32,11 @@ For larger changes, open an issue first so we can agree on the approach.
 - Add or update tests for behaviour changes.
 - Keep catalogue ids unique and stable — never renumber existing entries.
 
+## Licensing your contribution
+
+Code is licensed under [MIT](LICENSE) and the data in `data/` under
+[CC BY 4.0](data/LICENSE). By submitting a contribution you agree to the
+[Contributor License Agreement](CLA.md), which lets Myna keep using and
+relicensing your work.
+
 By participating, you agree to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
