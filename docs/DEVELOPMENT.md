@@ -67,9 +67,24 @@ when output is piped or `NO_COLOR` is set.
 
 ## Measuring coverage
 
-`tests/requests.csv` holds plain-language requests, each with the concept ids
-a good answer should include. `scripts/coverage.py` runs every request through
-`myna search` and sorts them into:
+`tests/requests.csv` holds plain-language requests, phrased the way people
+describe what they want, each with the concept ids a good answer should
+include:
+
+```
+request,expected
+close the menu when the user clicks anywhere else,outside-click-dismissal
+my app crashes when the list is empty,error-handling;empty-states
+make it faster,
+```
+
+Separate several ids with `;`. Leave `expected` empty to only check that
+something matches. An id that is not in the catalogue yet marks a gap to
+fill. Keep the file plain CSV with no comment lines, so CSV viewers and
+editors can open it.
+
+`scripts/coverage.py` runs every request through `myna search` and sorts
+them into:
 
 - **ok**: the expected concepts were found, and one of them ranked first
 - **weak**: they were found, but none ranked first

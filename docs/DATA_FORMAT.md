@@ -82,7 +82,11 @@ WCAG,2.4.2 Page Titled,page-structure,
 OWASP,Drone Security,,excluded: specialised domain
 ```
 
-An item with no concepts must have a note starting with `excluded:`. When a
+Each row is one item of a source: `source` is a short name (`APG`, `WCAG`,
+`OWASP`, `MASVS`, `CWV`, `NIST` or `API`), `item` is its name, and `concepts`
+lists the `;`-separated ids of the concepts whose checklists cover it. An
+item with no concepts must have a note starting with `excluded:`. Keep the
+file plain CSV with no comment lines, so CSV viewers can open it. When a
 change adds or removes what a concept covers, update this file too. See
 `data/SOURCES.md` for the sources themselves.
 

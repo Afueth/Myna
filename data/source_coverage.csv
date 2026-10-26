@@ -1,10 +1,4 @@
 source,item,concepts,note
-# Which Myna concepts cover each item of the three reference sources.
-# "concepts" lists concept ids (;-separated) whose checklists cover the item.
-# Items left out on purpose have no concepts and a note starting with "excluded:".
-# scripts/check_catalogue.py checks that every listed concept id exists.
-#
-# ---- W3C ARIA Authoring Practices Guide: all 30 patterns
 APG,Accordion,accordion,
 APG,Alert,alert-message,
 APG,Alert and Message Dialogs,alert-dialog,
@@ -35,8 +29,6 @@ APG,Tooltip,tooltip,
 APG,Tree View,tree-view,
 APG,Treegrid,tree-view,
 APG,Window Splitter,resizable-panels,
-#
-# ---- WCAG 2.2: all level A and AA success criteria
 WCAG,1.1.1 Non-text Content,image-optimization;aria-attributes,
 WCAG,1.2.1 Audio-only and Video-only (Prerecorded),media-accessibility,
 WCAG,1.2.2 Captions (Prerecorded),media-accessibility,
@@ -93,8 +85,6 @@ WCAG,3.3.8 Accessible Authentication (Minimum),authentication;bot-protection,
 WCAG,"4.1.1 Parsing",,"excluded: obsolete in WCAG 2.2, always satisfied"
 WCAG,"4.1.2 Name, Role, Value",aria-attributes;accessible-buttons,
 WCAG,4.1.3 Status Messages,toast-notification;alert-message;progress-indicator,
-#
-# ---- OWASP Cheat Sheet Series: sheets about building web, mobile, API and AI apps
 OWASP,Access Control,authorization,
 OWASP,AI Agent Security,llm-features,
 OWASP,Authentication,authentication,
@@ -183,7 +173,6 @@ OWASP,XML Security,injection-prevention,
 OWASP,XPath Injection Prevention,injection-prevention,
 OWASP,XS Leaks,security-headers,
 OWASP,XSS Filter Evasion,input-sanitization,
-# Left out on purpose
 OWASP,AI-Powered Advertising Systems Security,,excluded: specialised domain
 OWASP,AML Sanctions AI Agent Payments,,excluded: specialised domain
 OWASP,Automotive Security,,excluded: specialised domain
@@ -233,8 +222,6 @@ OWASP,Threat Modeling,,excluded: team process or reference material
 OWASP,Verifying Third Party Agent Execution Evidence,,excluded: team process or reference material
 OWASP,Virtual Patching,,excluded: team process or reference material
 OWASP,Vulnerability Disclosure,,excluded: team process or reference material
-#
-# ---- OWASP MASVS 2: all 24 mobile security controls
 MASVS,MASVS-STORAGE-1 The app securely stores sensitive data,mobile-app-security,
 MASVS,MASVS-STORAGE-2 The app prevents leakage of sensitive data,mobile-app-security,
 MASVS,MASVS-CRYPTO-1 The app employs current strong cryptography,data-encryption,
@@ -259,8 +246,6 @@ MASVS,MASVS-PRIVACY-1 The app minimizes access to sensitive data and resources,u
 MASVS,MASVS-PRIVACY-2 The app prevents identification of the user,user-data-privacy,
 MASVS,MASVS-PRIVACY-3 The app is transparent about data collection and usage,user-data-privacy,
 MASVS,MASVS-PRIVACY-4 The app offers user control over their data,user-data-privacy,
-#
-# ---- web.dev Core Web Vitals and the supporting metrics
 CWV,Largest Contentful Paint (LCP) at most 2.5 s,web-performance;image-optimization;lazy-loading,
 CWV,Interaction to Next Paint (INP) at most 200 ms,web-performance;debounce-throttle,
 CWV,Cumulative Layout Shift (CLS) at most 0.1,web-performance;element-sizing;image-optimization,
@@ -268,8 +253,6 @@ CWV,Assessed at the 75th percentile on mobile and desktop,web-performance,
 CWV,Time to First Byte (TTFB),web-performance;caching,
 CWV,First Contentful Paint (FCP),web-performance,
 CWV,Total Blocking Time (TBT),web-performance,
-#
-# ---- NIST SP 800-63B-4 (authentication)
 NIST,"Password length: 15 single-factor, 8 with MFA, allow at least 64",authentication,
 NIST,No composition rules,authentication,
 NIST,No periodic password changes,authentication,
@@ -284,8 +267,6 @@ NIST,SMS and phone codes are restricted,two-factor-auth,
 NIST,Email is not an out-of-band authenticator,two-factor-auth,
 NIST,Syncable authenticators (passkeys),passkeys,
 NIST,Biometric attempt limits,,excluded: enforced by the platform biometric APIs
-#
-# ---- API guidelines, by topic: RFC 9457, Zalando chapters, Microsoft sections
 API,RFC 9457 Problem Details for HTTP APIs,api-errors,
 API,Zalando: General guidelines (API first),rest-api,
 API,Zalando: REST Basics - Meta information,rest-api;api-versioning,
@@ -319,8 +300,6 @@ API,Microsoft: Bring your own storage,,excluded: Azure specific
 API,Microsoft: Conditional requests,conditional-requests,
 API,Microsoft: Returning string offsets and lengths,,excluded: Azure specific
 API,Microsoft: Distributed tracing and telemetry,logging;api-errors,
-#
-# ---- Google API Improvement Proposals: all 73 general AIPs
 API,AIP-1 AIP Purpose and Guidelines,,excluded: team process or reference material
 API,AIP-2 AIP Numbering,,excluded: team process or reference material
 API,AIP-3 AIP Versioning,,excluded: team process or reference material
