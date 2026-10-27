@@ -21,6 +21,7 @@ const SAMPLE = JSON.stringify({
     created: '2026-10-26T13:08:03Z',
     summary: 'Settings page',
     concepts: ['toggle-switch', 'dropdown-menu'],
+    related: ['accessible-buttons', 7],
     counts: { pass: 99, fail: 99, not_applicable: 99 },
     results: [
         { number: 1, item: 'Use role=switch', verdict: 'pass', file: 'index.html', line: 51 },
@@ -41,6 +42,7 @@ test('parses a review and recomputes the counts from the results', () => {
     assert.equal(review.results[1].line, 156);
     assert.equal(review.results[2].file, null);
     assert.equal(review.created.toISOString(), '2026-10-26T13:08:03.000Z');
+    assert.deepEqual(review.related, ['accessible-buttons']); // non-strings dropped
 });
 
 test('reports unreadable files instead of throwing', () => {
@@ -107,7 +109,7 @@ test('makes reviewing again a required step of the fix request', () => {
     const { review } = parseReview(SAMPLE);
     const text = buildFixRequest(review, 'C:\\work\\app');
     assert.match(text, /A\. Fix every item above\./);
-    assert.match(text, /B\. Then review again: call Myna's review_checklist with concept_ids \["toggle-switch", "dropdown-menu"\] and include_related false/);
+    assert.match(text, /B\. Then review again: call Myna's review_checklist with concept_ids \["toggle-switch", "dropdown-menu"\]/);
     assert.match(text, /report_review with project_dir "C:\\work\\app", summary "Settings page"/);
     assert.match(text, /Step B is required/);
 });
@@ -117,7 +119,7 @@ test('builds a review-again request with the same concepts and folder', () => {
     assert.equal(
         buildReviewRequest(review, '/work/app'),
         "Review the code again with Myna (Settings page): call Myna's review_checklist with concept_ids " +
-            '["toggle-switch", "dropdown-menu"] and include_related false, check every item against the current code, then call ' +
+            '["toggle-switch", "dropdown-menu"], check every item against the current code, then call ' +
             `Myna's report_review with project_dir "/work/app", summary "Settings page" and one result per item.`
     );
 

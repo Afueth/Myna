@@ -50,6 +50,7 @@ function parseReview(text) {
             version: typeof data.version === 'string' ? data.version : '',
             created: created && !isNaN(created) ? created : null,
             concepts: Array.isArray(data.concepts) ? data.concepts.filter((c) => typeof c === 'string') : [],
+            related: Array.isArray(data.related) ? data.related.filter((c) => typeof c === 'string') : [],
             results,
             counts,
         },
@@ -116,10 +117,10 @@ function location(result) {
  * where to save the result, so the new review replaces the old one.
  */
 function reviewInstruction(review, projectDir) {
-    // The saved concepts already include the related ones Myna added, so ask
-    // for exactly these; otherwise each review again would add more.
+    // Ask for the chosen concepts only: Myna adds the same closely related
+    // ones (review.related) again, so the review stays the same size.
     const ids = review.concepts.length
-        ? `concept_ids [${review.concepts.map((c) => `"${c}"`).join(', ')}] and include_related false`
+        ? `concept_ids [${review.concepts.map((c) => `"${c}"`).join(', ')}]`
         : 'the same concepts as the last review';
     const summary = review.summary ? `, summary "${review.summary}"` : '';
     return (

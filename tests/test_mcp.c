@@ -219,7 +219,7 @@ static void test_review_adds_related(const myna_catalogue *cat)
     CHECK(has(r, "Added because they are closely related: "));
     CHECK(has(r, "NOT APPLICABLE where they don't fit"));
     CHECK(has(r, "call find_concepts for them"));
-    CHECK(has(r, "concept_ids [\\\"modal-dialog\\\", "));
+    CHECK(has(r, "concept_ids [\\\"modal-dialog\\\"], related_ids [\\\""));
     free(r);
 
     r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\",\"params\":"
@@ -302,7 +302,8 @@ static void test_report_review(const myna_catalogue *cat)
                        "\"summary\":\"Menu\",\"concept_ids\":[\"dropdown-menu\"],\"results\":["
                        "{\"number\":1,\"item\":\"Opens with Enter\",\"verdict\":\"pass\"},"
                        "{\"number\":2,\"item\":\"Stays on screen\",\"verdict\":\"fail\","
-                       "\"file\":\"app.js\",\"line\":9,\"note\":\"No positioning\"}]}}}");
+                       "\"file\":\"app.js\",\"line\":9,\"note\":\"No positioning\"}],"
+                       "\"related_ids\":[\"escape-key\"]}}}");
     CHECK(has(r, "\"isError\":false"));
     CHECK(has(r, "1 passed, 1 failed, 0 not applicable"));
     CHECK(has(r, "Stays on screen (app.js:9): No positioning"));
@@ -318,6 +319,8 @@ static void test_report_review(const myna_catalogue *cat)
         const json_value *counts = json_get(v, "counts");
         CHECK(counts && strcmp(json_get(counts, "fail")->text, "1") == 0);
         CHECK(strcmp(json_string(json_get(v, "summary")), "Menu") == 0);
+        const json_value *rel = json_get(v, "related");
+        CHECK(rel && rel->child && strcmp(rel->child->text, "escape-key") == 0);
         json_free(v);
     }
     CHECK(read_text_file("myna-report-test/.myna/history.jsonl") != NULL);

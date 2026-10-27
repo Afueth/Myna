@@ -97,7 +97,10 @@ the concepts the assistant names, and Myna helps it name the right ones:
   a confirmation dialog, that adds accessible buttons, color contrast, browser
   storage and checkbox. The rubric names them, and the assistant marks their
   items NOT APPLICABLE where they don't fit. Pass `include_related: false` to
-  review exactly the concepts you name.
+  review exactly the concepts you name. The assistant reports the chosen concepts
+  as `concept_ids` and the added ones as `related_ids`, and the saved review
+  keeps them apart, so reviewing again asks for the chosen ones and gets the
+  same related ones: the review stays the same size.
 
 ## Saved reviews
 
@@ -113,6 +116,7 @@ Each `report_review` call writes two files:
   "created": "2026-10-26T13:08:03Z",
   "summary": "Settings page",
   "concepts": ["toggle-switch", "dropdown-menu"],
+  "related": ["accessible-buttons", "color-contrast"],
   "counts": {"pass": 28, "fail": 2, "not_applicable": 0},
   "results": [
     {"number": 14, "item": "Keep the menu on screen near the edges of the window",

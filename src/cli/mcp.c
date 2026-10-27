@@ -128,6 +128,9 @@ static const char *const TOOLS[] = {
     "the project's root folder.\"},"
     "\"summary\":{\"type\":\"string\",\"description\":\"What was reviewed, in "
     "a few words, such as Settings page.\"}," ID_LIST_SCHEMA
+    "\"related_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},"
+    "\"maxItems\":10,\"description\":\"The concepts review_checklist added "
+    "because they are closely related, as its last line lists them.\"},"
     "\"results\":{\"type\":\"array\",\"minItems\":1,\"maxItems\":200,"
     "\"description\":\"One entry per rubric item.\",\"items\":{\"type\":"
     "\"object\",\"properties\":{"
@@ -552,11 +555,20 @@ static void review_rubric(json_buf *text, const myna_catalogue *cat, const json_
     textf(text, "\nIf the code contains features none of these concepts cover, such as a "
                 "form, sign-in, uploads or API calls, call find_concepts for them and "
                 "review those too.\n");
+    /* The chosen and the added concepts are reported apart, so a later review
+     * can ask for the chosen ones and get the same related ones again. */
     textf(text, "\nWhen you have checked every item, call report_review with project_dir, "
                 "concept_ids [");
-    for (size_t i = 0; i < total; i++)
+    for (size_t i = 0; i < n; i++)
         textf(text, "%s\"%s\"", i ? ", " : "", chosen[i]->id);
-    textf(text, "] and one result per numbered item.\n");
+    textf(text, "]");
+    if (added) {
+        textf(text, ", related_ids [");
+        for (size_t i = n; i < total; i++)
+            textf(text, "%s\"%s\"", i > n ? ", " : "", chosen[i]->id);
+        textf(text, "]");
+    }
+    textf(text, " and one result per numbered item.\n");
 }
 
 static void tool_checklist(json_buf *text, int *is_error, const myna_catalogue *cat,
@@ -648,10 +660,27 @@ static int check_result(json_buf *text, const json_value *r, int index)
     return 1;
 }
 
+/* Write the strings of a JSON array (or [] when `list` is NULL), skipping
+ * anything that is not a string. */
+static void put_string_array(json_buf *out, const json_value *list)
+{
+    int first = 1;
+    json_raw(out, "[");
+    for (const json_value *v = list ? list->child : NULL; v; v = v->next) {
+        if (v->type != JSON_STRING)
+            continue;
+        json_raw(out, first ? "" : ",");
+        json_str(out, v->text);
+        first = 0;
+    }
+    json_raw(out, "]");
+}
+
 static void tool_report(json_buf *text, int *is_error, const json_value *args)
 {
     const char *dir, *summary;
     const json_value *ids = json_get(args, "concept_ids");
+    const json_value *related = json_get(args, "related_ids");
     const json_value *results = json_get(args, "results");
     int counts[3] = {0, 0, 0}, n = 0;
 
@@ -664,8 +693,8 @@ static void tool_report(json_buf *text, int *is_error, const json_value *args)
         textf(text, "summary must be a short string (max %d characters).", MAX_REPORT_TEXT);
         return;
     }
-    if (ids && ids->type != JSON_ARRAY) {
-        textf(text, "concept_ids must be an array of strings.");
+    if ((ids && ids->type != JSON_ARRAY) || (related && related->type != JSON_ARRAY)) {
+        textf(text, "concept_ids and related_ids must be arrays of strings.");
         return;
     }
     if (!results || results->type != JSON_ARRAY || !results->child) {
@@ -694,17 +723,12 @@ static void tool_report(json_buf *text, int *is_error, const json_value *args)
     json_str(&out, stamp);
     json_raw(&out, ",\"summary\":");
     json_str(&out, summary ? summary : "");
-    json_raw(&out, ",\"concepts\":[");
-    int first = 1;
-    for (const json_value *v = ids ? ids->child : NULL; v; v = v->next) {
-        if (v->type != JSON_STRING)
-            continue;
-        json_raw(&out, first ? "" : ",");
-        json_str(&out, v->text);
-        first = 0;
-    }
+    json_raw(&out, ",\"concepts\":");
+    put_string_array(&out, ids);
+    json_raw(&out, ",\"related\":");
+    put_string_array(&out, related);
     snprintf(num, sizeof num, "%d", counts[0]);
-    json_raw(&out, "],\"counts\":{\"pass\":");
+    json_raw(&out, ",\"counts\":{\"pass\":");
     json_raw(&out, num);
     snprintf(num, sizeof num, "%d", counts[1]);
     json_raw(&out, ",\"fail\":");
