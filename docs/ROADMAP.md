@@ -32,6 +32,20 @@ the one before, so it is worth finishing one before starting the next.
 4. **Extension in TypeScript**, then **sharing the data**: the website, the
    data package and a DOI.
 
+## Known issues
+
+Problems we know about and will solve later, each with the task that fixes it:
+
+| Issue | Why it matters | Fixed by |
+|---|---|---|
+| **Search quality**: with 1,198 concepts, only 33% of the 1,258 test requests get the expected concept first, and 44% don't get it in the top five | It is the biggest weakness: every tool depends on finding the right concepts, and unrelated results make Myna look broken | 0.3 — Relevance Ranking |
+| **Too little evidence**: only 1 of 3 to 5 blind comparison rounds is done | One good result is a signal, not proof; public claims about Myna's value need more rounds | More comparison rounds (0.2) |
+| **Leftover file**: `wasm/_ls_probe.mjs` looks like a debugging script that was committed by accident | Unused files confuse contributors | Housekeeping (below) |
+
+## Housekeeping
+
+- [ ] Remove `wasm/_ls_probe.mjs` if nothing uses it
+
 ## Catalogue growth
 
 The catalogue grows from 1,198 concepts to about 2,900, in categories that each
