@@ -10,6 +10,7 @@ const {
     resolveFile,
     location,
     buildFixRequest,
+    buildReviewRequest,
     escapeHtml,
 } = require('../review');
 
@@ -91,14 +92,36 @@ test('resolves files relative to the project', () => {
 
 test('builds a fix request listing only the failed items', () => {
     const { review } = parseReview(SAMPLE);
-    const text = buildFixRequest(review);
+    const text = buildFixRequest(review, 'C:\\work\\app');
     assert.match(text, /^Myna's review of Settings page found 2 items to fix:/);
     assert.match(text, /1\. Keep the menu on screen \(app\.js:156\): No positioning/);
     assert.match(text, /2\. Typeahead\n/);
     assert.doesNotMatch(text, /role=switch/);
 
     const allGood = parseReview(JSON.stringify({ results: [{ item: 'a', verdict: 'pass' }] })).review;
-    assert.equal(buildFixRequest(allGood), '');
+    assert.equal(buildFixRequest(allGood, '/work'), '');
+});
+
+test('makes reviewing again a required step of the fix request', () => {
+    const { review } = parseReview(SAMPLE);
+    const text = buildFixRequest(review, 'C:\\work\\app');
+    assert.match(text, /A\. Fix every item above\./);
+    assert.match(text, /B\. Then review again: call Myna's review_checklist with concept_ids \["toggle-switch", "dropdown-menu"\]/);
+    assert.match(text, /report_review with project_dir "C:\\work\\app", summary "Settings page"/);
+    assert.match(text, /Step B is required/);
+});
+
+test('builds a review-again request with the same concepts and folder', () => {
+    const { review } = parseReview(SAMPLE);
+    assert.equal(
+        buildReviewRequest(review, '/work/app'),
+        "Review the code again with Myna (Settings page): call Myna's review_checklist with concept_ids " +
+            '["toggle-switch", "dropdown-menu"], check every item against the current code, then call ' +
+            `Myna's report_review with project_dir "/work/app", summary "Settings page" and one result per item.`
+    );
+
+    const bare = parseReview(JSON.stringify({ results: [{ item: 'a', verdict: 'pass' }] })).review;
+    assert.match(buildReviewRequest(bare, '/w'), /^Review the code again with Myna: call Myna's review_checklist with the same concepts as the last review/);
 });
 
 test('escapes text before it goes into the view', () => {

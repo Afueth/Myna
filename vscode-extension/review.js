@@ -111,8 +111,26 @@ function location(result) {
     return result.line ? `${result.file}:${result.line}` : result.file;
 }
 
-/** A message to paste into an AI chat, asking it to fix the failed items. */
-function buildFixRequest(review) {
+/**
+ * The instruction to review again with Myna: which concepts to check, and
+ * where to save the result, so the new review replaces the old one.
+ */
+function reviewInstruction(review, projectDir) {
+    const ids = review.concepts.length
+        ? `concept_ids [${review.concepts.map((c) => `"${c}"`).join(', ')}]`
+        : 'the same concepts as the last review';
+    const summary = review.summary ? `, summary "${review.summary}"` : '';
+    return (
+        `call Myna's review_checklist with ${ids}, check every item against the current code, ` +
+        `then call Myna's report_review with project_dir "${projectDir}"${summary} and one result per item.`
+    );
+}
+
+/**
+ * A message to paste into an AI chat, asking it to fix the failed items and
+ * then review again, as a required step, so the user sees the new result.
+ */
+function buildFixRequest(review, projectDir) {
     const failed = review.results.filter((r) => r.verdict === 'fail');
     if (failed.length === 0) {
         return '';
@@ -125,9 +143,19 @@ function buildFixRequest(review) {
     });
     lines.push(
         '',
-        "Please fix these, then check them again with Myna's review_checklist and report the new results with report_review."
+        'Please do both steps:',
+        'A. Fix every item above.',
+        `B. Then review again: ${reviewInstruction(review, projectDir)}`,
+        '',
+        'Step B is required. It updates the review I see in my editor, so do not skip it.'
     );
     return lines.join('\n');
+}
+
+/** A message to paste into an AI chat, asking it to review the current code again. */
+function buildReviewRequest(review, projectDir) {
+    const what = review.summary ? ` (${review.summary})` : '';
+    return `Review the code again with Myna${what}: ${reviewInstruction(review, projectDir)}`;
 }
 
 function escapeHtml(text) {
@@ -147,5 +175,6 @@ module.exports = {
     resolveFile,
     location,
     buildFixRequest,
+    buildReviewRequest,
     escapeHtml,
 };

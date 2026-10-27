@@ -14,6 +14,7 @@ const {
     resolveFile,
     location,
     buildFixRequest,
+    buildReviewRequest,
     escapeHtml,
 } = require('./review');
 
@@ -52,6 +53,7 @@ function activate(context) {
             vscode.commands.executeCommand('myna.review.focus')
         ),
         vscode.commands.registerCommand('myna.copyFixRequest', copyFixRequest),
+        vscode.commands.registerCommand('myna.copyReviewRequest', copyReviewRequest),
         vscode.commands.registerCommand('myna.openResult', openResult)
     );
 
@@ -140,7 +142,7 @@ function updateStatus(status) {
 }
 
 async function copyFixRequest() {
-    const text = current && current.review ? buildFixRequest(current.review) : '';
+    const text = current && current.review ? buildFixRequest(current.review, current.projectDir) : '';
     if (!text) {
         vscode.window.showInformationMessage('Myna: nothing to fix in the latest review.');
         return;
@@ -148,6 +150,17 @@ async function copyFixRequest() {
     await vscode.env.clipboard.writeText(text);
     vscode.window.showInformationMessage(
         'Myna: fix request copied. Paste it into your AI chat.'
+    );
+}
+
+async function copyReviewRequest() {
+    if (!current || !current.review) {
+        vscode.window.showInformationMessage('Myna: there is no review to repeat yet.');
+        return;
+    }
+    await vscode.env.clipboard.writeText(buildReviewRequest(current.review, current.projectDir));
+    vscode.window.showInformationMessage(
+        'Myna: review request copied. Paste it into your AI chat, and I will show the new result here.'
     );
 }
 
@@ -184,6 +197,8 @@ class ReviewView {
                 openResult(message.index);
             } else if (message && message.type === 'copy') {
                 copyFixRequest();
+            } else if (message && message.type === 'review') {
+                copyReviewRequest();
             } else if (message && message.type === 'refresh') {
                 vscode.commands.executeCommand('myna.refresh');
             }
@@ -246,8 +261,15 @@ function renderBody() {
     let html = bubble(mood, headline, details);
     if (failed.length) {
         html += `<h2>To fix</h2><ul class="results">${failed.map(resultItem).join('')}</ul>`;
+    }
+    html += '<div class="actions">';
+    if (failed.length) {
         html += '<button type="button" class="primary" data-action="copy">Copy fix request for your AI</button>';
     }
+    html +=
+        '<button type="button" class="secondary" data-action="review" ' +
+        'title="Copy a message that asks your AI to check the code again with Myna">Review again</button>';
+    html += '</div>';
     if (passed.length) {
         html += `<details><summary>Passed (${passed.length})</summary><ul class="results">${passed
             .map(resultItem)

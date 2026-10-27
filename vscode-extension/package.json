@@ -2,7 +2,8 @@
   "name": "myna",
   "displayName": "Myna",
   "description": "See how your AI's code did against Myna's expert checklists, right next to your files.",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "preview": true,
   "publisher": "afueth",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -62,6 +63,12 @@
         "icon": "$(copy)"
       },
       {
+        "command": "myna.copyReviewRequest",
+        "title": "Copy Review-Again Request for Your AI",
+        "category": "Myna",
+        "icon": "$(sync)"
+      },
+      {
         "command": "myna.showReview",
         "title": "Show Review",
         "category": "Myna"
@@ -71,6 +78,11 @@
       "view/title": [
         {
           "command": "myna.copyFixRequest",
+          "when": "view == myna.review",
+          "group": "navigation"
+        },
+        {
+          "command": "myna.copyReviewRequest",
           "when": "view == myna.review",
           "group": "navigation"
         },
@@ -86,6 +98,9 @@
         },
         {
           "command": "myna.copyFixRequest"
+        },
+        {
+          "command": "myna.copyReviewRequest"
         },
         {
           "command": "myna.showReview"

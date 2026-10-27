@@ -63,8 +63,10 @@ static const char INSTRUCTIONS[] =
     "\"annotations\":{\"readOnlyHint\":true,\"idempotentHint\":true,"           \
     "\"openWorldHint\":false}"
 
-static const char TOOLS[] =
-    "["
+/* One JSON object per tool, joined into the tools/list array. They are
+ * separate strings because a single literal this long is more than C
+ * compilers are required to support. */
+static const char *const TOOLS[] = {
     "{\"name\":\"find_concepts\",\"title\":\"Find concepts\","
     "\"description\":\"Find the software concepts behind a plain-language "
     "request, such as 'close the popup when I click outside'. Returns concept "
@@ -76,7 +78,7 @@ static const char TOOLS[] =
     "'target size' or 'debounce'. Myna searches them together with the "
     "description, which helps when the user's words don't name the concept.\"}},"
     "\"required\":[\"description\"],\"additionalProperties\":false},"
-    READ_ONLY "},"
+    READ_ONLY "}",
     "{\"name\":\"list_concepts\",\"title\":\"List concepts\","
     "\"description\":\"Browse the catalogue. With no category, lists the "
     "categories, such as ui, forms, security or architecture, and how many "
@@ -85,7 +87,7 @@ static const char TOOLS[] =
     "\"inputSchema\":{\"type\":\"object\",\"properties\":{\"category\":"
     "{\"type\":\"string\",\"description\":\"A category name from list_concepts, "
     "such as ui.\"}},\"additionalProperties\":false},"
-    READ_ONLY "},"
+    READ_ONLY "}",
     "{\"name\":\"get_checklist\",\"title\":\"Get implementation checklist\","
     "\"description\":\"Get what a good implementation must do (requirements) "
     "and how to check it works (done when) for the chosen concepts, as a "
@@ -95,7 +97,7 @@ static const char TOOLS[] =
     "\"description\":{\"type\":\"string\",\"description\":\"The user's request "
     "in plain words. Used to find concepts when concept_ids is empty, and "
     "quoted in the brief.\"}},\"additionalProperties\":false},"
-    READ_ONLY "},"
+    READ_ONLY "}",
     "{\"name\":\"review_checklist\",\"title\":\"Review against checklist\","
     "\"description\":\"Get a numbered review rubric for finished code: every "
     "requirement and done-when check for the chosen concepts, to mark PASS, "
@@ -105,7 +107,7 @@ static const char TOOLS[] =
     "\"description\":{\"type\":\"string\",\"description\":\"What was built, in "
     "plain words. Used to find concepts when concept_ids is empty.\"}},"
     "\"additionalProperties\":false},"
-    READ_ONLY "},"
+    READ_ONLY "}",
     "{\"name\":\"report_review\",\"title\":\"Report review results\","
     "\"description\":\"After checking code against review_checklist, report "
     "your verdict for each item. Myna saves the review in the project, in "
@@ -132,8 +134,8 @@ static const char TOOLS[] =
     "\"required\":[\"item\",\"verdict\"],\"additionalProperties\":false}}},"
     "\"required\":[\"project_dir\",\"results\"],\"additionalProperties\":false},"
     "\"annotations\":{\"readOnlyHint\":false,\"destructiveHint\":false,"
-    "\"idempotentHint\":true,\"openWorldHint\":false}}"
-    "]";
+    "\"idempotentHint\":true,\"openWorldHint\":false}}",
+};
 
 void myna_mcp_init(myna_mcp_state *st)
 {
@@ -801,7 +803,12 @@ static void dispatch(json_buf *b, myna_mcp_state *st, const myna_catalogue *cat,
     } else if (strcmp(method, "tools/list") == 0) {
         begin_result(b, id);
         json_raw(b, ",\"tools\":");
-        json_raw(b, TOOLS);
+        json_raw(b, "[");
+        for (size_t i = 0; i < sizeof TOOLS / sizeof TOOLS[0]; i++) {
+            json_raw(b, i ? "," : "");
+            json_raw(b, TOOLS[i]);
+        }
+        json_raw(b, "]");
         put_cache_hints(b);
         end_result(b);
     } else if (strcmp(method, "tools/call") == 0) {

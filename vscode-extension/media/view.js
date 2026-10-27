@@ -12,6 +12,8 @@
             vscode.postMessage({ type: 'open', index: Number(target.getAttribute('data-index')) });
         } else if (action === 'copy') {
             vscode.postMessage({ type: 'copy' });
+        } else if (action === 'review') {
+            vscode.postMessage({ type: 'review' });
         }
     });
 })();

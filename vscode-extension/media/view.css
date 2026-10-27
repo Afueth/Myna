@@ -140,6 +140,26 @@ button.primary:hover {
     background: var(--vscode-button-hoverBackground);
 }
 
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+button.secondary {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 2px;
+    background: var(--vscode-button-secondaryBackground);
+    color: var(--vscode-button-secondaryForeground);
+    font: inherit;
+    cursor: pointer;
+}
+
+button.secondary:hover {
+    background: var(--vscode-button-secondaryHoverBackground);
+}
+
 details summary {
     cursor: pointer;
     color: var(--vscode-descriptionForeground);

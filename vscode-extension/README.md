@@ -13,8 +13,13 @@ result. This extension shows that review:
   and in the **Problems** panel.
 - **In the status bar**: the latest score, at a glance.
 
-Click a failed item to jump to its line, or use **Copy fix request for your
-AI** to paste the list of fixes into your AI chat.
+Click a failed item to jump to its line. Two buttons turn the review into a
+message for your AI chat:
+
+- **Copy fix request for your AI**: the failed items, and the instruction to
+  review again with Myna afterwards, so the panel shows the new result.
+- **Review again**: asks your AI to check the current code against the same
+  checklists and save the new result.
 
 ## How it works
 
@@ -34,7 +39,8 @@ its own.
 | Command | What it does |
 |---|---|
 | Myna: Show Review | Opens the Myna panel |
-| Myna: Copy Fix Request for Your AI | Copies the failed items as a message for your AI chat |
+| Myna: Copy Fix Request for Your AI | Copies the failed items, and the instruction to review again, as a message for your AI chat |
+| Myna: Copy Review-Again Request for Your AI | Copies a message asking your AI to check the code again with the same checklists |
 | Myna: Refresh Review | Reads the review file again |
 
 ## Requirements
