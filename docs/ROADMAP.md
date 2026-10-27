@@ -9,11 +9,28 @@ developers.
 | **0.1 — Vocabulary Search** | Describe a change in plain language and see matching concepts with explanations. | C basics, functions, strings, arrays, input validation | Done |
 | **0.2 — Prompt Builder and MCP** | Turn selected concepts into a precise AI prompt with requirements and "done when" checks, let AI coding tools fetch checklists and review rubrics over MCP, and show reviews in the editor. | Templates, string building, JSON parsing, JSON-RPC protocols, platform APIs (clipboard, files) | Mostly done |
 | **0.3 — Relevance Ranking** (next) | Better scoring so results are small and relevant, with a catalogue of thousands of concepts. | Search algorithms, scoring, sorting, data structures | Started |
+| Data in YAML | Concepts as one YAML file each, validated by a schema, with an id, level and source for every checklist item; JSON and CSV are generated from it. | Data modelling, schemas, build steps, migration scripts | Planned |
+| MCP server in TypeScript | Move the MCP protocol layer to the official TypeScript SDK; the C engine stays, run as WebAssembly. | TypeScript, WebAssembly interop, protocol testing, packaging | Planned |
+| Sharing the data | A searchable website, a versioned data package and a citable DOI, so others can use the dataset. | Static sites, packaging, release automation | Planned |
 | 0.4 — Related Concepts | Richer relationships: synonyms, prerequisites and conflicts. | Structs, pointers, dynamic memory, dataset relationships | Started |
 | 0.5 — Framework Awareness | Explain how concepts map to React, CSS, FastAPI and other stacks. | Framework-specific terminology and curated mappings | Not started |
 | 0.6 — Project Awareness | Tailor suggestions to the current project's files and dependencies, with consent. | Filesystem traversal, dependency inspection, safe project analysis | First step |
 | 0.7 — Local API | Expose the engine over a local HTTP API. | HTTP fundamentals, networking, API boundaries | Not started |
 | 1.0 — Integrations | Editor integrations and packaged releases. | Editor workflows, packaging, documentation, releases, contributions | Partly done |
+
+## Next, in order
+
+The planned work, in the order it makes sense to do it. Each step builds on
+the one before, so it is worth finishing one before starting the next.
+
+1. **0.3 — Relevance Ranking**: search quality is the most urgent problem,
+   because every tool depends on finding the right concepts.
+2. **Data in YAML**: the base for reliable data, with an id, level and
+   source for every checklist item.
+3. **MCP server in TypeScript**: a maintained protocol layer, so changes to
+   MCP stop breaking Myna.
+4. **Extension in TypeScript**, then **sharing the data**: the website, the
+   data package and a DOI.
 
 ## Catalogue growth
 
@@ -75,7 +92,7 @@ checklist), in 21 categories, about 41% of the target.
       `presence-indicators`
 - [ ] Batches for every category, up to the targets above
 - [ ] Give every checklist item an id, a must or should level and the source
-      it comes from (`data/checklists.csv`)
+      it comes from (part of **Data in YAML**, below)
 
 ## 0.3 — Relevance Ranking (next)
 
@@ -142,6 +159,163 @@ that accept only one correct answer.
 - [ ] Extension: fill in GitHub Copilot's chat too, and warn when the
       installed Myna is too old to save reviews
 
+## Data in YAML
+
+The catalogue is CSV today, which is starting to limit it: lists are packed
+into single cells (`close it with Escape;trap focus;...`), the C structs fix
+hard limits (8 requirements, 16 triggers, 127 characters per item), there is
+no room for an id, level or source per checklist item, the format allows no
+comments, and on GitHub a change to one item shows the whole long line as
+changed.
+
+The plan is to keep the data that people edit in YAML, one file per concept,
+and generate the formats programs read:
+
+```
+data/concepts/<category>/<id>.yaml   people edit these
+        |  scripts/build_data.py, which validates against a JSON Schema
+        v
+build/data/concepts.json             Myna, the MCP server and the extension load this
+build/data/concepts.csv              for spreadsheets and the public dataset
+```
+
+A concept then looks like this:
+
+```yaml
+id: modal-dialog
+name: Modal dialog
+category: ui
+explanation: >
+  A window that opens on top of the page and blocks interaction
+  with the rest of the page until it is dismissed.
+synonyms: [modal, popup, dialog, lightbox]
+triggers: [pop up, dialog box, window on top, confirm box]
+related: [backdrop-overlay, focus-management, escape-key]
+requirements:
+  - id: r1
+    level: must
+    text: Close it with the Escape key and a visible close button
+    sources: [APG Dialog (Modal)]
+done_when:
+  - id: c1
+    level: must
+    text: Keyboard users cannot tab to the page behind it
+    sources: [APG Dialog (Modal), WCAG 2.4.3]
+```
+
+The C code never parses YAML: it reads the generated file. The JSON Schema
+also gives editors such as VS Code error checking and autocompletion while
+people write concepts.
+
+### Why YAML
+
+The deciding question is who edits the data, and how. For Myna it is people,
+including contributors, writing nested data: concepts with lists of items,
+each with an id, a level and sources. YAML is the most readable format for
+that, with comments and clean diffs.
+
+| If the priority were | The best format would be |
+|---|---|
+| Readable, contributor-friendly editing of nested data (Myna) | YAML with the guardrails below |
+| Maximum safety, with data edited mostly by scripts | JSON |
+| Simple settings files | TOML |
+| Spreadsheet editing above all | CSV |
+
+JSON stays the generated format (good for programs, tiring for people); TOML
+is awkward for lists of items with details; SQLite suits a generated search
+index rather than editing.
+
+### Guardrails
+
+YAML has real weaknesses: some plain words turn into other types (in older
+YAML, a trigger such as `no` becomes `false`, and `1.10` can become a number),
+one wrong indent quietly changes the meaning, the language has many ways to
+write the same thing, and some libraries can run code when loading untrusted
+files. These guardrails remove those risks:
+
+| Risk | Guardrail |
+|---|---|
+| Words turning into other types | The JSON Schema requires text for every name, trigger and item, so a `false` fails the check; strings that could be misread are quoted |
+| Indentation mistakes | `yamllint` in CI, and one formatter so every file has the same layout |
+| Many ways to write the same thing | A simple subset only: no anchors, aliases, tags or multiple documents per file |
+| Unsafe loading | Only safe loading (`yaml.safe_load`, or a strict library such as StrictYAML) |
+| Parsers disagreeing | Only one program reads YAML, the build script; everything else reads the generated JSON |
+
+- [ ] Write the JSON Schema for a concept, including item ids, `must` and
+      `should` levels, and sources (a `must` item cites a standard), with
+      every text field required to be a string
+- [ ] Set up the guardrails: safe loading only, the simple YAML subset
+      enforced by the build script, `yamllint` and a formatter in CI
+- [ ] Convert the 21 CSV files to one YAML file per concept with a script,
+      giving every existing item a permanent id
+- [ ] `scripts/build_data.py`: validate the YAML and generate
+      `concepts.json` and `concepts.csv`
+- [ ] Load the generated JSON in the C engine, and lift the fixed size
+      limits the CSV columns imposed
+- [ ] Move the checks in `scripts/check_catalogue.py` and the source
+      coverage to the new format
+- [ ] Assign a level and sources to every checklist item, area by area,
+      with an independent review of the citations
+- [ ] Show `must` and `should` in prompts and review rubrics
+- [ ] Update the data format guide, the contributing guide and the release
+      packaging
+
+## MCP server in TypeScript
+
+The MCP server is written by hand in C today (`src/cli/mcp.c`, with our own
+JSON parser in `src/cli/json.c`). There is no official MCP library for C, and
+the protocol changes quickly: the 2026-07-28 version changed how connections
+work, and Myna needed fixes before Claude Code would list its tools. The plan
+is to move the protocol layer to TypeScript with the official MCP SDK, and
+keep the C engine for search, prompts and reviews, run through the
+WebAssembly build in `wasm/`.
+
+Why TypeScript: the official SDK is the most complete and up to date, AI-tool
+users almost always have Node.js, so `npx` can install it, and the VS Code
+extension is already JavaScript, so the two can share code such as the review
+file format.
+
+- [ ] Expose the engine's functions (search, list, checklist, review rubric,
+      related concepts) from the WebAssembly build to JavaScript
+- [ ] New MCP server in `mcp/` with the official TypeScript SDK and the same
+      five tools: `find_concepts`, `list_concepts`, `get_checklist`,
+      `review_checklist`, `report_review`
+- [ ] Run the existing MCP test messages (`tests/test_mcp.c`) against both
+      servers, and match the C server's answers
+- [ ] Ship it: `npx myna-mcp`, and in the release downloads and the installer
+- [ ] Update the setup guide (`docs/MCP.md`) and the release smoke tests
+- [ ] Switch over, keep the C server for one release as a fallback, then
+      remove `src/cli/mcp.c` and `src/cli/json.c`
+
+## Extension in TypeScript
+
+The VS Code extension is plain JavaScript. It is growing (the chat picker,
+reading Claude Code sessions), and types catch mistakes before users do. It
+can also share code with the TypeScript MCP server, such as the review file
+format.
+
+- [ ] Convert `vscode-extension/` to TypeScript, with a build step that
+      still produces a small, dependency-free extension
+- [ ] Share the review file types with the MCP server
+- [ ] Keep the tests running in CI
+
+## Sharing the data
+
+The catalogue is valuable on its own, not only inside Myna. To let others use
+and cite it:
+
+- [ ] **A searchable website** generated from the data: browse every concept
+      and checklist, with no install. It is the quickest way to show what the
+      dataset holds
+- [ ] **A versioned data package** with each release (for example on npm,
+      PyPI or Hugging Face Datasets), so other tools can use the concepts and
+      checklists
+- [ ] **A DOI from Zenodo** for each release, so researchers and companies can
+      cite a specific version
+- [ ] **A prebuilt search index**, generated at build time, so search stays
+      fast as the catalogue grows to about 2,900 concepts
+- [ ] A changelog for the data, listing what changed in each release
+
 ## 0.4 — Related Concepts
 
 - [x] `related` links between concepts, shown as "Also consider"
@@ -189,7 +363,7 @@ that accept only one correct answer.
 ## Ideas for later
 
 - JSON output (`--json`) for scripting and editor integrations
-- Prebuilt index for large catalogues
 - Reviews that check code without an AI assistant, using simple rules for
   common mistakes
-- A web page to search Myna without installing anything
+- Search Myna in the browser itself, by running the WebAssembly build on the
+  website
