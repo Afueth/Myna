@@ -11,6 +11,7 @@ const {
     location,
     buildFixRequest,
     buildReviewRequest,
+    claudeCodeQuery,
     escapeHtml,
 } = require('../review');
 
@@ -106,7 +107,7 @@ test('makes reviewing again a required step of the fix request', () => {
     const { review } = parseReview(SAMPLE);
     const text = buildFixRequest(review, 'C:\\work\\app');
     assert.match(text, /A\. Fix every item above\./);
-    assert.match(text, /B\. Then review again: call Myna's review_checklist with concept_ids \["toggle-switch", "dropdown-menu"\]/);
+    assert.match(text, /B\. Then review again: call Myna's review_checklist with concept_ids \["toggle-switch", "dropdown-menu"\] and include_related false/);
     assert.match(text, /report_review with project_dir "C:\\work\\app", summary "Settings page"/);
     assert.match(text, /Step B is required/);
 });
@@ -116,12 +117,21 @@ test('builds a review-again request with the same concepts and folder', () => {
     assert.equal(
         buildReviewRequest(review, '/work/app'),
         "Review the code again with Myna (Settings page): call Myna's review_checklist with concept_ids " +
-            '["toggle-switch", "dropdown-menu"], check every item against the current code, then call ' +
+            '["toggle-switch", "dropdown-menu"] and include_related false, check every item against the current code, then call ' +
             `Myna's report_review with project_dir "/work/app", summary "Settings page" and one result per item.`
     );
 
     const bare = parseReview(JSON.stringify({ results: [{ item: 'a', verdict: 'pass' }] })).review;
     assert.match(buildReviewRequest(bare, '/w'), /^Review the code again with Myna: call Myna's review_checklist with the same concepts as the last review/);
+});
+
+test('encodes chat text so it survives a link to Claude Code', () => {
+    const text = 'Fix 1 & 2 (#14): "role=alertdialog"\nthen review again 100%';
+    const query = claudeCodeQuery(text);
+    // Spaces, line breaks and the characters that would end or split the query are all encoded.
+    assert.doesNotMatch(query, /[ \n#"&]/);
+    // Claude Code reads the link with URLSearchParams, so the round trip must be exact.
+    assert.equal(new URLSearchParams(query).get('prompt'), text);
 });
 
 test('escapes text before it goes into the view', () => {

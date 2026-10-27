@@ -57,6 +57,16 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "myna.fixWithAI",
+        "title": "Fix with Claude Code",
+        "category": "Myna"
+      },
+      {
+        "command": "myna.reviewWithAI",
+        "title": "Review Again with Claude Code",
+        "category": "Myna"
+      },
+      {
         "command": "myna.copyFixRequest",
         "title": "Copy Fix Request for Your AI",
         "category": "Myna",
@@ -97,6 +107,12 @@
           "command": "myna.refresh"
         },
         {
+          "command": "myna.fixWithAI"
+        },
+        {
+          "command": "myna.reviewWithAI"
+        },
+        {
           "command": "myna.copyFixRequest"
         },
         {
@@ -106,9 +122,29 @@
           "command": "myna.showReview"
         }
       ]
+    },
+    "configuration": {
+      "title": "Myna",
+      "properties": {
+        "myna.claudeCodeChat": {
+          "type": "string",
+          "enum": [
+            "ask",
+            "latest",
+            "new"
+          ],
+          "enumDescriptions": [
+            "Ask each time: continue a recent Claude Code chat of this project, or start a new one.",
+            "Always continue the most recent Claude Code chat of this project.",
+            "Always start a new Claude Code chat."
+          ],
+          "default": "ask",
+          "markdownDescription": "Where **Fix with Claude Code** and **Review again with Claude Code** put their message."
+        }
+      }
     }
   },
   "scripts": {
-    "test": "node --test test/review.test.js"
+    "test": "node --test test/review.test.js test/sessions.test.js"
   }
 }

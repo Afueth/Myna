@@ -30,6 +30,11 @@ LicenseFile={#SourceDir}\LICENSE
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 ChangesEnvironment=yes
+; Myna often runs in the background as an MCP server for AI tools. Those
+; processes have no window, so they cannot be asked to close: end them, and
+; leave restarting to the AI tool, which starts Myna again when it reconnects.
+CloseApplications=force
+RestartApplications=no
 SetupIconFile=..\assets\myna.ico
 UninstallDisplayIcon={app}\bin\myna.exe
 UninstallDisplayName=Myna

@@ -2,8 +2,14 @@
 
 ## 0.2.0
 
-- New **Review again** button and command: copies a message asking your AI to
-  check the current code with the same checklists and save the new result.
+- With Claude Code installed, **Fix with Claude Code** and **Review again
+  with Claude Code** put the message in a Claude Code chat: continue one of
+  the project's recent chats, listed by title, or start a new one. The new
+  `myna.claudeCodeChat` setting can skip the choice (`latest` or `new`).
+  Without Claude Code, the buttons copy the message instead.
+- The **Review again** button has a visible border.
+- New **Review again** button and command: asks your AI to check the current
+  code with the same checklists and save the new result.
 - The fix request now makes reviewing again a required step, with the exact
   concepts and project folder, so the panel updates after the fixes.
 - Myna's own icon in the activity bar, and marked as a preview.

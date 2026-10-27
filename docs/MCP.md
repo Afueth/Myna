@@ -73,7 +73,7 @@ and arguments (`mcp`). For Claude Desktop, add the Cursor-style
 | `find_concepts` | You ask for a feature in plain words | The matching concepts with ids, explanations, and related concepts to consider. The assistant can add `keywords`, technical names it thinks apply, which helps when your words don't name the concept |
 | `list_concepts` | Search didn't find what fits | The categories (ui, forms, security, architecture...) with their sizes, or every concept in one category |
 | `get_checklist` | Before writing code | The requirements and "done when" checks for the chosen concepts |
-| `review_checklist` | After writing code | A numbered rubric to mark PASS, FAIL or NOT APPLICABLE against the code |
+| `review_checklist` | After writing code | A numbered rubric to mark PASS, FAIL or NOT APPLICABLE against the code, including the most closely related concepts |
 | `report_review` | After checking the code | Saves the verdicts in your project and returns a summary of what failed |
 
 The first four only read Myna's catalogue. `report_review` writes to one
@@ -83,6 +83,21 @@ of the tools make network requests.
 To nudge an assistant into using Myna, you can say so in your request, for
 example: *"Use Myna's checklist to build a dropdown menu, then review it with
 Myna."*
+
+## What a review checks
+
+Myna doesn't read your code itself; the assistant does. So the review covers
+the concepts the assistant names, and Myna helps it name the right ones:
+
+- Its instructions ask the assistant to choose concepts from what the code
+  **actually contains**, not only from the request: a settings page that also
+  has a form or a sign-in gets those concepts too.
+- `review_checklist` **adds up to four closely related concepts**, the ones
+  most often linked to the chosen ones. For a dark-mode switch, a dropdown and
+  a confirmation dialog, that adds accessible buttons, color contrast, browser
+  storage and checkbox. The rubric names them, and the assistant marks their
+  items NOT APPLICABLE where they don't fit. Pass `include_related: false` to
+  review exactly the concepts you name.
 
 ## Saved reviews
 

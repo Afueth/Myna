@@ -389,13 +389,57 @@ static int is_match(const myna_match *matches, size_t count, const myna_concept 
     return 0;
 }
 
-static int is_listed(const myna_concept **list, size_t count, const myna_concept *c)
+static int is_listed(const myna_concept *const *list, size_t count, const myna_concept *c)
 {
     for (size_t i = 0; i < count; i++) {
         if (list[i] == c)
             return 1;
     }
     return 0;
+}
+
+#define MAX_CANDIDATES 128
+
+size_t myna_closest_related(const myna_catalogue *cat, const myna_concept *const *chosen,
+                            size_t count, const myna_concept **out, size_t max_out)
+{
+    const myna_concept *seen[MAX_CANDIDATES];
+    int votes[MAX_CANDIDATES];
+    size_t n = 0;
+
+    /* Count how many chosen concepts point at each candidate, in the order
+     * candidates are first listed. */
+    for (size_t i = 0; i < count; i++) {
+        for (size_t r = 0; r < chosen[i]->related_count; r++) {
+            const myna_concept *rel = myna_find_by_id(cat, chosen[i]->related[r]);
+            if (!rel || is_listed(chosen, count, rel))
+                continue;
+            size_t k = 0;
+            while (k < n && seen[k] != rel)
+                k++;
+            if (k < n) {
+                votes[k]++;
+            } else if (n < MAX_CANDIDATES) {
+                seen[n] = rel;
+                votes[n++] = 1;
+            }
+        }
+    }
+
+    /* Take the most-voted first; a stable pick keeps ties in listed order. */
+    size_t written = 0;
+    while (written < max_out) {
+        size_t best = n;
+        for (size_t k = 0; k < n; k++) {
+            if (votes[k] > 0 && (best == n || votes[k] > votes[best]))
+                best = k;
+        }
+        if (best == n)
+            break;
+        out[written++] = seen[best];
+        votes[best] = 0;
+    }
+    return written;
 }
 
 size_t myna_suggest_related(const myna_catalogue *cat, const myna_match *matches,

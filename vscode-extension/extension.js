@@ -15,11 +15,14 @@ const {
     location,
     buildFixRequest,
     buildReviewRequest,
+    claudeCodeQuery,
     escapeHtml,
 } = require('./review');
+const { findSessions } = require('./sessions');
 
 const REVIEW_GLOB = '**/.myna/review.json';
 const EXCLUDE_GLOB = '**/node_modules/**';
+const CLAUDE_CODE = 'anthropic.claude-code';
 
 /** The latest review, as shown everywhere: { file, projectDir, review } or { error } or null. */
 let current = null;
@@ -52,8 +55,13 @@ function activate(context) {
         vscode.commands.registerCommand('myna.showReview', () =>
             vscode.commands.executeCommand('myna.review.focus')
         ),
-        vscode.commands.registerCommand('myna.copyFixRequest', copyFixRequest),
-        vscode.commands.registerCommand('myna.copyReviewRequest', copyReviewRequest),
+        vscode.commands.registerCommand('myna.fixWithAI', () => askAI(fixText(), 'fix request')),
+        vscode.commands.registerCommand('myna.reviewWithAI', () => askAI(reviewText(), 'review request')),
+        vscode.commands.registerCommand('myna.copyFixRequest', () => copyText(fixText(), 'fix request')),
+        vscode.commands.registerCommand('myna.copyReviewRequest', () =>
+            copyText(reviewText(), 'review request')
+        ),
+        vscode.extensions.onDidChange(() => view.render()),
         vscode.commands.registerCommand('myna.openResult', openResult)
     );
 
@@ -141,27 +149,92 @@ function updateStatus(status) {
     status.show();
 }
 
-async function copyFixRequest() {
-    const text = current && current.review ? buildFixRequest(current.review, current.projectDir) : '';
+/** The fix request for the latest review, or '' when nothing failed. */
+function fixText() {
+    return current && current.review ? buildFixRequest(current.review, current.projectDir) : '';
+}
+
+/** The review-again request for the latest review, or '' when there is none. */
+function reviewText() {
+    return current && current.review ? buildReviewRequest(current.review, current.projectDir) : '';
+}
+
+function hasClaudeCode() {
+    return vscode.extensions.getExtension(CLAUDE_CODE) !== undefined;
+}
+
+async function copyText(text, label) {
     if (!text) {
-        vscode.window.showInformationMessage('Myna: nothing to fix in the latest review.');
+        vscode.window.showInformationMessage(`Myna: there is no ${label} to copy for the latest review.`);
         return;
     }
     await vscode.env.clipboard.writeText(text);
-    vscode.window.showInformationMessage(
-        'Myna: fix request copied. Paste it into your AI chat.'
-    );
+    vscode.window.showInformationMessage(`Myna: ${label} copied. Paste it into your AI chat.`);
 }
 
-async function copyReviewRequest() {
-    if (!current || !current.review) {
-        vscode.window.showInformationMessage('Myna: there is no review to repeat yet.');
+/**
+ * Put `text` in a Claude Code chat, through Claude Code's documented
+ * vscode://anthropic.claude-code/open?prompt=&session= link: an existing chat
+ * of this project or a new one, as the user chooses (setting
+ * myna.claudeCodeChat). The user still presses Enter to send it. Without
+ * Claude Code, or if the link fails, copy instead.
+ */
+async function askAI(text, label) {
+    if (!text) {
+        vscode.window.showInformationMessage(`Myna: there is no ${label} for the latest review.`);
         return;
     }
-    await vscode.env.clipboard.writeText(buildReviewRequest(current.review, current.projectDir));
-    vscode.window.showInformationMessage(
-        'Myna: review request copied. Paste it into your AI chat, and I will show the new result here.'
-    );
+    if (hasClaudeCode()) {
+        const chat = await chooseClaudeChat(label);
+        if (!chat) {
+            return; // the user closed the menu
+        }
+        const link = vscode.Uri.from({
+            scheme: vscode.env.uriScheme,
+            authority: CLAUDE_CODE,
+            path: '/open',
+            query: claudeCodeQuery(text, chat.session),
+        });
+        if (await vscode.env.openExternal(link)) {
+            const where = chat.session ? `your Claude Code chat "${chat.title}"` : 'a new Claude Code chat';
+            vscode.window.showInformationMessage(`Myna: the ${label} is in ${where}. Check it and press Enter to send.`);
+            return;
+        }
+    }
+    await copyText(text, label);
+}
+
+/**
+ * Which Claude Code chat to use: { session, title } for an existing chat of
+ * the reviewed project, { session: null } for a new chat, or undefined when
+ * the user closes the menu.
+ */
+async function chooseClaudeChat(label) {
+    const mode = vscode.workspace.getConfiguration('myna').get('claudeCodeChat', 'ask');
+    const sessions = mode === 'new' || !current ? [] : findSessions(current.projectDir);
+    const named = sessions.map((s) => ({ session: s.id, title: s.title || 'Untitled chat', modified: s.modified }));
+
+    if (named.length === 0 || mode === 'new') {
+        return { session: null };
+    }
+    if (mode === 'latest') {
+        return named[0];
+    }
+
+    const items = [
+        ...named.map((s) => ({
+            label: `$(comment-discussion) ${s.title}`,
+            description: timeAgo(s.modified),
+            chat: s,
+        })),
+        { label: '', kind: vscode.QuickPickItemKind.Separator },
+        { label: '$(add) New chat', description: 'Start a new Claude Code chat', chat: { session: null } },
+    ];
+    const picked = await vscode.window.showQuickPick(items, {
+        title: `Myna: where should the ${label} go?`,
+        placeHolder: 'Continue a Claude Code chat of this project, or start a new one',
+    });
+    return picked ? picked.chat : undefined;
 }
 
 async function openResult(index) {
@@ -196,9 +269,9 @@ class ReviewView {
             if (message && message.type === 'open' && Number.isInteger(message.index)) {
                 openResult(message.index);
             } else if (message && message.type === 'copy') {
-                copyFixRequest();
+                askAI(fixText(), 'fix request');
             } else if (message && message.type === 'review') {
-                copyReviewRequest();
+                askAI(reviewText(), 'review request');
             } else if (message && message.type === 'refresh') {
                 vscode.commands.executeCommand('myna.refresh');
             }
@@ -262,14 +335,24 @@ function renderBody() {
     if (failed.length) {
         html += `<h2>To fix</h2><ul class="results">${failed.map(resultItem).join('')}</ul>`;
     }
+    // With Claude Code, the buttons put the message in its chat box; without
+    // it, they copy the message to paste into any AI chat.
+    const claude = hasClaudeCode();
     html += '<div class="actions">';
     if (failed.length) {
-        html += '<button type="button" class="primary" data-action="copy">Copy fix request for your AI</button>';
+        html += claude
+            ? '<button type="button" class="primary" data-action="copy" title="Put the fix request in a Claude Code chat">Fix with Claude Code</button>'
+            : '<button type="button" class="primary" data-action="copy">Copy fix request for your AI</button>';
     }
-    html +=
-        '<button type="button" class="secondary" data-action="review" ' +
-        'title="Copy a message that asks your AI to check the code again with Myna">Review again</button>';
+    html += claude
+        ? '<button type="button" class="secondary" data-action="review" title="Ask Claude Code, in a chat you choose, to check the code again with Myna">Review again with Claude Code</button>'
+        : '<button type="button" class="secondary" data-action="review" title="Copy a message that asks your AI to check the code again with Myna">Review again</button>';
     html += '</div>';
+    if (claude) {
+        html +=
+            '<p class="hint">Choose a Claude Code chat of this project, or a new one. ' +
+            'The message is filled in; press Enter there to send it.</p>';
+    }
     if (passed.length) {
         html += `<details><summary>Passed (${passed.length})</summary><ul class="results">${passed
             .map(resultItem)

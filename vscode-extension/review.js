@@ -116,8 +116,10 @@ function location(result) {
  * where to save the result, so the new review replaces the old one.
  */
 function reviewInstruction(review, projectDir) {
+    // The saved concepts already include the related ones Myna added, so ask
+    // for exactly these; otherwise each review again would add more.
     const ids = review.concepts.length
-        ? `concept_ids [${review.concepts.map((c) => `"${c}"`).join(', ')}]`
+        ? `concept_ids [${review.concepts.map((c) => `"${c}"`).join(', ')}] and include_related false`
         : 'the same concepts as the last review';
     const summary = review.summary ? `, summary "${review.summary}"` : '';
     return (
@@ -158,6 +160,17 @@ function buildReviewRequest(review, projectDir) {
     return `Review the code again with Myna${what}: ${reviewInstruction(review, projectDir)}`;
 }
 
+/**
+ * The query part of a link that opens Claude Code with `text` in its chat
+ * box: vscode://anthropic.claude-code/open?prompt=...&session=... With a
+ * session id, the text goes into that existing chat instead of a new one.
+ * Everything is encoded here, so characters such as & and # survive the trip.
+ */
+function claudeCodeQuery(text, session) {
+    const query = `prompt=${encodeURIComponent(text)}`;
+    return session ? `${query}&session=${encodeURIComponent(session)}` : query;
+}
+
 function escapeHtml(text) {
     return String(text)
         .replace(/&/g, '&amp;')
@@ -176,5 +189,6 @@ module.exports = {
     location,
     buildFixRequest,
     buildReviewRequest,
+    claudeCodeQuery,
     escapeHtml,
 };

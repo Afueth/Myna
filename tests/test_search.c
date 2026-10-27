@@ -212,6 +212,27 @@ static void test_suggest_related_skips_results(const myna_catalogue *cat)
     CHECK(r == 2 && strcmp(rel[1]->id, "focus") == 0);
 }
 
+static void test_closest_related_ranks_by_votes(const myna_catalogue *cat)
+{
+    const myna_concept *out[5];
+
+    /* Both "click" and "escape" list "modal": it comes first, and the chosen
+     * concepts themselves are never suggested. */
+    const myna_concept *pair[] = {myna_find_by_id(cat, "click"), myna_find_by_id(cat, "escape")};
+    size_t n = myna_closest_related(cat, pair, 2, out, 5);
+    CHECK(n == 1);
+    CHECK(n >= 1 && strcmp(out[0]->id, "modal") == 0);
+
+    /* Equal votes keep the order the concept lists them in, up to max_out. */
+    const myna_concept *one[] = {myna_find_by_id(cat, "modal")};
+    n = myna_closest_related(cat, one, 1, out, 5);
+    CHECK(n == 3);
+    CHECK(n == 3 && strcmp(out[0]->id, "click") == 0 && strcmp(out[1]->id, "escape") == 0 &&
+          strcmp(out[2]->id, "focus") == 0);
+    CHECK(myna_closest_related(cat, one, 1, out, 2) == 2);
+    CHECK(myna_closest_related(cat, one, 1, out, 0) == 0);
+}
+
 static void test_find_by_id(const myna_catalogue *cat)
 {
     const myna_concept *c = myna_find_by_id(cat, "modal");
@@ -335,6 +356,7 @@ int main(int argc, char **argv)
     test_max_results_keeps_best(&cat);
     test_very_long_query(&cat);
     test_suggest_related_skips_results(&cat);
+    test_closest_related_ranks_by_votes(&cat);
     test_find_by_id(&cat);
     myna_catalogue_free(&cat);
 

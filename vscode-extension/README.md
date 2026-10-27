@@ -14,12 +14,28 @@ result. This extension shows that review:
 - **In the status bar**: the latest score, at a glance.
 
 Click a failed item to jump to its line. Two buttons turn the review into a
-message for your AI chat:
+message for your AI:
 
-- **Copy fix request for your AI**: the failed items, and the instruction to
-  review again with Myna afterwards, so the panel shows the new result.
-- **Review again**: asks your AI to check the current code against the same
-  checklists and save the new result.
+- **Fix with Claude Code**: the failed items, and the instruction to review
+  again with Myna afterwards, so the panel shows the new result.
+- **Review again with Claude Code**: asks your AI to check the current code
+  against the same checklists and save the new result.
+
+With [Claude Code](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code)
+installed, each button asks where the message should go: one of this
+project's recent Claude Code chats, shown by title (such as the chat that
+just built the feature), or a new chat. The message is filled in; press Enter
+to send it. Without Claude Code, the buttons copy the message so you can paste
+it into any AI chat.
+
+## Settings
+
+| Setting | Values |
+|---|---|
+| `myna.claudeCodeChat` | `ask` (default): choose each time. `latest`: always continue the most recent chat of the project. `new`: always start a new chat. |
+
+Myna finds a project's recent chats in Claude Code's own folder
+(`~/.claude/projects`). If it can't read them, it starts a new chat.
 
 ## How it works
 
@@ -39,6 +55,8 @@ its own.
 | Command | What it does |
 |---|---|
 | Myna: Show Review | Opens the Myna panel |
+| Myna: Fix with Claude Code | Opens a Claude Code chat with the fix request filled in |
+| Myna: Review Again with Claude Code | Opens a Claude Code chat asking it to check the code again |
 | Myna: Copy Fix Request for Your AI | Copies the failed items, and the instruction to review again, as a message for your AI chat |
 | Myna: Copy Review-Again Request for Your AI | Copies a message asking your AI to check the code again with the same checklists |
 | Myna: Refresh Review | Reads the review file again |

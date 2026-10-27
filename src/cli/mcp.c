@@ -18,7 +18,9 @@
 #include "report.h"
 
 #define MODERN_VERSION "2026-07-28"
-#define MAX_REPORT_RESULTS 100
+#define MAX_REPORT_RESULTS 200
+/* Related concepts review_checklist adds on top of the chosen ones. */
+#define MAX_RELATED_ADDED 4
 #define MAX_REPORT_TEXT 500
 #define MAX_PATH_TEXT 1000
 #define MAX_RESULTS 5
@@ -50,10 +52,13 @@ static const char INSTRUCTIONS[] =
     "in plain words, plus in keywords any technical names you think apply. If "
     "nothing fits, browse with list_concepts. Then call get_checklist with the "
     "ids you will implement, and "
-    "follow its requirements. After writing the code, call review_checklist "
-    "with the same ids and check the code against every item. Then call "
-    "report_review with your verdicts, so the user can see the review in "
-    "their editor.";
+    "follow its requirements. After writing the code, look at what the code "
+    "actually contains, not only what was asked for: every feature in it, such "
+    "as forms, buttons, dialogs, menus, sign-in, uploads or API calls, needs "
+    "its concept, so call find_concepts for any you have no id for. Then call "
+    "review_checklist with all those ids and check the code against every "
+    "item. Then call report_review with your verdicts, so the user can see "
+    "the review in their editor.";
 
 #define ID_LIST_SCHEMA                                                          \
     "\"concept_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},"      \
@@ -102,10 +107,16 @@ static const char *const TOOLS[] = {
     "\"description\":\"Get a numbered review rubric for finished code: every "
     "requirement and done-when check for the chosen concepts, to mark PASS, "
     "FAIL or NOT APPLICABLE. Call it after writing code, then read the code "
-    "and answer each item.\","
+    "and answer each item. Choose concept_ids from what the code actually "
+    "contains, not only from the request. Myna also adds the most closely "
+    "related concepts, so things like keyboard use and contrast are checked "
+    "too.\","
     "\"inputSchema\":{\"type\":\"object\",\"properties\":{" ID_LIST_SCHEMA
     "\"description\":{\"type\":\"string\",\"description\":\"What was built, in "
-    "plain words. Used to find concepts when concept_ids is empty.\"}},"
+    "plain words. Used to find concepts when concept_ids is empty.\"},"
+    "\"include_related\":{\"type\":\"boolean\",\"default\":true,\"description\":"
+    "\"Also review the most closely related concepts (default true). Set false "
+    "to review exactly concept_ids.\"}},"
     "\"additionalProperties\":false},"
     READ_ONLY "}",
     "{\"name\":\"report_review\",\"title\":\"Report review results\","
@@ -117,7 +128,7 @@ static const char *const TOOLS[] = {
     "the project's root folder.\"},"
     "\"summary\":{\"type\":\"string\",\"description\":\"What was reviewed, in "
     "a few words, such as Settings page.\"}," ID_LIST_SCHEMA
-    "\"results\":{\"type\":\"array\",\"minItems\":1,\"maxItems\":100,"
+    "\"results\":{\"type\":\"array\",\"minItems\":1,\"maxItems\":200,"
     "\"description\":\"One entry per rubric item.\",\"items\":{\"type\":"
     "\"object\",\"properties\":{"
     "\"item\":{\"type\":\"string\",\"description\":\"The checklist item, as "
@@ -517,19 +528,48 @@ static void append_built(json_buf *text, size_t len, int review, const myna_cata
     free(s);
 }
 
+/*
+ * The review rubric: the chosen concepts plus, unless include_related is
+ * false, the most closely related ones, so cross-cutting checks such as
+ * keyboard use and contrast are not missed when nobody asked for them.
+ */
+static void review_rubric(json_buf *text, const myna_catalogue *cat, const json_value *args,
+                          const myna_concept **chosen, size_t n)
+{
+    const json_value *flag = json_get(args, "include_related");
+    int related = !(flag && flag->type == JSON_BOOL && !flag->boolean);
+    size_t added = related ? myna_closest_related(cat, chosen, n, chosen + n, MAX_RELATED_ADDED) : 0;
+    size_t total = n + added;
+
+    append_built(text, myna_build_review(chosen, total, NULL, 0), 1, cat, NULL, chosen, total);
+
+    if (added) {
+        textf(text, "\nAdded because they are closely related: ");
+        for (size_t i = n; i < total; i++)
+            textf(text, "%s%s", i > n ? ", " : "", chosen[i]->name);
+        textf(text, ". Mark their items NOT APPLICABLE where they don't fit this code.\n");
+    }
+    textf(text, "\nIf the code contains features none of these concepts cover, such as a "
+                "form, sign-in, uploads or API calls, call find_concepts for them and "
+                "review those too.\n");
+    textf(text, "\nWhen you have checked every item, call report_review with project_dir, "
+                "concept_ids [");
+    for (size_t i = 0; i < total; i++)
+        textf(text, "%s\"%s\"", i ? ", " : "", chosen[i]->id);
+    textf(text, "] and one result per numbered item.\n");
+}
+
 static void tool_checklist(json_buf *text, int *is_error, const myna_catalogue *cat,
                            const json_value *args, int review)
 {
-    const myna_concept *chosen[MAX_IDS];
+    const myna_concept *chosen[MAX_IDS + MAX_RELATED_ADDED];
     const char *desc = json_string(json_get(args, "description"));
     size_t n = resolve_concepts(text, is_error, cat, args, chosen);
     if (n == 0)
         return;
 
     if (review) {
-        append_built(text, myna_build_review(chosen, n, NULL, 0), 1, cat, NULL, chosen, n);
-        textf(text, "\nWhen you have checked every item, call report_review with "
-                    "project_dir, the concept_ids and one result per numbered item.\n");
+        review_rubric(text, cat, args, chosen, n);
         return;
     }
 

@@ -206,6 +206,30 @@ static void test_modern_requests(const myna_catalogue *cat)
     free(r);
 }
 
+static void test_review_adds_related(const myna_catalogue *cat)
+{
+    myna_mcp_state st;
+    myna_mcp_init(&st);
+    st.legacy = 1;
+    char *r;
+
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"review_checklist\",\"arguments\":{\"concept_ids\":"
+                       "[\"modal-dialog\"]}}}");
+    CHECK(has(r, "Added because they are closely related: "));
+    CHECK(has(r, "NOT APPLICABLE where they don't fit"));
+    CHECK(has(r, "call find_concepts for them"));
+    CHECK(has(r, "concept_ids [\\\"modal-dialog\\\", "));
+    free(r);
+
+    r = call(&st, cat, "{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\",\"params\":"
+                       "{\"name\":\"review_checklist\",\"arguments\":{\"concept_ids\":"
+                       "[\"modal-dialog\"],\"include_related\":false}}}");
+    CHECK(!has(r, "Added because they are closely related"));
+    CHECK(has(r, "concept_ids [\\\"modal-dialog\\\"] and one result"));
+    free(r);
+}
+
 static void test_errors(const myna_catalogue *cat)
 {
     myna_mcp_state st;
@@ -337,6 +361,7 @@ int main(int argc, char **argv)
     test_legacy_session(&cat);
     test_modern_requests(&cat);
     test_errors(&cat);
+    test_review_adds_related(&cat);
     test_report_review(&cat);
     myna_catalogue_free(&cat);
 

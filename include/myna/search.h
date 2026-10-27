@@ -31,6 +31,15 @@ size_t myna_suggest_related(const myna_catalogue *cat, const myna_match *matches
                             size_t match_count, const myna_concept **out,
                             size_t max_out);
 
+/*
+ * The concepts most closely related to `chosen` that are not chosen
+ * themselves: a concept that several chosen concepts list as related comes
+ * before one that only a single concept lists; ties keep the order they are
+ * first listed in. Writes up to `max_out` to `out` and returns the number.
+ */
+size_t myna_closest_related(const myna_catalogue *cat, const myna_concept *const *chosen,
+                            size_t count, const myna_concept **out, size_t max_out);
+
 /* Find a concept by exact id. Returns NULL if not found. */
 const myna_concept *myna_find_by_id(const myna_catalogue *cat, const char *id);
 
