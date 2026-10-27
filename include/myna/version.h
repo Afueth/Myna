@@ -3,6 +3,6 @@
 
 /* Keep in step with project(... VERSION) in CMakeLists.txt; the release
  * workflow checks that they match. */
-#define MYNA_VERSION "0.2.2"
+#define MYNA_VERSION "0.2.3"
 
 #endif /* MYNA_VERSION_H */
